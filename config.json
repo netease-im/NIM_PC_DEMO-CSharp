@@ -1,0 +1,33 @@
+﻿{
+  "configs": {
+    "index": 1,
+    "list": [
+      {
+        "server": {
+          "global_config": {
+            "db_encrypt_key": "",
+            "preload_attach": true,
+            "sdk_log_level": 6,
+            "private_server_setting": true
+          },
+          "private_server_setting": {
+            "lbs": "",
+            "nos_lbs": "",
+            "default_link": [ "" ],
+            "default_nos_upload": [ "" ],
+            "default_nos_download": [ "" ],
+            "default_nos_access": null,
+            "rsa_public_key_module": ""
+          }
+        },
+        "appkey": "",
+        "roomlistserver": ""
+      },
+      {
+        "server": "",
+        "appkey": "45c6af3c98409b18a84451215d0bdd6e",
+        "roomlistserver": "https://app.netease.im/api/chatroom/homeList"
+      }
+    ]
+  }
+}

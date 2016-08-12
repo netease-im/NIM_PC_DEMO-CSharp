@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <EnableSecurityDebugging>false</EnableSecurityDebugging>
+    <PublishUrlHistory>C:\Users\鹏\SkyDrive\文档\NIMPublish\</PublishUrlHistory>
+    <InstallUrlHistory />
+    <SupportUrlHistory />
+    <UpdateUrlHistory />
+    <BootstrapperUrlHistory />
+    <ErrorReportUrlHistory />
+    <FallbackCulture>zh-CN</FallbackCulture>
+    <VerifyUploadedFiles>false</VerifyUploadedFiles>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <RemoteDebugEnabled>false</RemoteDebugEnabled>
+    <RemoteDebugMachine>10.242.103.148</RemoteDebugMachine>
+    <StartWorkingDirectory>
+    </StartWorkingDirectory>
+    <StartAction>Project</StartAction>
+    <StartProgram>C:\C#NIM2.5\Debug\NimDemo.exe</StartProgram>
+    <StartArguments>C:\C#NIM2.5\Debug\NimDemo.exe</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <StartProgram>C:\C#NIM2.5\Debug\NimDemo.exe</StartProgram>
+    <StartArguments>C:\C#NIM2.5\Debug\NimDemo.exe</StartArguments>
+    <RemoteDebugMachine>10.242.103.148</RemoteDebugMachine>
+  </PropertyGroup>
+</Project>
