@@ -69,10 +69,8 @@ namespace NIMDemo.LivingStreamSDK
 			{
 				Marshal.FreeHGlobal(ptr_ls);
 			}
-			
-
-		
 			System.Diagnostics.Debug.Assert(ls_ret_default == 0);
+
 			ls_para_.paOutUrl = url;
 
 			//音频
@@ -119,9 +117,7 @@ namespace NIMDemo.LivingStreamSDK
 				Marshal.FreeHGlobal(ptr_ls2);
 			}
 			
-
 			nimSDKHelper.Init();
-			//nimSDKHelper.session = this;
 			return true;
 		}
 
@@ -148,16 +144,8 @@ namespace NIMDemo.LivingStreamSDK
 				{
 					live_streaming_ = true;
 					nimSDKHelper.StartDevices();
-					// 					while (true)
-// 					{
-// 						SendVideoFrame();
-// 						SendAudioFrame();
-// 					}
 				}
-
 			}
-			
-
 		}
 
 		//结束直播

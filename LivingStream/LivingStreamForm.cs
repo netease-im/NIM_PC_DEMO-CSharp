@@ -12,6 +12,7 @@ using NIMDemo.AVChat;
 using System.Drawing.Drawing2D;
 using NIMDemo.MainForm;
 using NIM;
+using NimUtility;
 
 namespace NIMDemo
 {
@@ -24,7 +25,6 @@ namespace NIMDemo
 			graphics = pb_livingstream.CreateGraphics();
 		}
 
-	
 
 		private void btn_Click(object sender, EventArgs e)
 		{
@@ -34,7 +34,22 @@ namespace NIMDemo
 
 		private void btn_bypass_Click(object sender, EventArgs e)
 		{
+			string appkey = ConfigReader.GetAppKey();
+			if (!appkey.Equals("6f49e3f759ccd47810b445444eebc090"))
+			{
+				MessageBox.Show("请将appkey更改为6f49e3f759ccd47810b445444eebc090！");
+				return; 
+			}
 
+			if (nimSDKHelper.session != null)
+			{
+				nimSDKHelper.session.DoStopLiveStream();
+				nimSDKHelper.session.ClearSession();
+				nimSDKHelper.session = null;
+				btn_ls.Text = "开始直播";
+			}
+			BypassLivingStreamChoiceForm choiceform = new BypassLivingStreamChoiceForm();
+			choiceform.ShowDialog();
 		}
 
 		public void ShowVideoFrame(VideoFrame frame)

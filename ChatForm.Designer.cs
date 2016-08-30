@@ -39,6 +39,7 @@
             this.testMediaBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.recallMsgBtn = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -53,6 +54,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.recallMsgBtn);
             this.splitContainer1.Panel1.Controls.Add(this.listBox1);
             // 
             // splitContainer1.Panel2
@@ -66,8 +68,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.testMediaBtn);
             this.splitContainer1.Panel2.Controls.Add(this.button1);
             this.splitContainer1.Panel2.Controls.Add(this.textBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(501, 430);
-            this.splitContainer1.SplitterDistance = 186;
+            this.splitContainer1.Size = new System.Drawing.Size(501, 460);
+            this.splitContainer1.SplitterDistance = 222;
             this.splitContainer1.TabIndex = 0;
             // 
             // listBox1
@@ -169,11 +171,21 @@
             this.textBox1.Size = new System.Drawing.Size(477, 128);
             this.textBox1.TabIndex = 0;
             // 
+            // recallMsgBtn
+            // 
+            this.recallMsgBtn.Location = new System.Drawing.Point(392, 187);
+            this.recallMsgBtn.Name = "recallMsgBtn";
+            this.recallMsgBtn.Size = new System.Drawing.Size(97, 23);
+            this.recallMsgBtn.TabIndex = 2;
+            this.recallMsgBtn.Text = "撤回";
+            this.recallMsgBtn.UseVisualStyleBackColor = true;
+            this.recallMsgBtn.Click += new System.EventHandler(this.recallMsgBtn_Click);
+            // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(501, 430);
+            this.ClientSize = new System.Drawing.Size(501, 460);
             this.Controls.Add(this.splitContainer1);
             this.Name = "ChatForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -199,5 +211,6 @@
         private System.Windows.Forms.Button SysmsgLogBtn;
         private System.Windows.Forms.Button btn_joinmultiroom;
         private System.Windows.Forms.Button btn_createmultiroom;
+        private System.Windows.Forms.Button recallMsgBtn;
     }
 }

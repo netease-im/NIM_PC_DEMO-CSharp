@@ -57,7 +57,7 @@ namespace NIMDemo
                 NIM.NIMVChatInfo info = new NIM.NIMVChatInfo();
                 NIM.VChatAPI.CalleeAck(channel_id, ret == DialogResult.Yes, info);
             };
-            _ownerFriendsListForm.Invoke(a);
+            _ownerFriendsListForm.BeginInvoke(a);
         }
 
         private static void OnSessionCalleeAckRes(long channel_id, int code)
@@ -128,8 +128,14 @@ namespace NIMDemo
         private static void OnSessionHangupNotify(long channel_id, int code)
         {
             EndDevices();
-            if (code == 200)
-                MessageBox.Show("已挂断");
+			if (code == 200)
+			{
+				Action action = () =>
+				{
+					MessageBox.Show("已挂断");
+				};
+				_ownerFriendsListForm.Invoke(action);
+			}
         }
         #endregion
 
@@ -146,7 +152,11 @@ namespace NIMDemo
             _vchatHandlers.onSessionNetStatus = OnSessionNetStatus;
             _vchatHandlers.onSessionHangupRes = OnSessionHangupRes;
             _vchatHandlers.onSessionHangupNotify = OnSessionHangupNotify;
-            _vchatHandlers.onSessionSyncAckNotify = null;
+
+			_vchatHandlers.onSessionSyncAckNotify =(channel_id,code,uid,  mode, accept,  time, client)=>
+			{
+
+			};
 
             //注册音视频会话交互回调
             NIM.VChatAPI.SetSessionStatusCb(_vchatHandlers);

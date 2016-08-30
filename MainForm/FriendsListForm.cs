@@ -136,6 +136,7 @@ namespace NIMDemo
            : this()
         {
             _selfId = id;
+			Helper.UserHelper.SelfId = id;
         }
 
         private bool _notifyNetworkDisconnect = true;
@@ -512,7 +513,7 @@ namespace NIMDemo
                     string m3 = isBlacklist ? "取消黑名单" : "设置黑名单";
                     MenuItem i3 = new MenuItem(m3, (o, ex) =>
                     {
-                        NIM.User.UserAPI.SetBlacklist(id, !isBlacklist, (a, b, c) =>
+                        NIM.User.UserAPI.SetBlacklist(id, !isBlacklist, (a, b, c,d,e1) =>
                         {
                             
                         });
@@ -522,7 +523,7 @@ namespace NIMDemo
                     string m4 = muted ? "取消静音" : "静音";
                     MenuItem i4 = new MenuItem(m4, (o, ex) =>
                     {
-                        NIM.User.UserAPI.SetUserMuted(id, !muted, (a, b, c) =>
+                        NIM.User.UserAPI.SetUserMuted(id, !muted, (a, b, c,d,e1) =>
                         {
 
                         });

@@ -23,6 +23,7 @@ namespace NIMDemo
         private nim_vchat_opt_cb_func _createroomcb = null;
         private nim_vchat_opt2_cb_func _joinroomcb = null;
         string room_name = "154145";
+        private string _lastSendedMsgId = null;
 
         private ChatForm()
         {
@@ -84,10 +85,8 @@ namespace NIMDemo
             else
             {
                 NIM.NIMTextMessage textMsg = new NIM.NIMTextMessage();
-                //textMsg.ReceiverID = "936c97544aa946e5b3efa5fd28f493b3";
                 textMsg.SessionType = _sessionType;
                 textMsg.ReceiverID = _peerId;
-                //textMsg.SessionType = NIM.Session.NIMSessionType.kNIMSessionTypeP2P;
                 textMsg.TextContent = message;
                 textMsg.PushContent = "云信测试消息--*--";
                 NIM.TalkAPI.SendMessage(textMsg);
@@ -143,8 +142,13 @@ namespace NIMDemo
 
         void SendMessageResultHandler(object sender, MessageArcEventArgs args)
         {
+            if(args.ArcInfo.Response == ResponseCode.kNIMResSuccess && args.ArcInfo.TalkId == _peerId)
+            {
+                _lastSendedMsgId = args.ArcInfo.MsgId;
+            }
             if (args.ArcInfo.Response == ResponseCode.kNIMResSuccess || args.ArcInfo.TalkId != _peerId)
                 return;
+            
             Action action = () =>
             {
                 MessageBox.Show(args.Dump(), "发送失败");
@@ -378,6 +382,19 @@ namespace NIMDemo
         {
             InputRoomIdForm form = new InputRoomIdForm();
             form.ShowDialog();
+        }
+
+        private void recallMsgBtn_Click(object sender, EventArgs e)
+        {
+            if(!string.IsNullOrEmpty(_lastSendedMsgId))
+            {
+                NIM.TalkAPI.RecallMessage(_lastSendedMsgId,"撤回消息", OnRecallMessageCompleted);
+            }
+        }
+
+        private void OnRecallMessageCompleted(ResponseCode result, RecallNotification notify)
+        {
+            DemoTrace.WriteLine("撤回消息:" + result.ToString()+" " + notify.Dump());
         }
     }
 

@@ -32,18 +32,18 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.rt_push_url = new System.Windows.Forms.RichTextBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.pb_livingstream = new System.Windows.Forms.PictureBox();
 			this.btn = new System.Windows.Forms.Button();
 			this.btn_bypass = new System.Windows.Forms.Button();
-			this.pb_livingstream = new System.Windows.Forms.PictureBox();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pb_livingstream)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btn_ls
 			// 
-			this.btn_ls.Location = new System.Drawing.Point(449, 311);
+			this.btn_ls.Location = new System.Drawing.Point(437, 311);
 			this.btn_ls.Name = "btn_ls";
-			this.btn_ls.Size = new System.Drawing.Size(75, 23);
+			this.btn_ls.Size = new System.Drawing.Size(119, 23);
 			this.btn_ls.TabIndex = 0;
 			this.btn_ls.Text = "开始直播";
 			this.btn_ls.UseVisualStyleBackColor = true;
@@ -76,27 +76,6 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "视频展示区域";
 			// 
-			// btn
-			// 
-			this.btn.Location = new System.Drawing.Point(449, 266);
-			this.btn.Name = "btn";
-			this.btn.Size = new System.Drawing.Size(75, 23);
-			this.btn.TabIndex = 4;
-			this.btn.Text = "音视频设置";
-			this.btn.UseVisualStyleBackColor = true;
-			this.btn.Click += new System.EventHandler(this.btn_Click);
-			// 
-			// btn_bypass
-			// 
-			this.btn_bypass.Location = new System.Drawing.Point(449, 224);
-			this.btn_bypass.Name = "btn_bypass";
-			this.btn_bypass.Size = new System.Drawing.Size(75, 23);
-			this.btn_bypass.TabIndex = 5;
-			this.btn_bypass.Text = "旁路直播";
-			this.btn_bypass.UseVisualStyleBackColor = true;
-			this.btn_bypass.Visible = false;
-			this.btn_bypass.Click += new System.EventHandler(this.btn_bypass_Click);
-			// 
 			// pb_livingstream
 			// 
 			this.pb_livingstream.Location = new System.Drawing.Point(7, 21);
@@ -105,11 +84,31 @@
 			this.pb_livingstream.TabIndex = 0;
 			this.pb_livingstream.TabStop = false;
 			// 
+			// btn
+			// 
+			this.btn.Location = new System.Drawing.Point(437, 266);
+			this.btn.Name = "btn";
+			this.btn.Size = new System.Drawing.Size(119, 23);
+			this.btn.TabIndex = 4;
+			this.btn.Text = "音视频设置";
+			this.btn.UseVisualStyleBackColor = true;
+			this.btn.Click += new System.EventHandler(this.btn_Click);
+			// 
+			// btn_bypass
+			// 
+			this.btn_bypass.Location = new System.Drawing.Point(437, 226);
+			this.btn_bypass.Name = "btn_bypass";
+			this.btn_bypass.Size = new System.Drawing.Size(119, 23);
+			this.btn_bypass.TabIndex = 5;
+			this.btn_bypass.Text = "麦序接口测试";
+			this.btn_bypass.UseVisualStyleBackColor = true;
+			this.btn_bypass.Click += new System.EventHandler(this.btn_bypass_Click);
+			// 
 			// LivingStreamForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(536, 348);
+			this.ClientSize = new System.Drawing.Size(568, 348);
 			this.Controls.Add(this.btn_bypass);
 			this.Controls.Add(this.btn);
 			this.Controls.Add(this.groupBox1);
@@ -117,6 +116,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btn_ls);
 			this.Name = "LivingStreamForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "直播相关";
 			this.groupBox1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.pb_livingstream)).EndInit();

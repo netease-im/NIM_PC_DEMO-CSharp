@@ -103,11 +103,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependents\NimAudio.dll</HintPath>
     </Reference>
-    <Reference Include="NimChatRoom, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="NIMChatRoom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependents\NimChatRoom.dll</HintPath>
+      <HintPath>Dependents\NIMChatRoom.dll</HintPath>
     </Reference>
-    <Reference Include="NimCore, Version=2.1.1.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="NimCore, Version=2.7.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependents\NimCore.dll</HintPath>
     </Reference>
@@ -134,6 +134,19 @@
     </Compile>
     <Compile Include="AVChat\AVDevicesSettingForm.Designer.cs">
       <DependentUpon>AVDevicesSettingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ByPassLivingStream\BypassLivingStreamChoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ByPassLivingStream\BypassLivingStreamChoiceForm.Designer.cs">
+      <DependentUpon>BypassLivingStreamChoiceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ByPassLivingStream\BypassLivingStreamCommon.cs" />
+    <Compile Include="ByPassLivingStream\BypassLivingStreamForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ByPassLivingStream\BypassLivingStreamForm.Designer.cs">
+      <DependentUpon>BypassLivingStreamForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ChatForm.cs">
       <SubType>Form</SubType>
@@ -281,6 +294,12 @@
     <EmbeddedResource Include="AVChat\AVDevicesSettingForm.resx">
       <DependentUpon>AVDevicesSettingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ByPassLivingStream\BypassLivingStreamChoiceForm.resx">
+      <DependentUpon>BypassLivingStreamChoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ByPassLivingStream\BypassLivingStreamForm.resx">
+      <DependentUpon>BypassLivingStreamForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChatForm.resx">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -382,7 +401,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Assets\logo.png" />
   </ItemGroup>

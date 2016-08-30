@@ -147,10 +147,19 @@ namespace NIMDemo.Team
                                 });
                             }
                         });
+                        MenuItem item2 = new MenuItem("修改群昵称", (s, args) =>
+                        {
+                            var member = NIM.Team.TeamAPI.QuerySingleMemberInfo(_teamId, uid);
+                            member.NickName = "nickname:" + new Random().Next();
+                            NIM.Team.TeamAPI.UpdateMemberNickName(member, null);
+                        });
                         m.MenuItems.Add(item);
                         var myInfo = _teamMmebers[FriendsListForm.SelfId];
                         if (myInfo.Type == NIM.Team.NIMTeamUserType.kNIMTeamUserTypeCreator || myInfo.Type == NIM.Team.NIMTeamUserType.kNIMTeamUserTypeManager)
+                        {
                             m.MenuItems.Add(item1);
+                            m.MenuItems.Add(item2);
+                        }
                     }
                     m.MenuItems.Add(menu);
                     m.Show(treeView1, e.Location);

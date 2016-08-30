@@ -19,6 +19,8 @@ namespace NIMDemo.MainForm
         //private MultimediaHandler _multimediaHandler;
 		private nim_vchat_mp4_record_opt_cb_func _startcb = null;
 		private nim_vchat_mp4_record_opt_cb_func _stopcb = null;
+		private nim_vchat_opt_cb_func _setvideoqualitycb = null;
+
 		private bool mute = false;
 		private bool record = false;
         const int RenderInterval = 60;
@@ -26,11 +28,21 @@ namespace NIMDemo.MainForm
         public VideoChatForm()
         {
             InitializeComponent();
+			InitQuality();
 			_startcb = new nim_vchat_mp4_record_opt_cb_func(VChatRecordStartCallback); 
             this.Load += VideoChatForm_Load;
             this.FormClosed += VideoChatForm_FormClosed;
         }
 
+		private void InitQuality()
+		{
+			foreach(var quality in Enum.GetValues(typeof(NIMVChatVideoQuality)))
+			{
+				cb_setquality.Items.Add(quality);				
+			}
+			if (cb_setquality.Items.Count > 0)
+				cb_setquality.SelectedIndex = 0;
+		}
 		private void VChatRecordStartCallback(bool ret, int code,string file,Int64 time,string json_extension,IntPtr user_data)
 		{
 			if(ret)
@@ -141,5 +153,16 @@ namespace NIMDemo.MainForm
             AVChat.AVDevicesSettingForm form = new AVChat.AVDevicesSettingForm();
             form.ShowDialog();
         }
+
+		private void cb_setquality_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			_setvideoqualitycb = new nim_vchat_opt_cb_func((ret, code, json, intptr) =>
+			{
+				//ret  true
+				//设置成功
+			});
+			NIMVChatVideoQuality quality =(NIMVChatVideoQuality)((ComboBox)sender).SelectedItem;
+			NIM.VChatAPI.SetVideoQuality(quality, "", _setvideoqualitycb, IntPtr.Zero);
+		}
 	}
 }

@@ -38,7 +38,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.UserNameComboBox = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox2
@@ -48,7 +47,6 @@
             this.textBox2.PasswordChar = '*';
             this.textBox2.Size = new System.Drawing.Size(137, 21);
             this.textBox2.TabIndex = 1;
-            this.textBox2.Text = "123456";
             // 
             // label1
             // 
@@ -138,8 +136,6 @@
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "登录";
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

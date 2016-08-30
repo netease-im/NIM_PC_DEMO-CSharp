@@ -19,7 +19,8 @@
     </StartWorkingDirectory>
     <StartAction>Project</StartAction>
     <StartProgram>C:\C#NIM2.5\Debug\NimDemo.exe</StartProgram>
-    <StartArguments>C:\C#NIM2.5\Debug\NimDemo.exe</StartArguments>
+    <StartArguments>
+    </StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <StartProgram>C:\C#NIM2.5\Debug\NimDemo.exe</StartProgram>
