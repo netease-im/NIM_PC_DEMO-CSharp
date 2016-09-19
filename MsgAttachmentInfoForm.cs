@@ -118,7 +118,7 @@ namespace NIMDemo
                     this.Invoke(action, b);
                 }
             },
-            (a, b) =>
+            (a) =>
             {
                 
             });

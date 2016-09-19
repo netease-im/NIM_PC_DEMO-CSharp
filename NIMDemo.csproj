@@ -135,6 +135,8 @@
     <Compile Include="AVChat\AVDevicesSettingForm.Designer.cs">
       <DependentUpon>AVDevicesSettingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Beauty\ColorBalance.cs" />
+    <Compile Include="Beauty\Smooth.cs" />
     <Compile Include="ByPassLivingStream\BypassLivingStreamChoiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -404,9 +406,10 @@
   <ItemGroup>
     <Content Include="Assets\logo.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd $(ProjectDir)Dependents\dllimport
+    <PostBuildEvent>cd /d "$(ProjectDir)Dependents\dllimport"
 for %25%25i in (*.dll) do if not exist "$(TargetDir)%25%25i" (copy /Y %25%25i "$(TargetDir)%25%25i");
 xcopy "$(ProjectDir)Dependents\dllimport\livingStream\*.dll"  /d /e /r  "$(TargetDir)livingStream\"
 </PostBuildEvent>

@@ -9,17 +9,20 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using NIM;
+using System.Runtime.InteropServices;
 
 namespace NIMDemo.MainForm
 {
     public partial class VideoChatForm : Form
     {
+		private bool beauty_ = false;//是否已开启美颜
         private Graphics _peerRegionGraphics;
         private Graphics _mineRegionGraphics;
         //private MultimediaHandler _multimediaHandler;
 		private nim_vchat_mp4_record_opt_cb_func _startcb = null;
 		private nim_vchat_mp4_record_opt_cb_func _stopcb = null;
 		private nim_vchat_opt_cb_func _setvideoqualitycb = null;
+        private nim_vchat_opt_cb_func _set_custom_videocb = null;
 
 		private bool mute = false;
 		private bool record = false;
@@ -30,6 +33,7 @@ namespace NIMDemo.MainForm
             InitializeComponent();
 			InitQuality();
 			_startcb = new nim_vchat_mp4_record_opt_cb_func(VChatRecordStartCallback); 
+
             this.Load += VideoChatForm_Load;
             this.FormClosed += VideoChatForm_FormClosed;
         }
@@ -88,7 +92,36 @@ namespace NIMDemo.MainForm
 
         private void OnCapturedVideoFrame(object sender, VideoEventAgrs e)
         {
-            ShowVideoFrame(_mineRegionGraphics, minePicBox.Width, minePicBox.Height, e.Frame);
+             //如果开启了美颜
+			if(beauty_)
+			{
+                uint size=Convert.ToUInt32(e.Frame.Width*e.Frame.Height*3/2);
+                //处理数据
+                byte[] i420=NIMDemo.LivingStreamSDK.YUVHelper.ARGBToI420(e.Frame.Data,e.Frame.Width,e.Frame.Height);
+                Beauty.Smooth.smooth_process(i420,e.Frame.Width,e.Frame.Height,10,0,200);
+                e.Frame.Data = NIMDemo.LivingStreamSDK.YUVHelper.I420ToARGB(i420, e.Frame.Width, e.Frame.Height);
+                try
+                {
+                    //发送自定义数据
+                    TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+                    ulong time = Convert.ToUInt64(ts.TotalMilliseconds);
+                    NIMDemo.LivingStreamSDK.YUVHelper.i420Revert(ref i420,e.Frame.Width,e.Frame.Height);
+                    IntPtr unmanagedPointer = Marshal.AllocHGlobal(i420.Length);
+                    Marshal.Copy(i420, 0, unmanagedPointer, i420.Length);
+                    NIM.DeviceAPI.CustomVideoData(time, unmanagedPointer, size, (uint)e.Frame.Width, (uint)e.Frame.Height);
+                    Marshal.FreeHGlobal(unmanagedPointer);
+                }
+                catch(Exception ex)
+                {
+
+                }
+                //本地显示数据 
+                ShowVideoFrame(_mineRegionGraphics, minePicBox.Width, minePicBox.Height, e.Frame);
+			}
+            else
+            { 
+                ShowVideoFrame(_mineRegionGraphics, minePicBox.Width, minePicBox.Height, e.Frame);
+            }
         }
 
         private void OnReceivedVideoFrame(object sender,VideoEventAgrs args)
@@ -163,6 +196,43 @@ namespace NIMDemo.MainForm
 			});
 			NIMVChatVideoQuality quality =(NIMVChatVideoQuality)((ComboBox)sender).SelectedItem;
 			NIM.VChatAPI.SetVideoQuality(quality, "", _setvideoqualitycb, IntPtr.Zero);
+		}
+
+		private void btn_beauty_Click(object sender, EventArgs e)
+		{
+            if (_set_custom_videocb == null)
+            {
+                _set_custom_videocb = new nim_vchat_opt_cb_func((ret, code, json, intptr) =>
+                {
+                    if (ret)
+                    {
+                        beauty_ = !beauty_;
+                        Action action = () =>
+                        {
+                            if (beauty_)
+                                btn_beauty.Text = "美颜(关)";
+                            else
+                                btn_beauty.Text = "美颜(开)";
+                        };
+                        this.Invoke(action);
+
+                    }
+                    //ret  true
+                    //设置成功
+                });
+            }
+            NIM.VChatAPI.SetCustomData(false, !beauty_, "", _set_custom_videocb, IntPtr.Zero);
+
+            //beauty_ = !beauty_;
+            //Action action = () =>
+            //{
+            //    if (beauty_)
+            //        btn_beauty.Text = "美颜(关)";
+            //    else
+            //        btn_beauty.Text = "美颜(开)";
+            //};
+            //this.Invoke(action);
+            
 		}
 	}
 }

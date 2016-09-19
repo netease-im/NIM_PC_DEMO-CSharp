@@ -18,7 +18,6 @@ namespace NIMDemo
             this.Load += OnLoginFormLoaded;
             this.VisibleChanged += OnLoginFormVisibleChanged;
             LoginFormIstance = this;
-            NIM.NimUnhandledExceptionFilter.RegisterFilter();
         }
 
         private void OnLoginFormVisibleChanged(object sender, EventArgs e)
@@ -37,9 +36,7 @@ namespace NIMDemo
 
         private bool InitSdk()
         {
-            NimUtility.NimLogManager.NimCoreLog.Info("ClientAPI.Init");
             var config = ConfigReader.GetServerConfig();
-            NimUtility.NimLogManager.NimCoreLog.Info(config == null ? "config = null" : config.Serialize());
             if (!NIM.ClientAPI.Init("NIMCSharpDemo", null, config))
             {
                // NimUtility.NimLogManager.NimCoreLog.ErrorFormat("sdk init faild");
@@ -59,7 +56,6 @@ namespace NIMDemo
         {
             if (!InitSdk())
                 return;
-            NimUtility.NimLogManager.NimCoreLog.Info("begin to login");
             var ps = ProxySettingForm.GetProxySetting();
             if (ps != null && ps.IsValid)
             {

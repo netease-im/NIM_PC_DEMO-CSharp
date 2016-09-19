@@ -30,13 +30,14 @@
         {
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.peerPicBox = new System.Windows.Forms.PictureBox();
+			this.cb_setquality = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.bt_setting = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
 			this.btnSetMute = new System.Windows.Forms.Button();
 			this.btnRecord = new System.Windows.Forms.Button();
 			this.minePicBox = new System.Windows.Forms.PictureBox();
-			this.cb_setquality = new System.Windows.Forms.ComboBox();
+			this.btn_beauty = new System.Windows.Forms.Button();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -57,6 +58,7 @@
 			// 
 			// splitContainer1.Panel2
 			// 
+			this.splitContainer1.Panel2.Controls.Add(this.btn_beauty);
 			this.splitContainer1.Panel2.Controls.Add(this.cb_setquality);
 			this.splitContainer1.Panel2.Controls.Add(this.label1);
 			this.splitContainer1.Panel2.Controls.Add(this.bt_setting);
@@ -76,6 +78,15 @@
 			this.peerPicBox.Size = new System.Drawing.Size(383, 302);
 			this.peerPicBox.TabIndex = 0;
 			this.peerPicBox.TabStop = false;
+			// 
+			// cb_setquality
+			// 
+			this.cb_setquality.FormattingEnabled = true;
+			this.cb_setquality.Location = new System.Drawing.Point(161, 156);
+			this.cb_setquality.Name = "cb_setquality";
+			this.cb_setquality.Size = new System.Drawing.Size(201, 20);
+			this.cb_setquality.TabIndex = 6;
+			this.cb_setquality.SelectedIndexChanged += new System.EventHandler(this.cb_setquality_SelectedIndexChanged);
 			// 
 			// label1
 			// 
@@ -134,14 +145,15 @@
 			this.minePicBox.TabIndex = 0;
 			this.minePicBox.TabStop = false;
 			// 
-			// cb_setquality
+			// btn_beauty
 			// 
-			this.cb_setquality.FormattingEnabled = true;
-			this.cb_setquality.Location = new System.Drawing.Point(161, 156);
-			this.cb_setquality.Name = "cb_setquality";
-			this.cb_setquality.Size = new System.Drawing.Size(201, 20);
-			this.cb_setquality.TabIndex = 6;
-			this.cb_setquality.SelectedIndexChanged += new System.EventHandler(this.cb_setquality_SelectedIndexChanged);
+			this.btn_beauty.Location = new System.Drawing.Point(22, 182);
+			this.btn_beauty.Name = "btn_beauty";
+			this.btn_beauty.Size = new System.Drawing.Size(89, 23);
+			this.btn_beauty.TabIndex = 7;
+			this.btn_beauty.Text = "美颜（开）";
+			this.btn_beauty.UseVisualStyleBackColor = true;
+			this.btn_beauty.Click += new System.EventHandler(this.btn_beauty_Click);
 			// 
 			// VideoChatForm
 			// 
@@ -177,5 +189,6 @@
         private System.Windows.Forms.Button bt_setting;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ComboBox cb_setquality;
+		private System.Windows.Forms.Button btn_beauty;
 	}
 }

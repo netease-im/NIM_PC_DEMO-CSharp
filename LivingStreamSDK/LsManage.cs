@@ -165,16 +165,7 @@ namespace NIMDemo.LivingStreamSDK
 			int ret = -1;
 			if (pls_client_ != IntPtr.Zero && live_streaming_)
 			{
-				byte[] argb = new byte[size];
-				int offset = 0;
-				while (offset < size)
-				{
-					var b = Marshal.ReadByte(data, offset);
-					argb[offset++] = b;
-				}
-
 				int errorCode = 0;
-
 				try
 				{
 					ret = LSClientNativeMethods.Nlss_SendCustomVideoData(pls_client_, data, size, ref errorCode);

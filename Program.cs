@@ -28,7 +28,6 @@ namespace NIMDemo
         {
             if (e.Exception == null)
                 return;
-            NimUtility.NimLogManager.DefaultLog.ErrorFormat("Application_ThreadException:{0}\n{1}", e.Exception.Message, e.Exception.StackTrace);
         }
 
         static void Application_ApplicationExit(object sender, EventArgs e)

@@ -7,82 +7,141 @@ namespace NIMDemo.LivingStreamSDK
 {
 	class YUVHelper
 	{
-		private static int A = 0;
-		private static int R = 3;
-		private static int G = 2;
-		private static int B = 1;
-// 		public static int ARGBToI420( byte[] src_argb,int src_stride_argb,
-// 									 byte[] dst_y,int dst_stride_y,
-// 									 byte[] dst_u,int dst_stride_u,
-// 									 byte[] dst_v,int dst_stride_v,
-// 									 int width,int height)
-// 		{
-// 			int index_src = 0;
-// 			int index_y = 0;
-// 			int index_u = 0;
-// 			int index_v = 0;
-// 			int y;
-// 			if(src_argb!=null||dst_y!=null||dst_u!=null||dst_v!=null||width<=0||height==0)
-// 			{
-// 				return -1;
-// 			}
-// 			if(height<0)
-// 			{
-// 				height = -height;
-// 
-// 				index_src = (height - 1) * src_stride_argb;
-// 				src_stride_argb = -src_stride_argb;
-// 			}
-// 
-// 			for(y=0;y<height-1;y+=2)
-// 			{
-// 				ARGBToUVRow(src_argb, src_stride_argb, dst_u, dst_v, width, index_src,index_y,index_u,index_v);
-// 				ARGBToYRow(src_argb, dst_y, width,0,0);
-// 				ARGBToYRow(src_argb , dst_y, width, index_src + src_stride_argb,index_y+dst_stride_y);
-// 				index_src += src_stride_argb * 2;
-// 				index_y += dst_stride_y * 2;
-// 				index_u += dst_stride_u;
-// 				index_v += dst_stride_v;
-// 			}
-// 
-// 			if(Convert.ToBoolean(height&1))
-// 			{
-// 				ARGBToUVRow(src_argb, 0, dst_u, dst_v, width,index_src,index_y,index_u,index_v);
-// 				ARGBToYRow(src_argb, dst_y, width,index_src,index_y);
-// 			}
-// 			return 0;
-// 		}
+		private static int A = 3;
+		private static int R = 2;
+		private static int G = 1;
+		private static int B = 0;
+
+
+        //旋转180
+        public static void i420Revert(ref byte[] yuv_src,int width,int height)
+        {
+            int yuv_size=width*height*3/2; 
+            byte[] new_yuv = new byte[yuv_size];
+            if(yuv_src.Length!=yuv_size)
+            {
+                return ;
+            }  
+
+            int y_size = width * height ;
+            int u_index = width * height;
+            int v_index = width * height * 5 / 4;
+            for (int i = 0; i < height;i++)
+            {
+               //y
+               Array.Copy(yuv_src, i*width,new_yuv,(height-i-1)*width, width);
+               
+               //u v
+              if(i%2==0)
+              {
+                  Array.Copy(yuv_src,(u_index+(i/2)*width/2), new_yuv,u_index+(height/2- i/2 - 1) * width/2, width/2);
+                  Array.Copy(yuv_src, (v_index + (i / 2) * width / 2), new_yuv, v_index + (height / 2 - i / 2 - 1) * width/2, width / 2);
+              }
+            }
 
 
 
-		public static byte[] I420ToRGB(byte[] src,int width,int height)
+            yuv_src = new_yuv;
+            return;
+        }
+
+		public static byte[] ARGBToI420(byte[] src_argb,int width, int height)
 		{
-			int numOfPixel = width * height;
-			int positionOfV = numOfPixel;
-			int positionOfU = numOfPixel / 4 + numOfPixel;
-			byte[] rgb = new byte[numOfPixel * 4];
-
-			for(int i=0;i<height;i++)
+            byte[] i420 = new byte[width * height * 3 / 2];
+			int index_src = 0;
+			int index_y = 0;
+			int index_uv = 0;
+            int dst_stride_y = width;
+            int dst_stride_uv = width / 2;
+			if (src_argb == null || width <= 0 || height <= 0)
 			{
-				int startY = i * width;
-				int step = (i / 2) * (width / 2);
-				int startV = positionOfV + step;
-				int startU = positionOfU + step;
-				for(int j=0;j<width;j++)
-				{
-					int Y = startY + j;
-					int V = startV + j / 2;
-					int U = startU + j / 2;
-					int index = Y * 4;
-					RGB tmp = yuvTorgb(src[Y], src[U], src[V]);
-					rgb[index + R] = tmp.r;
-					rgb[index + G] = tmp.g;
-					rgb[index + B] = tmp.b;
-				}
+				return null;
 			}
-			rgb = rgb.Reverse().ToArray();
-			return rgb;
+
+            //2行处理数据
+			for (int y = 0; y < height; y += 2)
+			{
+				ARGBToUVRow(src_argb, i420, width,height,index_src,index_uv);
+				ARGBToYRow(src_argb, i420, width, index_src, index_y);
+                ARGBToYRow(src_argb, i420, width, index_src + width, index_y + dst_stride_y);
+				index_src += width * 2;
+				index_y += dst_stride_y * 2;
+                index_uv += dst_stride_uv;
+			}
+
+            //若像素高度为奇数，处理最后剩余的一行
+			if (Convert.ToBoolean(height & 1))
+			{
+				ARGBToUVRow(src_argb,i420, width,height,index_src,index_uv);
+				ARGBToYRow(src_argb, i420, width, index_src, index_y);
+			}
+
+            return i420;
 		}
+
+
+        //倒序转换
+        public static byte[] I420ToARGBRevert(byte[] src, int width, int height)
+        {
+            int numOfPixel = width * height; 
+            int positionOfU = numOfPixel;
+            int positionOfV = numOfPixel / 4 +numOfPixel;
+        
+            byte[] rgb = new byte[numOfPixel * 4];
+            int index = 0;
+            for (int i = height-1; i >=0; i--)
+            {
+                int startY = i * width;
+                int step = (i / 2) * (width / 2);
+                int startU = positionOfU + step;
+                int startV = positionOfV + step;
+                for (int j = 0; j < width; j++)
+                {
+                    int Y = startY + j;
+                    int V = startV + j / 2;
+                    int U = startU + j / 2;
+                   // int index = Y * 4;
+                    RGB tmp = yuvTorgb(src[Y], src[U], src[V]);
+                    rgb[index + A] = 255; 
+                    rgb[index + R] =tmp.r;
+                    rgb[index + G] = tmp.g; 
+                    rgb[index + B] = tmp.b;
+                    index += 4;
+                }
+            }
+            return rgb;
+        }
+
+        //顺序转换
+        public static byte[] I420ToARGB(byte[] src, int width, int height)
+        {
+            int numOfPixel = width * height;
+            int positionOfU = numOfPixel;
+            int positionOfV = numOfPixel / 4 + numOfPixel;
+
+            byte[] rgb = new byte[numOfPixel * 4];
+            for (int i =0; i<height; i++)
+            {
+                int startY = i * width;
+                int step = (i / 2) * (width / 2);
+                int startU = positionOfU + step;
+                int startV = positionOfV + step;
+                for (int j = 0; j < width; j++)
+                {
+                    int Y = startY + j;
+                    int V = startV + j / 2;
+                    int U = startU + j / 2;
+                   int index = Y * 4;
+                    RGB tmp = yuvTorgb(src[Y], src[U], src[V]);
+                    rgb[index + A] = 255;
+                    rgb[index + R] = tmp.r;
+                    rgb[index + G] = tmp.g;
+                    rgb[index + B] = tmp.b;
+                    index += 4;
+                }
+            }
+            return rgb;
+        }
 
 		private  class RGB
 		{
@@ -90,6 +149,7 @@ namespace NIMDemo.LivingStreamSDK
 			public byte g;
 			public byte b;
 		}
+
 
 		private static RGB yuvTorgb(byte Y, byte U, byte V)
 		{
@@ -104,32 +164,44 @@ namespace NIMDemo.LivingStreamSDK
 		}
 
 
+
 		//Y = (0.257 * R) + (0.504 * G) + (0.098 * B) + 16
+        //Cb = U = -(0.148 * R) - (0.291 * G) + (0.439 * B) + 128
 		//Cr = V = (0.439 * R) - (0.368 * G) - (0.071 * B) + 128
-		//Cb = U = -(0.148 * R) - (0.291 * G) + (0.439 * B) + 128
 
-		private static void ARGBToUVRow(byte[] src_argb, int src_stride_argb, byte[] dst_u, byte[] dst_v, int width, int index_src, int index_y, int index_u, int index_v)
+        private static void ARGBToUVRow(byte[] src_argb, byte[] i420, int width, int height, int index_src, int index_uv)
+        {
+            int y_size = width * height;
+            int u_size = y_size / 4;
+            int index_u = y_size + index_uv;
+            int index_v = y_size + u_size + index_uv;
+
+
+            for (int index = 0; index < width; index += 2)
+            {
+                int index_r = index_src * 4 + index * 4 + R;
+                int index_g = index_src * 4 + index * 4 + G;
+                int index_b = index_src * 4 + index * 4 + B;
+
+                i420[index_u] = Convert.ToByte(-src_argb[index_r] * 0.148 - 0.291 * src_argb[index_g] + src_argb[index_b] * 0.439 + 128);
+                i420[index_v] = Convert.ToByte(src_argb[index_r] * 0.439 - 0.368 * src_argb[index_g] - src_argb[index_b] * 0.071 + 128);
+
+                index_u++;
+                index_v++;
+            }
+        }
+
+		private static void ARGBToYRow(byte[] src_argb, byte[] i420, int width, int index_src, int index_y)
 		{
-			int index = 0;
-			int index_dst_uv = 0;
-			for (; index < width*2; index += 8)
-			{
-				dst_v[index_v+ index_dst_uv] = Convert.ToByte(src_argb[index_src + index + 1] * 0.439 - 0.368 * src_argb[index_src + index + 2] - src_argb[index_src + index + 3] * 0.071 + 128);
-				dst_u[index_u+ index_dst_uv] = Convert.ToByte(-src_argb[index_src + index + 1] * 0.148 - 0.291 * src_argb[index_src + index + 2] + src_argb[index_src + index + 3] * 0.439 + 128);
-				index_dst_uv += 1;
-			}
-		}
-		private static void ARGBToYRow(byte[] src_argb, byte[] dst_y, int width, int index_src, int index_y)
-		{
-			int index = 0;
-			int index_dst_y = 0;
-			for (; index < width; index++)
-			{
-				dst_y[index_y+index_dst_y] = Convert.ToByte(src_argb[index_src + index + 1] * 0.257 + 0.504 * src_argb[index_src + index + 2] + src_argb[index_src + index + 3] * 0.098 + 16);
-				index_dst_y += 1;
-			}
-		}
+            for (int index = 0; index < width; index++)
+            {
+                int index_r = index_src * 4 + index * 4 + R;
+                int index_g = index_src * 4 + index * 4 + G;
+                int index_b = index_src * 4 + index * 4 + B;
 
+                i420[index_y + index] = Convert.ToByte(src_argb[index_r] * 0.257 + 0.504 * src_argb[index_g] + src_argb[index_r] * 0.098 + 16);
 
+            }
+		}
 	}
 }

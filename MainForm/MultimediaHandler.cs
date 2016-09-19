@@ -182,6 +182,7 @@ namespace NIMDemo
                 MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int)width, (int)height, (int)size, (long)time);
                 CapturedVideoFrameHandler(_ownerFriendsListForm, new MainForm.VideoEventAgrs(frame));
             }
+
         }
 
         //收到视频帧回调函数

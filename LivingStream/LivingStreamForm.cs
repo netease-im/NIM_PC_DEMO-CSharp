@@ -18,6 +18,7 @@ namespace NIMDemo
 {
 	public partial class LivingStreamForm : Form
 	{
+        private bool beauty_ = false;
 		Graphics graphics = null;
 		public LivingStreamForm()
 		{
@@ -25,6 +26,14 @@ namespace NIMDemo
 			graphics = pb_livingstream.CreateGraphics();
 		}
 
+        public bool Beauty
+        {
+            get { return beauty_; }
+            set
+            {
+                beauty_ = value;
+            }
+        }
 
 		private void btn_Click(object sender, EventArgs e)
 		{
@@ -102,5 +111,18 @@ namespace NIMDemo
 				btn_ls.Text = "开始直播";
 			}
 		}
+
+        private void btn_beauty_Click(object sender, EventArgs e)
+        {
+            beauty_ = !beauty_;
+            Action action = () =>
+            {
+                if (beauty_)
+                    btn_beauty.Text = "美颜(关)";
+                else
+                    btn_beauty.Text = "美颜(开)";
+            };
+            this.Invoke(action);
+        }
 	}
 }

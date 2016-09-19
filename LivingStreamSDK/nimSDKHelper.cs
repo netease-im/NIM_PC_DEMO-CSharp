@@ -45,16 +45,20 @@ namespace NIMDemo.LivingStreamSDK
 			if (session != null)
 			{
 				byte[] yuv = new byte[size];
-				int offset = 0;
-				while (offset < size)
-				{
-					var b = Marshal.ReadByte(data, offset);
-					yuv[offset++] = b;
-				}
-				byte[] rgb = YUVHelper.I420ToRGB(yuv, (int)width, (int)height);
+                Marshal.Copy(data, yuv, 0, (int)size);
+                if(form.Beauty)
+                {
+                    Beauty.ColorBalance.colorbalance_yuv_u8(yuv, size, 10, 240);
+                    Beauty.Smooth.smooth_process(yuv, (int)width,(int)height, 10, 0, 200);
+                }
+
+                byte[] rgb = YUVHelper.I420ToARGBRevert(yuv, (int)width, (int)height);
+         
 				int framesize = (int)(width * height * 4);
 				MainForm.VideoFrame frame = new MainForm.VideoFrame(rgb, (int)width, (int)height, framesize, (long)time);
 				form.ShowVideoFrame(frame);
+				if (form.Beauty)
+					Marshal.Copy(yuv, 0, data, (int)size);
 				session.SendVideoFrame(data, (int)size);
 			}
 		}
