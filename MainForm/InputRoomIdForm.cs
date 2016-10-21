@@ -33,15 +33,17 @@ namespace NIMDemo
                     vchat.Show();
                     this.Close();
                 };
-                this.BeginInvoke(action);
+                this.Invoke(action);
             }
             else
             {
                 Action action = () =>
                 {
                     MessageBox.Show("加入房间失败-错误码:" + code.ToString());
-                };
-                this.BeginInvoke(action);
+					VChatAPI.End();
+
+				};
+                this.Invoke(action);
 
             }
         }
@@ -54,6 +56,15 @@ namespace NIMDemo
             {
                 //调用成功
             }
+			else
+			{
+				Action action = () =>
+				{
+					MessageBox.Show("JoinRoom 调用失败:");
+				};
+				this.BeginInvoke(action);
+			}
+
         }
     }
 }

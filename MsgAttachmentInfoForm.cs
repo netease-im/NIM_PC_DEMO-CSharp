@@ -122,6 +122,15 @@ namespace NIMDemo
             {
                 
             });
+
+            NIM.Nos.NosAPI.Download(_attachment.RemoteUrl, (a, b, c, d) => 
+            {
+                System.Diagnostics.Debug.WriteLine(new { A = a, B = b, C = c, D = d }.Dump());
+            }, 
+            (a) => 
+            {
+                System.Diagnostics.Debug.WriteLine(a.Dump());
+            }, "user data");
         }
 
         void OnDownloadCompleted(string path)

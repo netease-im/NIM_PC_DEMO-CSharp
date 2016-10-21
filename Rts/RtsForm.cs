@@ -127,11 +127,14 @@ namespace NIMDemo
             foreach (var item in lines)
             {
                 var cmd = PaintCommand.Create(item, panel1.Size);
-                if (cmd == null) continue;
+                if (cmd == null || cmd.Type == CommandType.DrawOpPktId)
+                    continue;
                 _peerPaintingRecord.Add(cmd);
             }
             var c = _peerPaintingRecord.Count;
-            var lastCmdType = _peerPaintingRecord[c - 1].Type;
+            if (c <= 0)
+                return;
+            CommandType lastCmdType = _peerPaintingRecord[c - 1].Type;
             if (lastCmdType == CommandType.DrawOpUndo)
             {
                 _peerPaintingRecord.Revert();
@@ -149,9 +152,13 @@ namespace NIMDemo
             {
                 ClearGraph();
             }
-            else
+            else if(lastCmdType == CommandType.DrawOpStart || lastCmdType == CommandType.DrawOpMove || lastCmdType == CommandType.DrawOpEnd)
             {
                 DoDraw(_peerPaintingRecord, s, _peerPaintingRecord.Count - 1, _peerDrawingGraphics, _peerPen);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("unknow data type:{0}", content);
             }
         }
 
