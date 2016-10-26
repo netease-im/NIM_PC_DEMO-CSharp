@@ -67,6 +67,7 @@ namespace NIMDemo
             NIM.ClientAPI.RegMulitiportPushEnableChangedCb(SyncMultipushState);
             NIM.ClientAPI.IsMultiportPushEnabled(InitMultipushState);
             NIM.TalkAPI.OnReceiveMessageHandler += OnReceiveMessage;
+            NIM.TalkAPI.RegRecallMessageCallback(OnRecallMessage);
             multipushCheckbox.CheckedChanged += MultipushCheckbox_CheckedChanged;
             NIM.SysMessage.SysMsgAPI.ReceiveSysMsgHandler += OnReceivedSysNotification;
             _teamList.LoadTeams();
@@ -77,6 +78,16 @@ namespace NIMDemo
             MultimediaHandler.InitVChatInfo();
             NIM.DataSync.DataSyncAPI.RegCompleteCb(OnDataSyncCompleted);
             _rtsHandler = new RtsHandler(this);
+        }
+
+        /// <summary>
+        /// 撤回消息回调
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="notify"></param>
+        private void OnRecallMessage(ResponseCode result, RecallNotification[] notify)
+        {
+            DemoTrace.WriteLine("撤回消息通知", result, notify.Dump());
         }
 
         private void OnDataSyncCompleted(NIMDataSyncType syncType, NIMDataSyncStatus status, string jsonAttachment)
@@ -490,10 +501,10 @@ namespace NIMDemo
         {
             if (e.Button == MouseButtons.Right)
             {
+                ContextMenu cm = new ContextMenu();
                 if (listView1.SelectedItems.Count > 0)
                 {
                     var id = listView1.SelectedItems[0].Text;
-                    ContextMenu cm = new ContextMenu();
                     MenuItem i1 = new MenuItem("查看详情", (o, ex) =>
                     {
                         FriendProfileForm card = new FriendProfileForm(id);
@@ -513,9 +524,9 @@ namespace NIMDemo
                     string m3 = isBlacklist ? "取消黑名单" : "设置黑名单";
                     MenuItem i3 = new MenuItem(m3, (o, ex) =>
                     {
-                        NIM.User.UserAPI.SetBlacklist(id, !isBlacklist, (a, b, c,d,e1) =>
+                        NIM.User.UserAPI.SetBlacklist(id, !isBlacklist, (a, b, c, d, e1) =>
                         {
-                            
+
                         });
                     });
 
@@ -523,21 +534,27 @@ namespace NIMDemo
                     string m4 = muted ? "取消静音" : "静音";
                     MenuItem i4 = new MenuItem(m4, (o, ex) =>
                     {
-                        NIM.User.UserAPI.SetUserMuted(id, !muted, (a, b, c,d,e1) =>
+                        NIM.User.UserAPI.SetUserMuted(id, !muted, (a, b, c, d, e1) =>
                         {
 
                         });
+                    });
+
+                    MenuItem i5 = new MenuItem("是否好友", (o, ex) =>
+                    {
+                        var ret = NIM.Friend.FriendAPI.IsActiveFriend(id);
+                        DemoTrace.WriteLine("{0} is friend:{1}", id, ret);
                     });
 
                     cm.MenuItems.Add(i1);
                     cm.MenuItems.Add(i2);
                     cm.MenuItems.Add(i3);
                     cm.MenuItems.Add(i4);
+                    cm.MenuItems.Add(i5);
                     cm.Show(listView1, e.Location);
                 }
                 else
                 {
-                    ContextMenu cm = new ContextMenu();
                     MenuItem item = new MenuItem("添加好友", (s, args) =>
                     {
                         Form form = new Form();

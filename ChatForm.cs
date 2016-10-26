@@ -392,7 +392,7 @@ namespace NIMDemo
             }
         }
 
-        private void OnRecallMessageCompleted(ResponseCode result, RecallNotification notify)
+        private void OnRecallMessageCompleted(ResponseCode result, RecallNotification[] notify)
         {
             DemoTrace.WriteLine("撤回消息:" + result.ToString()+" " + notify.Dump());
         }

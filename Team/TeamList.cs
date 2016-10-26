@@ -158,7 +158,15 @@ namespace NIMDemo.Team
                                 DemoTrace.WriteLine(result.Dump());
                             });
                     });
-                    contextMenu.MenuItems.AddRange(new MenuItem[] {m1, m3, m4, m5});
+
+                    MenuItem m6 = new MenuItem("获取禁言列表", (s, args) => 
+                    {
+                        NIM.Team.TeamAPI.QueryMutedListOnlineAsync(tid, (res, count, id, members) => 
+                        {
+                            DemoTrace.WriteLine("禁言列表:",res, count, id, members.Dump());
+                        });
+                    });
+                    contextMenu.MenuItems.AddRange(new MenuItem[] { m1, m3, m4, m5, m6 });
                 }
                 contextMenu.Show(_teamListView, e.Location);
             }
