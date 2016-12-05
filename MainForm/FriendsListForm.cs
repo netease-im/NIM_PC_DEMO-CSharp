@@ -655,5 +655,34 @@ namespace NIMDemo
 		{
 			new LivingStreamForm().Show();
 		}
-	}
+
+        private void OnMenuClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            //语音
+            if(e.ClickedItem.MergeIndex == 0)
+            {
+                Audio.AudioForm form = new Audio.AudioForm();
+                form.StartPosition = FormStartPosition.CenterScreen;
+                form.Show();
+            }
+            //白板
+            if(e.ClickedItem.MergeIndex == 1)
+            {
+                Rts.RtsConference conf = new Rts.RtsConference();
+                conf.StartPosition = FormStartPosition.CenterScreen;
+                conf.Show();
+            }
+            if(e.ClickedItem.MergeIndex == 2)
+            {
+                MessageBox.Show(NIM.ClientAPI.GetLoginState().ToString());
+            }
+            //http
+            if(e.ClickedItem.MergeIndex == 3)
+            {
+                Http.HttpForm form = new Http.HttpForm();
+                form.StartPosition = FormStartPosition.CenterScreen;
+                form.Show();
+            }
+        }
+    }
 }

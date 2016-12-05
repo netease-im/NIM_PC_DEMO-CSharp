@@ -129,6 +129,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\AudioForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Audio\AudioForm.Designer.cs">
+      <DependentUpon>AudioForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AVChat\AVDevicesSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -169,6 +175,12 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\UserHelper.cs" />
+    <Compile Include="Http\HttpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Http\HttpForm.Designer.cs">
+      <DependentUpon>HttpForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InvokeActionWrapper.cs" />
     <Compile Include="Helper\VChatHelper.cs" />
     <Compile Include="LivingStreamSDK\LivingStreamDefine.cs" />
@@ -248,12 +260,6 @@
     <Compile Include="ObjectPropertyInfoForm.Designer.cs">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OutputForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OutputForm.Designer.cs">
-      <DependentUpon>OutputForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DemoTrace.cs" />
@@ -265,6 +271,12 @@
     </Compile>
     <Compile Include="RecentSessionList.cs" />
     <Compile Include="Rts\PaintingRecord.cs" />
+    <Compile Include="Rts\RtsConference.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rts\RtsConference.Designer.cs">
+      <DependentUpon>RtsConference.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rts\RtsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -293,6 +305,16 @@
     <Compile Include="Team\TeamMembersForm.Designer.cs">
       <DependentUpon>TeamMembersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\OutputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tools\OutputForm.Designer.cs">
+      <DependentUpon>OutputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\OutputInfoText.cs" />
+    <EmbeddedResource Include="Audio\AudioForm.resx">
+      <DependentUpon>AudioForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AVChat\AVDevicesSettingForm.resx">
       <DependentUpon>AVDevicesSettingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -310,6 +332,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Http\HttpForm.resx">
+      <DependentUpon>HttpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LivingStream\LivingStreamForm.resx">
       <DependentUpon>LivingStreamForm.cs</DependentUpon>
@@ -345,9 +370,6 @@
     <EmbeddedResource Include="ObjectPropertyInfoForm.resx">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OutputForm.resx">
-      <DependentUpon>OutputForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -361,6 +383,9 @@
     <EmbeddedResource Include="FriendProfileForm.resx">
       <DependentUpon>FriendProfileForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Rts\RtsConference.resx">
+      <DependentUpon>RtsConference.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Rts\RtsForm.resx" />
     <EmbeddedResource Include="Team\CreateAdvancedTeamForm.resx">
       <DependentUpon>CreateAdvancedTeamForm.cs</DependentUpon>
@@ -371,11 +396,13 @@
     <EmbeddedResource Include="Team\TeamMembersForm.resx">
       <DependentUpon>TeamMembersForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tools\OutputForm.resx">
+      <DependentUpon>OutputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <Content Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="NIMDemo_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

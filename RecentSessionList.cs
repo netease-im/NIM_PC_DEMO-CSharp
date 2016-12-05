@@ -13,6 +13,7 @@ namespace NIMDemo
         private readonly ListBox _sessionListBox = null;
         private readonly List<SessionInfo> _sessionsCollection = new List<SessionInfo>();
         private readonly InvokeActionWrapper _actionWrapper;
+        private int _pinnedSessionsCount = 0;
 
         public RecentSessionList(ListBox box)
         {
@@ -40,10 +41,10 @@ namespace NIMDemo
             }
         }
 
-        void ShowSessionItemMenu(SessionInfo info,Point location)
+        void ShowSessionItemMenu(SessionInfo info, Point location)
         {
             ContextMenu menu = new ContextMenu();
-            
+
             MenuItem item1 = new MenuItem("删除", (s, e) =>
             {
                 NIM.Session.SessionAPI.DeleteRecentSession(info.SessionType, info.Id, (a, b, c) =>
@@ -61,7 +62,7 @@ namespace NIMDemo
                     Update(info, b);
                     NIM.Session.SessionAPI.QueryAllRecentSession((m, n) =>
                     {
-                        
+
                     });
                 });
             });
@@ -80,10 +81,23 @@ namespace NIMDemo
                     _sessionListBox.Invoke(action);
                 });
             });
+
+            string itemText = info.IsPinnedOnTop ? "取消置顶" : "置顶";
+            MenuItem item4 = new MenuItem(itemText, (s, e) =>
+            {
+                NIM.Session.SessionAPI.PinSessionOnTop(info.SessionType, info.Id, !info.IsPinnedOnTop, (a, b, c) =>
+                {
+                    DemoTrace.WriteLine("会话置顶:", a, b.Id, b.IsPinnedOnTop);
+                    if (a == 200)
+                        Update(info, b);
+                });
+            });
+
             menu.MenuItems.Add(item1);
             if (info.Status == NIM.Messagelog.NIMMsgLogStatus.kNIMMsgLogStatusUnread)
                 menu.MenuItems.Add(item2);
             menu.MenuItems.Add(item3);
+            menu.MenuItems.Add(item4);
             menu.Show(_sessionListBox, location);
         }
 
@@ -122,7 +136,7 @@ namespace NIMDemo
             }
             if (e.Info.Command == NIMSessionCommand.kNIMSessionCommandRemove)
             {
-                
+
             }
         }
 
@@ -138,7 +152,7 @@ namespace NIMDemo
             // Define the default color of the brush as black.
             Brush myBrush = Brushes.Black;
             var item = target.Items[e.Index] as NIM.Session.SessionInfo;
-
+            
             // Determine the color of the brush to draw each item based  
             // on the index of the item to draw. 
             switch (item.Status)
@@ -146,6 +160,10 @@ namespace NIMDemo
                 case NIM.Messagelog.NIMMsgLogStatus.kNIMMsgLogStatusUnread:
                     myBrush = Brushes.Red;
                     break;
+            }
+            if(item.IsPinnedOnTop)
+            {
+                myBrush = Brushes.LightGreen;
             }
             string sessionId = "";
             string content = "";
@@ -165,8 +183,8 @@ namespace NIMDemo
                 content += string.Format("[{0}]", item.MsgType.ToString());
             }
             content += item.Content;
-            Rectangle top = new Rectangle(e.Bounds.Location, new Size(e.Bounds.Size.Width, e.Bounds.Height/2));
-            Rectangle b = new Rectangle(e.Bounds.Location.X, e.Bounds.Location.Y + e.Bounds.Height/2, e.Bounds.Size.Width, e.Bounds.Size.Height/2);
+            Rectangle top = new Rectangle(e.Bounds.Location, new Size(e.Bounds.Size.Width, e.Bounds.Height / 2));
+            Rectangle b = new Rectangle(e.Bounds.Location.X, e.Bounds.Location.Y + e.Bounds.Height / 2, e.Bounds.Size.Width, e.Bounds.Size.Height / 2);
             // Draw the current item text based on the current Font  
             // and the custom brush settings.
             e.Graphics.DrawString(sessionId, e.Font, myBrush, top, StringFormat.GenericDefault);
@@ -192,7 +210,8 @@ namespace NIMDemo
         {
             Action action = () =>
             {
-                _sessionListBox.Items.Insert(0, info);
+                _pinnedSessionsCount += info.IsPinnedOnTop ? 1 : 0;
+                _sessionListBox.Items.Insert(info.IsPinnedOnTop ? 0 : _pinnedSessionsCount, info);
                 _sessionListBox.Invalidate();
             };
             _actionWrapper.InvokeAction(action);
@@ -202,26 +221,36 @@ namespace NIMDemo
         {
             Action action = () =>
             {
-                int index = 0;
-                foreach (var info in _sessionListBox.Items)
+                if(oldInfo.IsPinnedOnTop != newInfo.IsPinnedOnTop)
                 {
-                    var si = info as SessionInfo;
-                    if (si != null && si.Id == oldInfo.Id)
-                    {
-                        _sessionListBox.Items[index] = newInfo;
-                        _sessionListBox.Invalidate();
-                    }
-                    index++;
+                    DeleteSession(oldInfo);
+                    InsertSession(newInfo);
                 }
+                else
+                {
+                    int index = 0;
+                    foreach (var info in _sessionListBox.Items)
+                    {
+                        var si = info as SessionInfo;
+                        if (si != null && si.Id == oldInfo.Id)
+                        {
+                            _sessionListBox.Items[index] = newInfo;
+                        }
+                        index++;
+                    }
+                }
+                _sessionListBox.Invalidate();
             };
             _actionWrapper.InvokeAction(action);
         }
 
         void DeleteSession(SessionInfo info)
         {
-            _sessionsCollection.Remove(info);
             Action action = () =>
             {
+                _sessionsCollection.Remove(info);
+                if (info.IsPinnedOnTop)
+                    _pinnedSessionsCount--;
                 _sessionListBox.Items.Remove(info);
                 _sessionListBox.Invalidate();
             };
@@ -231,6 +260,7 @@ namespace NIMDemo
         void DeleteAll()
         {
             _sessionsCollection.Clear();
+            _pinnedSessionsCount = 0;
             Action action = () =>
             {
                 _sessionListBox.Items.Clear();
@@ -242,7 +272,6 @@ namespace NIMDemo
         void UpdateSessionList()
         {
             _sessionsCollection.Sort((x, y) => x.Timetag == y.Timetag ? 0 : (x.Timetag > y.Timetag ? -1 : 1));
-
         }
     }
 }

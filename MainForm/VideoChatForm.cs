@@ -15,6 +15,7 @@ namespace NIMDemo.MainForm
 {
     public partial class VideoChatForm : Form
     {
+        private bool accompany_ = false;//是否已开启伴奏
 		private bool beauty_ = false;//是否已开启美颜
         private Graphics _peerRegionGraphics;
         private Graphics _mineRegionGraphics;
@@ -232,7 +233,33 @@ namespace NIMDemo.MainForm
             //        btn_beauty.Text = "美颜(开)";
             //};
             //this.Invoke(action);
+       
             
 		}
+
+        private void btn_accompany_Click(object sender, EventArgs e)
+        {
+
+            DeviceAPI.StartDeviceResultHandler cb = (type, ret) =>
+            {
+                if (ret)
+                {
+                    accompany_ = !accompany_;
+                    Action action = () =>
+                    {
+                        if (accompany_)
+                            btn_accompany.Text = "伴奏(关)";
+                    };
+                    this.Invoke(action);
+                }
+            };
+            if (!accompany_)
+                NIM.DeviceAPI.StartDevice(NIMDeviceType.kNIMDeviceTypeAudioHook, tb_player_path_.Text, 0, cb);
+            else
+            {
+                NIM.DeviceAPI.EndDevice(NIMDeviceType.kNIMDeviceTypeAudioHook);
+                btn_accompany.Text = "伴奏(开)";
+            }
+        }
 	}
 }

@@ -18,8 +18,8 @@ namespace NIMDemo
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.Automatic);
-            Application.ThreadException += Application_ThreadException;
+            //Application.SetUnhandledExceptionMode(UnhandledExceptionMode.Automatic);
+            //Application.ThreadException += Application_ThreadException;
             Application.Run(new LoginForm());
             //Application.Run(new Form1());
         }
