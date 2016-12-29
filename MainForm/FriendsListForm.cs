@@ -653,8 +653,12 @@ namespace NIMDemo
 
 		private void btn_livingstream_Click(object sender, EventArgs e)
 		{
+#if WIN32
 			new LivingStreamForm().Show();
-		}
+#elif WIN64
+            MessageBox.Show("目前直播暂时不支持64位");
+#endif
+            }
 
         private void OnMenuClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -680,6 +684,13 @@ namespace NIMDemo
             if(e.ClickedItem.MergeIndex == 3)
             {
                 Http.HttpForm form = new Http.HttpForm();
+                form.StartPosition = FormStartPosition.CenterScreen;
+                form.Show();
+            }
+            //DocTrans
+            if(e.ClickedItem.MergeIndex == 4)
+            {
+                Http.DocTransForm form = new Http.DocTransForm();
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.Show();
             }

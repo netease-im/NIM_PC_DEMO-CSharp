@@ -56,7 +56,7 @@ namespace NIMDemo.Http
                 NosUploadData.TotalSize = 0;
                 NosUploadData.UploadedSize = 0;
                 NosUploadData.Url = "";
-                NIM.Nos.NosAPI.UploadEx(NosUploadData.FilePath, ResultCb, Marshal.StringToHGlobalAnsi("UploadResult"),
+                NIM.Nos.NosAPI.UploadEx(NosUploadData.FilePath,null, ResultCb, Marshal.StringToHGlobalAnsi("UploadResult"),
                ReportPrg, Marshal.StringToHGlobalAnsi("UploadProgress"),
                ReportSpeed, Marshal.StringToHGlobalAnsi("UploadSpeed"),
                ReportInfo, Marshal.StringToHGlobalAnsi("UploadInfo"));
@@ -107,7 +107,7 @@ namespace NIMDemo.Http
 
         private void downloadBtn_Click(object sender, EventArgs e)
         {
-            NosAPI.DownloadEx(NosUploadData.Url, ReportDownloadResult, Marshal.StringToCoTaskMemAnsi(""),
+            NosAPI.DownloadEx(NosUploadData.Url,null, ReportDownloadResult, Marshal.StringToCoTaskMemAnsi(""),
                 ReportDownloadPrg, Marshal.StringToCoTaskMemAnsi(""),
                 ReportDownloadSpeed, Marshal.StringToCoTaskMemAnsi(""),
                 ReportDownloadInfo, Marshal.StringToCoTaskMemAnsi(""));

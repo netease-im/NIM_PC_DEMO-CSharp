@@ -36,13 +36,13 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -50,7 +50,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -112,6 +112,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\AudioForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Audio\AudioForm.Designer.cs">
+      <DependentUpon>AudioForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AVChat\AVDevicesSettingForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -145,13 +151,19 @@
     <Compile Include="ChatRoomListForm.Designer.cs">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Helper\UserHelper.cs" />
+    <Compile Include="Http\DocTransForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Http\DocTransForm.Designer.cs">
+      <DependentUpon>DocTransForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helper\UserHelper.cs" />
+    <Compile Include="Http\HttpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Http\HttpForm.Designer.cs">
+      <DependentUpon>HttpForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InvokeActionWrapper.cs" />
     <Compile Include="Helper\VChatHelper.cs" />
     <Compile Include="LivingStreamSDK\LivingStreamDefine.cs" />
@@ -231,10 +243,10 @@
     <Compile Include="ObjectPropertyInfoForm.Designer.cs">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OutputForm.cs">
+    <Compile Include="Tools\OutputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OutputForm.Designer.cs">
+    <Compile Include="Tools\OutputForm.Designer.cs">
       <DependentUpon>OutputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -248,6 +260,12 @@
     </Compile>
     <Compile Include="RecentSessionList.cs" />
     <Compile Include="Rts\PaintingRecord.cs" />
+    <Compile Include="Rts\RtsConference.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Rts\RtsConference.Designer.cs">
+      <DependentUpon>RtsConference.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rts\RtsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -276,6 +294,10 @@
     <Compile Include="Team\TeamMembersForm.Designer.cs">
       <DependentUpon>TeamMembersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\OutputInfoText.cs" />
+    <EmbeddedResource Include="Audio\AudioForm.resx">
+      <DependentUpon>AudioForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AVChat\AVDevicesSettingForm.resx">
       <DependentUpon>AVDevicesSettingForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -291,8 +313,11 @@
     <EmbeddedResource Include="ChatRoomListForm.resx">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Http\DocTransForm.resx">
+      <DependentUpon>DocTransForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Http\HttpForm.resx">
+      <DependentUpon>HttpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LivingStream\LivingStreamForm.resx">
       <DependentUpon>LivingStreamForm.cs</DependentUpon>
@@ -328,7 +353,7 @@
     <EmbeddedResource Include="ObjectPropertyInfoForm.resx">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OutputForm.resx">
+    <EmbeddedResource Include="Tools\OutputForm.resx">
       <DependentUpon>OutputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -343,6 +368,9 @@
     </Compile>
     <EmbeddedResource Include="FriendProfileForm.resx">
       <DependentUpon>FriendProfileForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Rts\RtsConference.resx">
+      <DependentUpon>RtsConference.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Rts\RtsForm.resx" />
     <EmbeddedResource Include="Team\CreateAdvancedTeamForm.resx">
@@ -389,32 +417,32 @@
     <Content Include="Assets\logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\sdk\nim_sdk_desktop\nim_sdk_csharp\Src\Audio\NimAudio.csproj">
+    <ProjectReference Include="..\..\..\nim\Src\Audio\NimAudio.csproj">
       <Project>{a4fc140e-8c55-4e25-b7c3-9110df69222b}</Project>
       <Name>NimAudio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sdk\nim_sdk_desktop\nim_sdk_csharp\Src\ChatRoom\NimChatRoom.csproj">
+    <ProjectReference Include="..\..\..\nim\Src\ChatRoom\NimChatRoom.csproj">
       <Project>{c6e81245-e678-4608-b649-4ebd6244210a}</Project>
       <Name>NimChatRoom</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sdk\nim_sdk_desktop\nim_sdk_csharp\Src\Core\NimCore.csproj">
+    <ProjectReference Include="..\..\..\nim\Src\Core\NimCore.csproj">
       <Project>{3f88dd96-1392-409a-89e8-475fc56e4647}</Project>
       <Name>NimCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sdk\nim_sdk_desktop\nim_sdk_csharp\Src\Http\NimHttp.csproj">
+    <ProjectReference Include="..\..\..\nim\Src\Http\NimHttp.csproj">
       <Project>{b211b7e3-96b2-453b-b9c0-1a98dc6794ce}</Project>
       <Name>NimHttp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sdk\nim_sdk_desktop\nim_sdk_csharp\Src\Utility\NimUtility.csproj">
+    <ProjectReference Include="..\..\..\nim\Src\Utility\NimUtility.csproj">
       <Project>{a9141f3e-b530-49ee-b959-16a49e1c98b1}</Project>
       <Name>NimUtility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd $(ProjectDir)Dependents\dllimport
+    <PostBuildEvent>cd /d $(ProjectDir)Dependents\dllimport\$(PlatformName)
 for %25%25i in (*.dll) do if not exist "$(TargetDir)%25%25i" (copy /Y %25%25i "$(TargetDir)%25%25i");
-xcopy "$(ProjectDir)Dependents\dllimport\livingStream\*.dll"  /d /e /r  "$(TargetDir)livingStream\"
+if exist "livingStream" ( xcopy "livingStream\*.dll"  /d /e /r  "$(TargetDir)livingStream\")
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

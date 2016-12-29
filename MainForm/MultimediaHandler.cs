@@ -96,7 +96,7 @@ namespace NIMDemo
                 {
                     if (NIMDemo.Helper.VChatHelper.CurrentVChatType == NIMDemo.Helper.VChatType.kP2P)
                     {
-                        MainForm.VideoChatForm vform = new MainForm.VideoChatForm();
+                        MainForm.VideoChatForm vform = MainForm.VideoChatForm.GetInstance();
                         vform.Show();
                     }
                 };
@@ -133,6 +133,12 @@ namespace NIMDemo
 				Action action = () =>
 				{
 					MessageBox.Show("已挂断");
+                    MainForm.VideoChatForm vform = MainForm.VideoChatForm.GetInstance();
+                    if(vform!=null)
+                    {
+                        vform.Close();
+                    }
+                  
 				};
 				_ownerFriendsListForm.Invoke(action);
 			}

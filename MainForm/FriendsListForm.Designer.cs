@@ -59,6 +59,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.recentSessionListbox = new System.Windows.Forms.ListBox();
+            this.文档转换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -214,7 +215,8 @@
             this.语音ToolStripMenuItem,
             this.rTSToolStripMenuItem,
             this.登录状态ToolStripMenuItem,
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.文档转换ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(395, 25);
@@ -380,6 +382,13 @@
             this.recentSessionListbox.Size = new System.Drawing.Size(381, 489);
             this.recentSessionListbox.TabIndex = 0;
             // 
+            // 文档转换ToolStripMenuItem
+            // 
+            this.文档转换ToolStripMenuItem.MergeIndex = 4;
+            this.文档转换ToolStripMenuItem.Name = "文档转换ToolStripMenuItem";
+            this.文档转换ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.文档转换ToolStripMenuItem.Text = "文档转换";
+            // 
             // FriendsListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -440,6 +449,7 @@
         private System.Windows.Forms.ToolStripMenuItem rTSToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 登录状态ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 文档转换ToolStripMenuItem;
     }
 }
 

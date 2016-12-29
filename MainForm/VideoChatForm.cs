@@ -29,7 +29,19 @@ namespace NIMDemo.MainForm
 		private bool record = false;
         const int RenderInterval = 60;
         const int MaxFrameCount = 3;
-        public VideoChatForm()
+
+        private static VideoChatForm videoChatForm_ = null;
+        
+        public static VideoChatForm GetInstance()
+        {
+            if(videoChatForm_==null)
+            {
+                videoChatForm_ = new VideoChatForm();
+            }
+            return videoChatForm_;
+        }
+
+        private VideoChatForm()
         {
             InitializeComponent();
 			InitQuality();
@@ -70,13 +82,15 @@ namespace NIMDemo.MainForm
         private void VideoChatForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             //if (_multimediaHandler != null)
+             NIM.VChatAPI.End();
             {
                 MultimediaHandler.ReceiveVideoFrameHandler -= OnReceivedVideoFrame;
                 MultimediaHandler.CapturedVideoFrameHandler -= OnCapturedVideoFrame;
             }
-            NIM.VChatAPI.End();
+           
             _peerRegionGraphics.Dispose();
             _mineRegionGraphics.Dispose();
+            videoChatForm_ = null;
            // _multimediaHandler = null;
         }
 
@@ -239,7 +253,7 @@ namespace NIMDemo.MainForm
 
         private void btn_accompany_Click(object sender, EventArgs e)
         {
-
+#if WIN32
             DeviceAPI.StartDeviceResultHandler cb = (type, ret) =>
             {
                 if (ret)
@@ -260,6 +274,28 @@ namespace NIMDemo.MainForm
                 NIM.DeviceAPI.EndDevice(NIMDeviceType.kNIMDeviceTypeAudioHook);
                 btn_accompany.Text = "伴奏(开)";
             }
+#elif WIN64
+            MessageBox.Show("目前64位没有伴奏功能");
+#endif
+            }
+
+     
+
+        private void cb_aec_CheckedChanged(object sender, EventArgs e)
+        {
+            NIM.DeviceAPI.SetAudioProcessInfo(cb_aec.Checked, cb_ns.Checked, cb_vid.Checked);
+
         }
+
+        private void cb_ns_CheckedChanged(object sender, EventArgs e)
+        {
+            NIM.DeviceAPI.SetAudioProcessInfo(cb_aec.Checked, cb_ns.Checked, cb_vid.Checked);
+        }
+
+        private void cb_vid_CheckedChanged(object sender, EventArgs e)
+        {
+            NIM.DeviceAPI.SetAudioProcessInfo(cb_aec.Checked, cb_ns.Checked, cb_vid.Checked);
+        }  
+
 	}
 }
