@@ -43,12 +43,6 @@ namespace NIMDemo
                 MessageBox.Show("NIM init failed!");
                 return false;
             }
-            //NimUtility.NimLogManager.NimCoreLog.Info("ClientAPI.Init success");
-            //NimUtility.NimLogManager.NimCoreLog.Info("NIM.VChatAPI.Init");
-            if (!NIM.VChatAPI.Init())
-            {
-                MessageBox.Show("NIM VChatAPI init failed!");
-            }
             return true;
         }
 
@@ -94,6 +88,10 @@ namespace NIMDemo
                     toolStripProgressBar1.Value = 100;
                     if (result.Code == NIM.ResponseCode.kNIMResSuccess)
                     {
+                        if (!NIM.VChatAPI.Init())
+                        {
+                            MessageBox.Show("NIM VChatAPI init failed!");
+                        }
                         this.Hide();
                         new FriendsListForm(_userName).Show();
                         toolStripProgressBar1.Value = 0;

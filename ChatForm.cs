@@ -20,7 +20,7 @@ namespace NIMDemo
         private readonly string _peerId = null;
         private readonly NIM.Session.NIMSessionType _sessionType;
         private bool _fileDroped = false;
-        private nim_vchat_opt_cb_func _createroomcb = null;
+        private nim_vchat_opt2_cb_func _createroomcb = null;
         private nim_vchat_opt2_cb_func _joinroomcb = null;
         string room_name = "154145";
         private string _lastSendedMsgId = null;
@@ -34,7 +34,7 @@ namespace NIMDemo
             this.textBox1.DragEnter += TextBox1_DragEnter;
             this.textBox1.DragDrop += TextBox1_DragDrop;
 
-            _createroomcb = new nim_vchat_opt_cb_func(CreateMultiVChatRoomCallback);
+            _createroomcb = new nim_vchat_opt2_cb_func(CreateMultiVChatRoomCallback);
             _joinroomcb = new nim_vchat_opt2_cb_func(JoinMultiVChatRoomCallback);
         }
 
@@ -222,9 +222,9 @@ namespace NIMDemo
             form.Show();
         }
 
-        private void CreateMultiVChatRoomCallback(bool ret, int code,string json_extension,IntPtr user_data)
+        private void CreateMultiVChatRoomCallback(int code, long channel_id, string json_extension, IntPtr user_data)
 		{
-            if (ret)
+            if (code == 200)
             {
                 json_extension = "{\"session_id\":\"leewp\"}";
                 //创建房间成功,将内容抛至UI线程  
@@ -375,7 +375,7 @@ namespace NIMDemo
             room_name = Guid.NewGuid().ToString("N");
 
 			//
-            VChatAPI.CreateRoom(room_name, custom_info, json_extension, _createroomcb, IntPtr.Zero);
+            VChatAPI.CreateRoom(room_name, custom_info, json_extension, _createroomcb);
         }
 
         private void btn_joinmultiroom_Click(object sender, EventArgs e)

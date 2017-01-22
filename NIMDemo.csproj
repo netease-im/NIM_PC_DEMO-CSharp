@@ -440,7 +440,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd /d "$(ProjectDir)Dependents\dllimport\$(PlatformName)"
+    <PostBuildEvent>cd /d $(ProjectDir)Dependents\dllimport\$(PlatformName)
 for %25%25i in (*.dll) do if not exist "$(TargetDir)%25%25i" (copy /Y %25%25i "$(TargetDir)%25%25i");
 if exist "livingStream" ( xcopy "livingStream\*.dll"  /d /e /r  "$(TargetDir)livingStream\")</PostBuildEvent>
   </PropertyGroup>

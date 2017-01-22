@@ -58,7 +58,7 @@ namespace NIMDemo.Audio
             NIMAudio.AudioAPI.StopCapture();
         }
 
-        private void OnCaptureStopped(int resCode, string call_id, string res_id, string file_path, string file_ext, long file_size, int audio_duration)
+        private void OnCaptureStopped(int resCode, string call_id, string res_id, string file_path, string file_ext, int file_size, int audio_duration)
         {
             _outputTools.ShowInfo("录制结束:{0}\r\n file_path:{1}\r\n ext:{2}\r\n size:{3}\r\n duration:{4}",
                 resCode, file_path, file_ext, file_size, audio_duration);

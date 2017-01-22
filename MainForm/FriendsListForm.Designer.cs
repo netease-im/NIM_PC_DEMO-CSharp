@@ -45,6 +45,7 @@
             this.rTSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.登录状态ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.文档转换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -59,7 +60,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.recentSessionListbox = new System.Windows.Forms.ListBox();
-            this.文档转换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -216,7 +217,8 @@
             this.rTSToolStripMenuItem,
             this.登录状态ToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.文档转换ToolStripMenuItem});
+            this.文档转换ToolStripMenuItem,
+            this.toolStripMenuItem2});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(395, 25);
@@ -251,6 +253,13 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(43, 21);
             this.toolStripMenuItem1.Text = "http";
+            // 
+            // 文档转换ToolStripMenuItem
+            // 
+            this.文档转换ToolStripMenuItem.MergeIndex = 4;
+            this.文档转换ToolStripMenuItem.Name = "文档转换ToolStripMenuItem";
+            this.文档转换ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.文档转换ToolStripMenuItem.Text = "文档转换";
             // 
             // tabControl1
             // 
@@ -382,12 +391,12 @@
             this.recentSessionListbox.Size = new System.Drawing.Size(381, 489);
             this.recentSessionListbox.TabIndex = 0;
             // 
-            // 文档转换ToolStripMenuItem
+            // toolStripMenuItem2
             // 
-            this.文档转换ToolStripMenuItem.MergeIndex = 4;
-            this.文档转换ToolStripMenuItem.Name = "文档转换ToolStripMenuItem";
-            this.文档转换ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.文档转换ToolStripMenuItem.Text = "文档转换";
+            this.toolStripMenuItem2.MergeIndex = 5;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(68, 21);
+            this.toolStripMenuItem2.Text = "网络测试";
             // 
             // FriendsListForm
             // 
@@ -450,6 +459,7 @@
         private System.Windows.Forms.ToolStripMenuItem 登录状态ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 文档转换ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
 

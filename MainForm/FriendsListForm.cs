@@ -45,7 +45,7 @@ namespace NIMDemo
             listView1.Groups.AddRange(_groups);
             _teamList = new Team.TeamList(TeamListView);
             _sessionList = new SessionList(chatListView);
-           
+
             this.HandleCreated += FriendsListForm_HandleCreated;
             _actionWrapper = new InvokeActionWrapper(this);
         }
@@ -147,7 +147,7 @@ namespace NIMDemo
            : this()
         {
             _selfId = id;
-			Helper.UserHelper.SelfId = id;
+            Helper.UserHelper.SelfId = id;
         }
 
         private bool _notifyNetworkDisconnect = true;
@@ -215,7 +215,7 @@ namespace NIMDemo
             {
                 NIM.Team.TeamAPI.AcceptTeamInvitation(e.Message.Content.ReceiverId, e.Message.Content.SenderId, (x) =>
                 {
-                    
+
                 });
             }
         }
@@ -243,7 +243,7 @@ namespace NIMDemo
 
         private void OnUserNameCardChanged(object sender, UserNameCardChangedArgs e)
         {
-            DemoTrace.WriteLine("用户名片变更:" + e.UserNameCardList.Dump()) ;
+            DemoTrace.WriteLine("用户名片变更:" + e.UserNameCardList.Dump());
             var card = e.UserNameCardList.Find(c => c.AccountId == SelfId);
             DisplayMyProfile(card);
         }
@@ -299,7 +299,7 @@ namespace NIMDemo
                     if (info.VerifyType == NIM.Friend.NIMVerifyType.kNIMVerifyTypeAdd ||
                         info.VerifyType == NIM.Friend.NIMVerifyType.kNIMVerifyTypeAgree)
                     {
-                        _friendsDictionary[info.AccountId] = new NIM.Friend.NIMFriendProfile() {AccountId = info.AccountId};
+                        _friendsDictionary[info.AccountId] = new NIM.Friend.NIMFriendProfile() { AccountId = info.AccountId };
                     }
                 }
                 if (args.ChangedInfo.ChangedType == NIM.Friend.NIMFriendChangeType.kNIMFriendChangeTypeSyncList)
@@ -326,16 +326,16 @@ namespace NIMDemo
             listView1.BeginUpdate();
             foreach (var pair in _friendsDictionary)
             {
-                if (listView1.Items.ContainsKey(pair.Key+"_0"))
+                if (listView1.Items.ContainsKey(pair.Key + "_0"))
                 {
-                    
+
                 }
                 else
                 {
                     AddFriendListItem(pair.Value);
                 }
             }
-            for(int i =0 ;i<listView1.Items.Count;i++)
+            for (int i = 0; i < listView1.Items.Count; i++)
             {
                 var item = listView1.Items[i] as ListViewItem;
                 if (item.Group != _groups[0])
@@ -386,7 +386,7 @@ namespace NIMDemo
             listView1.EndUpdate();
         }
 
-        void AddFriendListItem(NIM.Friend.NIMFriendProfile profile,int group = 0)
+        void AddFriendListItem(NIM.Friend.NIMFriendProfile profile, int group = 0)
         {
             ListViewItem item = new ListViewItem();
             item.SubItems.Add(profile.AccountId);
@@ -485,7 +485,7 @@ namespace NIMDemo
             NIM.SysMessage.SysMsgAPI.ReceiveSysMsgHandler -= OnReceivedSysNotification;
             NIM.VChatAPI.Cleanup();
             NIM.ClientAPI.Cleanup();
-            
+
             Action action = ChangeAccount;
             _actionWrapper.InvokeAction(action);
         }
@@ -590,12 +590,12 @@ namespace NIMDemo
                 }
 
             }
-            
+
         }
 
-        void DownCallback(int a, string b,string c,string d)
+        void DownCallback(int a, string b, string c, string d)
         {
-            
+
         }
 
 
@@ -611,14 +611,14 @@ namespace NIMDemo
                 {
                     if (a == ResponseCode.kNIMResSuccess)
                     {
-                        UserAPI.GetUserNameCard(new List<string>() {SelfId}, (ret) =>
-                        {
-                            if (ret.Any())
-                            {
-                                _selfNameCard = ret[0];
-                                DisplayMyProfile(_selfNameCard);
-                            }
-                        });
+                        UserAPI.GetUserNameCard(new List<string>() { SelfId }, (ret) =>
+                          {
+                              if (ret.Any())
+                              {
+                                  _selfNameCard = ret[0];
+                                  DisplayMyProfile(_selfNameCard);
+                              }
+                          });
                     }
                 });
             };
@@ -632,7 +632,7 @@ namespace NIMDemo
             var list = s.Search();
             ChatRoomListForm form = new ChatRoomListForm(list);
             form.Show();
-            
+
         }
 
         private void CloseForm(MainFormExitType exitType)
@@ -651,49 +651,59 @@ namespace NIMDemo
             new SysMsgForm().Show();
         }
 
-		private void btn_livingstream_Click(object sender, EventArgs e)
-		{
+        private void btn_livingstream_Click(object sender, EventArgs e)
+        {
 #if WIN32
 			new LivingStreamForm().Show();
 #elif WIN64
             MessageBox.Show("目前直播暂时不支持64位");
 #endif
-            }
+        }
 
         private void OnMenuClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             //语音
-            if(e.ClickedItem.MergeIndex == 0)
+            if (e.ClickedItem.MergeIndex == 0)
             {
                 Audio.AudioForm form = new Audio.AudioForm();
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.Show();
             }
             //白板
-            if(e.ClickedItem.MergeIndex == 1)
+            if (e.ClickedItem.MergeIndex == 1)
             {
                 Rts.RtsConference conf = new Rts.RtsConference();
                 conf.StartPosition = FormStartPosition.CenterScreen;
                 conf.Show();
             }
-            if(e.ClickedItem.MergeIndex == 2)
+            if (e.ClickedItem.MergeIndex == 2)
             {
                 MessageBox.Show(NIM.ClientAPI.GetLoginState().ToString());
             }
             //http
-            if(e.ClickedItem.MergeIndex == 3)
+            if (e.ClickedItem.MergeIndex == 3)
             {
                 Http.HttpForm form = new Http.HttpForm();
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.Show();
             }
             //DocTrans
-            if(e.ClickedItem.MergeIndex == 4)
+            if (e.ClickedItem.MergeIndex == 4)
             {
                 Http.DocTransForm form = new Http.DocTransForm();
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.Show();
             }
+            if (e.ClickedItem.MergeIndex == 5)
+            {
+                NIM.VChatAPI.DetectNetwork(null, OnNetDetection, IntPtr.Zero);
+            }
+
+        }
+
+        private void OnNetDetection(bool ret, int code, string json_extension, IntPtr user_data)
+        {
+            DemoTrace.WriteLine(string.Format("网络测试:{0} code = {1},result = {2}", ret, code, json_extension));
         }
     }
 }

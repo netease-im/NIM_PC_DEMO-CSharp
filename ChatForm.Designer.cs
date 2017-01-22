@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.recallMsgBtn = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.btn_joinmultiroom = new System.Windows.Forms.Button();
             this.btn_createmultiroom = new System.Windows.Forms.Button();
@@ -39,7 +40,7 @@
             this.testMediaBtn = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.recallMsgBtn = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -69,8 +70,18 @@
             this.splitContainer1.Panel2.Controls.Add(this.button1);
             this.splitContainer1.Panel2.Controls.Add(this.textBox1);
             this.splitContainer1.Size = new System.Drawing.Size(501, 460);
-            this.splitContainer1.SplitterDistance = 222;
+            this.splitContainer1.SplitterDistance = 221;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // recallMsgBtn
+            // 
+            this.recallMsgBtn.Location = new System.Drawing.Point(392, 187);
+            this.recallMsgBtn.Name = "recallMsgBtn";
+            this.recallMsgBtn.Size = new System.Drawing.Size(97, 23);
+            this.recallMsgBtn.TabIndex = 2;
+            this.recallMsgBtn.Text = "撤回";
+            this.recallMsgBtn.UseVisualStyleBackColor = true;
+            this.recallMsgBtn.Click += new System.EventHandler(this.recallMsgBtn_Click);
             // 
             // listBox1
             // 
@@ -171,16 +182,6 @@
             this.textBox1.Size = new System.Drawing.Size(477, 128);
             this.textBox1.TabIndex = 0;
             // 
-            // recallMsgBtn
-            // 
-            this.recallMsgBtn.Location = new System.Drawing.Point(392, 187);
-            this.recallMsgBtn.Name = "recallMsgBtn";
-            this.recallMsgBtn.Size = new System.Drawing.Size(97, 23);
-            this.recallMsgBtn.TabIndex = 2;
-            this.recallMsgBtn.Text = "撤回";
-            this.recallMsgBtn.UseVisualStyleBackColor = true;
-            this.recallMsgBtn.Click += new System.EventHandler(this.recallMsgBtn_Click);
-            // 
             // ChatForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -193,6 +194,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
