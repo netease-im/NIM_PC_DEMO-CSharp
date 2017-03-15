@@ -43,7 +43,7 @@ namespace NIMDemo.Team
 
         public void LoadTeams()
         {
-            NIM.Team.TeamAPI.QueryMyTeamsInfo((list) =>
+            NIM.Team.TeamAPI.QueryAllMyTeamsInfo((list) =>
             {
                 Action action = () =>
                 {
@@ -73,6 +73,7 @@ namespace NIMDemo.Team
                         f.MembersIDSelected = (n, ids) =>
                         {
                             NIM.Team.NIMTeamInfo i = new NIM.Team.NIMTeamInfo();
+                            i.TeamType = NIMTeamType.kNIMTeamTypeNormal;
                             i.Name = n;
                             NIM.Team.TeamAPI.CreateTeam(i, ids, "", (ret) =>
                             {

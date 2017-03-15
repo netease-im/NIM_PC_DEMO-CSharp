@@ -34,15 +34,18 @@ namespace NIMDemo
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
         }
 
+
+        private string _appKey = null;
         private bool InitSdk()
         {
-            var config = ConfigReader.GetServerConfig();
-            if (!NIM.ClientAPI.Init("NIMCSharpDemo", null, config))
+            var config = ConfigReader.GetSdkConfig();
+            if (!NIM.ClientAPI.Init(config.AppKey, "NIMCSharpDemo", null, config))
             {
                // NimUtility.NimLogManager.NimCoreLog.ErrorFormat("sdk init faild");
                 MessageBox.Show("NIM init failed!");
                 return false;
             }
+            _appKey = config.AppKey;
             return true;
         }
 
@@ -62,12 +65,12 @@ namespace NIMDemo
             {
                 toolStripProgressBar1.Value = 0;
                 label3.Text = "";
-                string appkey = ConfigReader.GetAppKey();
-                if (string.IsNullOrEmpty(appkey))
+                if (string.IsNullOrEmpty(_appKey))
                 {
-                    MessageBox.Show("请在config.json 中设置session key");
+                    MessageBox.Show("请设置app key");
+                    return;
                 }
-                NIM.ClientAPI.Login(appkey, _userName, password, HandleLoginResult);
+                NIM.ClientAPI.Login(_appKey, _userName, password, HandleLoginResult);
             }
         }
 

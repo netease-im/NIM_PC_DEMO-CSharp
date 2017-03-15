@@ -33,6 +33,17 @@ namespace NIMDemo.LivingStreamSDK
 		private bool live_streaming_;
 
 		#endregion
+        public int Width
+        {   
+            get { return width_; }
+            set { width_ = value; }
+        }
+
+        public int Height
+        {
+            get { return height_; }
+            set { height_ = value; }
+        }
 
 
 		public bool InitSession(bool screen, string url)
@@ -80,16 +91,16 @@ namespace NIMDemo.LivingStreamSDK
 			ls_para_.stAudioParam.enInFmt = enum_NLSS_AUDIOIN_FMT.EN_NLSS_AUDIOIN_FMT_S16;
 
 			//视频
-			if(screen)
+			if(width_==1280)
 			{
-				width_ = 1280;
-				height_ = 720;
+				//width_ = 1280;
+				//height_ = 720;
 				ls_para_.stVideoParam.iOutBitrate = 1500000;
 			}
 			else
 			{
-				width_ = 640;
-				height_ = 480;
+				//width_ = 640;
+				//height_ = 480;
 				ls_para_.stVideoParam.iOutBitrate = 700000;
 			}
 			ls_para_.stVideoParam.stInCustomVideo.enVideoInFmt = enum_NLSS_VIDEOIN_FMT.EN_NLSS_VIDEOIN_FMT_I420;

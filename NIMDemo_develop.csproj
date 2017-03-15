@@ -84,6 +84,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -94,13 +95,14 @@
     <LangVersion>default</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dependents\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\nim\ThirdParty\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -441,8 +443,20 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd /d $(ProjectDir)Dependents\dllimport\$(PlatformName)
+echo copy native dlls 
 for %25%25i in (*.dll) do if not exist "$(TargetDir)%25%25i" (copy /Y %25%25i "$(TargetDir)%25%25i");
+echo copy livingStream
 if exist "livingStream" ( xcopy "livingStream\*.dll"  /d /e /r  "$(TargetDir)livingStream\")
+echo update managed dlls
+cd /d $(TargetDir) 
+set target="$(ProjectDir)Dependents\"
+echo %25target%25
+copy /Y "NimAudio.dll" %25target%25
+copy /Y "NIMChatRoom.dll" %25target%25
+copy /Y "NimCore.dll" %25target%25
+copy /Y "NimHttp.dll" %25target%25
+copy /Y "NimUtility.dll" %25target%25)
+
 </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

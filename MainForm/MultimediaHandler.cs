@@ -88,7 +88,7 @@ namespace NIMDemo
 
         }
 
-        private static void OnSessionConnectNotify(long channel_id, int code, string record_addr, string record_file)
+        private static void OnSessionConnectNotify(long channel_id, int code, string record_file, string video_record_file)
         {
             if (code == 200)
             {
@@ -183,22 +183,36 @@ namespace NIMDemo
         //捕获视频帧回调函数
         private static void VideoDataCaptureHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data)
         {
-            if (CapturedVideoFrameHandler != null)
-            {
-                MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int)width, (int)height, (int)size, (long)time);
-                CapturedVideoFrameHandler(_ownerFriendsListForm, new MainForm.VideoEventAgrs(frame));
-            }
+			MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int)width, (int)height, (int)size, (long)time);
+			try
+			{
+				if (CapturedVideoFrameHandler != null)
+				{
+					CapturedVideoFrameHandler(_ownerFriendsListForm, new MainForm.VideoEventAgrs(frame));
+				}
+			}
+			catch
+			{
+				return;
+			}
 
         }
 
         //收到视频帧回调函数
        private static void VideoDataRecHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data)
         {
-            if (ReceiveVideoFrameHandler != null)
-            {
-                MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int) width, (int) height, (int) size, (long)time);
-                ReceiveVideoFrameHandler(_ownerFriendsListForm, new MainForm.VideoEventAgrs(frame));
-            }
+			MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int)width, (int)height, (int)size, (long)time);
+			try
+			{
+				if (ReceiveVideoFrameHandler != null)
+				{
+					ReceiveVideoFrameHandler(_ownerFriendsListForm, new MainForm.VideoEventAgrs(frame));
+				}
+			}
+			catch
+			{
+				return;
+			}
         }
 
         //Stream ParseVedioData(IntPtr data, uint size, uint width, uint height)

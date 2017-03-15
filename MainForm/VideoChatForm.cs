@@ -22,11 +22,14 @@ namespace NIMDemo.MainForm
         //private MultimediaHandler _multimediaHandler;
 		private nim_vchat_mp4_record_opt_cb_func _startcb = null;
 		private nim_vchat_mp4_record_opt_cb_func _stopcb = null;
+		private nim_vchat_audio_record_opt_cb_func _start_audio_record_cb = null;
+		private nim_vchat_audio_record_opt_cb_func _stop_audio_record_cb = null;
 		private nim_vchat_opt_cb_func _setvideoqualitycb = null;
         private nim_vchat_opt_cb_func _set_custom_videocb = null;
 
 		private bool mute = false;
 		private bool record = false;
+		private bool audio_record = false;
         const int RenderInterval = 60;
         const int MaxFrameCount = 3;
 
@@ -295,7 +298,45 @@ namespace NIMDemo.MainForm
         private void cb_vid_CheckedChanged(object sender, EventArgs e)
         {
             NIM.DeviceAPI.SetAudioProcessInfo(cb_aec.Checked, cb_ns.Checked, cb_vid.Checked);
-        }  
+        }
 
+		private void btnRecordAudio_Click(object sender, EventArgs e)
+		{
+			Random random = new Random();
+			string path = Application.StartupPath + @"\" + random.Next().ToString() + @".aac";
+			string json_extension = "";
+			audio_record = !audio_record;
+			if (audio_record)
+			{
+				_start_audio_record_cb = new nim_vchat_audio_record_opt_cb_func(VChatAudioRecordCallback);
+				btnRecordAudio.Text = "停止录音";
+				NIM.VChatAPI.StartAudioRecord(path, _start_audio_record_cb);
+			}
+			else
+			{
+				_stop_audio_record_cb = new nim_vchat_audio_record_opt_cb_func(VChatAudioRecordCallback);
+				btnRecordAudio.Text = "录制音频";
+				NIM.VChatAPI.StopAudioRecord(_start_audio_record_cb);
+			}
+		}
+
+		private void VChatAudioRecordCallback(bool ret, int code, string file, Int64 time, string json_extension, IntPtr user_data)
+		{
+			if (ret)
+			{
+				if (audio_record)
+					MessageBox.Show("开始录制");
+				else
+					MessageBox.Show("结束录制");
+			}
+			else
+			{
+				if (audio_record)
+					MessageBox.Show("开始录制操作失败-错误码:" + code.ToString());
+				else
+					MessageBox.Show("结束录制操作失败-错误码:" + code.ToString());
+
+			}
+		}
 	}
 }

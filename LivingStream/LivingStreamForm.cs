@@ -19,6 +19,7 @@ namespace NIMDemo
 	public partial class LivingStreamForm : Form
 	{
         private bool beauty_ = false;
+        private string pullurl_ = "";
 		Graphics graphics = null;
 		public LivingStreamForm()
 		{
@@ -80,6 +81,12 @@ namespace NIMDemo
 				new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
 			img.Dispose();
 		}
+
+        public string  GetPushUrl()
+        {
+            return pullurl_;
+        }
+
 		private void btn_ls_Click(object sender, EventArgs e)
 		{
 			if(String.IsNullOrEmpty(rt_push_url.Text))
@@ -94,12 +101,12 @@ namespace NIMDemo
 				return;
 			}
 
-			string url = rt_push_url.Text;
+            pullurl_ = rt_push_url.Text;
 			if (nimSDKHelper.session == null)
 			{
 				nimSDKHelper.form = this;
 				nimSDKHelper.session = new LsSession();
-				nimSDKHelper.session.InitSession(false, url); 
+                nimSDKHelper.session.InitSession(false, pullurl_); 
 				nimSDKHelper.session.DoStartLiveStream();
 				btn_ls.Text = "结束直播";
 			}

@@ -44,6 +44,19 @@ namespace NIMDemo.LivingStreamSDK
 		{
 			if (session != null)
 			{
+                if(session.Height!=height&&session.Width!=width)
+                {  
+                    session.DoStopLiveStream();
+                    session.ClearSession();
+                  
+                    session = new LsSession();
+                    session.Width = Convert.ToInt32(width);
+                    session.Height = Convert.ToInt32(height);
+                    session.InitSession(false, form.GetPushUrl());
+                    nimSDKHelper.session.DoStartLiveStream();
+
+                    return;
+                }
 				byte[] yuv = new byte[size];
                 Marshal.Copy(data, yuv, 0, (int)size);
                 if(form.Beauty)
