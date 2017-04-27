@@ -15,15 +15,7 @@ namespace NIMDemo
 {
 	public partial class MultiVChatForm : Form
 	{
-        /// <summary>
-        /// 视频数据回调
-        /// </summary>
-        /// <param name="time">毫秒级时间戳</param>
-        /// <param name="data">数据指针， ARGB</param>
-        /// <param name="size">数据长途sizeof(char)</param>
-        /// <param name="width">画面宽</param>
-        /// <param name="rate">画面高</param>
-        public delegate void MultiChatVideoDataHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data);
+  
         private Graphics _multiVChatFormGraphics_pb01;
         private Graphics _multiVChatFormGraphics_pb02;
         private Graphics _multiVChatFormGraphics_pb03;
@@ -135,11 +127,11 @@ namespace NIMDemo
 
             NIM.VChatAPI.SetSessionStatusCb(_vchatHandlers);
             //注册音频接收回调
-            DeviceAPI.SetAudioReceiveDataCb(AudioDataReceiveCallBack);
+            DeviceAPI.SetAudioReceiveDataCb(AudioDataReceiveCallBack,null);
             //注册视频接收回调
-            DeviceAPI.SetVideoReceiveDataCb(VideoDataReceiveCallBack);
+            DeviceAPI.SetVideoReceiveDataCb(VideoDataReceiveCallBack,null);
             //注册视频捕获回调
-            DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureCallBack);
+            DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureCallBack,null);
 
             //启动设备在MultimediaHandler onSessionConnectNotify回调通知中
            // StartDevices();
@@ -186,7 +178,7 @@ namespace NIMDemo
         }
 
         //收到视频数据回调
-        private void VideoDataReceiveCallBack(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data)
+        private void VideoDataReceiveCallBack(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension)
         {
             MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int)width, (int)height, (int)size, (long)time);
             string account=ParseCbJsonExtension(json_extension);
@@ -244,7 +236,7 @@ namespace NIMDemo
         }
 
         //捕获视频回调
-        private void VideoDataCaptureCallBack(UInt64 time, IntPtr data,UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data)
+        private void VideoDataCaptureCallBack(UInt64 time, IntPtr data,UInt32 size, UInt32 width, UInt32 height, string json_extension)
         {
            
             Action action = () =>
@@ -338,8 +330,7 @@ namespace NIMDemo
                         {
                             isBlacklist = _audioblacklist.Contains(id);
                             VChatAPI.SetMemberInBlackList(id, !isBlacklist, true, "",
-                               _audiosetblacklistop
-                                , IntPtr.Zero);
+                               _audiosetblacklistop);
                         };
                     }
 
@@ -391,8 +382,7 @@ namespace NIMDemo
                         {
                             muted = _vedioblacklist.Contains(id);
                             VChatAPI.SetMemberInBlackList(id, !muted, false, "",
-                              _vediosetblacklistop,
-                              IntPtr.Zero);
+                              _vediosetblacklistop);
                         };
                     }
 

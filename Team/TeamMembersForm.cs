@@ -31,14 +31,18 @@ namespace NIMDemo.Team
         private void TeamMembersForm_Load(object sender, EventArgs e)
         {
             treeView1.MouseUp += TreeView1_MouseUp;
-            NIM.Team.TeamAPI.QueryTeamMembersInfo(_teamId, (info) =>
+            NIM.Team.TeamAPI.QueryTeamMembersInfo(_teamId, (tid,coutn,hasUinfo,info) =>
             {
                 if (info != null)
                 {
                     foreach (var i in info)
                     {
-                        _memberCollection.Add(i.AccountId);
-                        _teamMmebers[i.AccountId] = i;
+                        if(i.Type != NIM.Team.NIMTeamUserType.kNIMTeamUserTypeLocalWaitAccept)
+                        {
+                            _memberCollection.Add(i.AccountId);
+                            _teamMmebers[i.AccountId] = i;
+                        }
+                      
                     }
                     UpdateTreeView();
                 }
@@ -82,22 +86,22 @@ namespace NIMDemo.Team
                     var node = treeNodes[0];
                     MenuItem menu = new MenuItem("移出群", (s, args) =>
                     {
-                        NIM.Team.TeamAPI.KickMemberOutFromTeam(_teamId, new string[] {node.Name}, (a) =>
-                        {
-                            if (a.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
-                            {
-                                foreach (var id in a.TeamEvent.IdCollection)
-                                {
-                                    _memberCollection.Remove(id);
-                                    _teamMmebers.Remove(id);
-                                }
-                                UpdateTreeView();
-                            }
-                            else
-                            {
-                                MessageBox.Show("操作失败:" + a.TeamEvent.ResponseCode.ToString());
-                            }
-                        });
+                        NIM.Team.TeamAPI.KickMemberOutFromTeam(_teamId, new string[] { node.Name }, (a) =>
+                          {
+                              if (a.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
+                              {
+                                  foreach (var id in a.TeamEvent.IdCollection)
+                                  {
+                                      _memberCollection.Remove(id);
+                                      _teamMmebers.Remove(id);
+                                  }
+                                  UpdateTreeView();
+                              }
+                              else
+                              {
+                                  MessageBox.Show("操作失败:" + a.TeamEvent.ResponseCode.ToString());
+                              }
+                          });
                     });
                     ContextMenu m = new ContextMenu();
                     string uid = node.Name;
@@ -109,15 +113,15 @@ namespace NIMDemo.Team
                         MenuItem item = new MenuItem(txt, (s, args) =>
                         {
                             if (normalMember)
-                                NIM.Team.TeamAPI.AddTeamManagers(_teamId, new string[] {uid}, (ret) =>
-                                {
-                                    DemoTrace.WriteLine(txt, ret.Dump());
-                                });
+                                NIM.Team.TeamAPI.AddTeamManagers(_teamId, new string[] { uid }, (ret) =>
+                                  {
+                                      DemoTrace.WriteLine(txt, ret.Dump());
+                                  });
                             else
-                                NIM.Team.TeamAPI.RemoveTeamManagers(_teamId, new string[] {uid}, (ret) =>
-                                {
-                                    DemoTrace.WriteLine(txt, ret.Dump());
-                                });
+                                NIM.Team.TeamAPI.RemoveTeamManagers(_teamId, new string[] { uid }, (ret) =>
+                                  {
+                                      DemoTrace.WriteLine(txt, ret.Dump());
+                                  });
                         });
                         var text1 = memInfo.IsMuted ? "取消禁言" : "禁言";
                         MenuItem item1 = new MenuItem(text1, (s, args) =>
@@ -179,7 +183,7 @@ namespace NIMDemo.Team
                         NIM.NIMTextMessage msg = new NIM.NIMTextMessage();
                         msg.ReceiverID = root.Text;
                         msg.SessionType = NIM.Session.NIMSessionType.kNIMSessionTypeTeam;
-                        msg.TextContent = "群推送消息..."+new Random().NextDouble().ToString();
+                        msg.TextContent = "群推送消息..." + new Random().NextDouble().ToString();
                         NIM.TalkAPI.SendTeamFrocePushMessage(msg, forceMsg);
                     });
                     ContextMenu m = new ContextMenu();
@@ -197,6 +201,10 @@ namespace NIMDemo.Team
                             {
                                 if (r.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResTeamInviteSuccess)
                                 {
+                                    MessageBox.Show("邀请成功，等待对方验证: " + r.TeamEvent.ResponseCode.ToString());
+                                }
+                                else if(r.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
+                                {
                                     foreach (var id in r.TeamEvent.IdCollection)
                                     {
                                         NIM.Team.TeamAPI.QuerySingleMemberInfo(_teamId, id, (ret) =>
@@ -208,14 +216,14 @@ namespace NIMDemo.Team
                                 }
                                 else
                                 {
-                                    MessageBox.Show("操作失败:" + r.TeamEvent.ResponseCode.ToString());
+                                    MessageBox.Show("邀请失败：" + r.TeamEvent.ResponseCode.ToString());
                                 }
                             });
                         };
                         form.Show();
                     });
                     ContextMenu m = new ContextMenu();
-                    
+
                     m.MenuItems.Add(menu);
                     m.Show(treeView1, e.Location);
                 }

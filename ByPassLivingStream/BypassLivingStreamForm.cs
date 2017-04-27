@@ -363,7 +363,7 @@ namespace NIMDemo
 		
 		private void btn_query_queue_Click(object sender, EventArgs e)
 		{
-			NIMChatRoom.ChatRoomApi.QueueListAsync(Convert.ToInt64(room_id_), (room_id, error_code, result, json_extension, user_data) =>
+			NIMChatRoom.ChatRoomApi.QueueListAsync(Convert.ToInt64(room_id_), (room_id, error_code, result) =>
 			{
 				if (error_code == ResponseCode.kNIMResSuccess)
 				{
@@ -378,7 +378,7 @@ namespace NIMDemo
 
 		private void btn_clear_queue_Click(object sender, EventArgs e)
 		{
-			NIMChatRoom.ChatRoomApi.QueueDropAsync(Convert.ToInt64(room_id_), ( room_id, error_code,json_extension, user_data) =>
+			NIMChatRoom.ChatRoomApi.QueueDropAsync(Convert.ToInt64(room_id_), ( room_id, error_code) =>
 			{
 				Action act = () =>
 				{
@@ -390,7 +390,7 @@ namespace NIMDemo
 
 		private void btn_poll_element_Click(object sender, EventArgs e)
 		{
-			NIMChatRoom.ChatRoomApi.QueuePollAsync(Convert.ToInt64(room_id_),tb_opt_key.Text,(room_id,error_code, result, json_extension, user_data) =>
+			NIMChatRoom.ChatRoomApi.QueuePollAsync(Convert.ToInt64(room_id_),tb_opt_key.Text,(room_id,error_code, result) =>
 			{
 				Action act = () =>
 				  {
@@ -402,7 +402,7 @@ namespace NIMDemo
 
 		private void btn_addorupdate_queue_Click(object sender, EventArgs e)
 		{
-			NIMChatRoom.ChatRoomApi.QueueOfferAsync(Convert.ToInt64(room_id_), tb_key_.Text, tb_value_.Text, (room_id,error_code,json_extension,user_data) =>
+			NIMChatRoom.ChatRoomApi.QueueOfferAsync(Convert.ToInt64(room_id_), tb_key_.Text, tb_value_.Text, (room_id,error_code) =>
 			{
 				Action act = () =>
 				  {

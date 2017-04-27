@@ -167,11 +167,11 @@ namespace NIMDemo
             //注册音视频会话交互回调
             NIM.VChatAPI.SetSessionStatusCb(_vchatHandlers);
             //注册音频接收数据回调
-            NIM.DeviceAPI.SetAudioReceiveDataCb(AudioDataRecHandler);
+            NIM.DeviceAPI.SetAudioReceiveDataCb(AudioDataRecHandler,null);
             //注册视频接收数据回调
-            NIM.DeviceAPI.SetVideoReceiveDataCb(VideoDataRecHandler);
+            NIM.DeviceAPI.SetVideoReceiveDataCb(VideoDataRecHandler,null);
             //注册视频采集数据回调
-            NIM.DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureHandler);
+            NIM.DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureHandler,null);
         }
        private static void AudioDataRecHandler(UInt64 time, IntPtr data, UInt32 size, Int32 rate)
         {
@@ -181,7 +181,7 @@ namespace NIMDemo
         public static EventHandler<MainForm.VideoEventAgrs> ReceiveVideoFrameHandler;
         public static EventHandler<MainForm.VideoEventAgrs> CapturedVideoFrameHandler;
         //捕获视频帧回调函数
-        private static void VideoDataCaptureHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data)
+        private static void VideoDataCaptureHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension)
         {
 			MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int)width, (int)height, (int)size, (long)time);
 			try
@@ -199,7 +199,7 @@ namespace NIMDemo
         }
 
         //收到视频帧回调函数
-       private static void VideoDataRecHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data)
+       private static void VideoDataRecHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension)
         {
 			MainForm.VideoFrame frame = new MainForm.VideoFrame(data, (int)width, (int)height, (int)size, (long)time);
 			try

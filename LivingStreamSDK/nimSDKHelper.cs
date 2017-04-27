@@ -19,8 +19,10 @@ namespace NIMDemo.LivingStreamSDK
 			JObject jo = new JObject();
 			jo.Add(new JProperty("subtype", NIMVideoSubType.kNIMVideoSubTypeI420));
 			string json_extention = jo.ToString();
-			NIM.DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureHandler,json_extention);
-			NIM.DeviceAPI.SetAudioCaptureDataCb(AudioDataCaptureHandler);
+			NIM.NIMVChatCustomAudioJsonEx audioJsonEx = new NIMVChatCustomAudioJsonEx();
+			NIM.NIMVChatCustomVideoJsonEx videoJsonEx = new NIMVChatCustomVideoJsonEx();
+			NIM.DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureHandler, videoJsonEx);
+			NIM.DeviceAPI.SetAudioCaptureDataCb(AudioDataCaptureHandler, audioJsonEx);
 		}
 		public static void StartDevices()
 		{
@@ -40,7 +42,7 @@ namespace NIMDemo.LivingStreamSDK
 		}
 
 
-		private static void VideoDataCaptureHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension, IntPtr user_data)
+		private static void VideoDataCaptureHandler(UInt64 time, IntPtr data, UInt32 size, UInt32 width, UInt32 height, string json_extension)
 		{
 			if (session != null)
 			{

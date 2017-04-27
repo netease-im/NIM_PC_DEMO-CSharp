@@ -36,19 +36,22 @@ namespace NIMDemo
                 Action<NIM.Friend.NIMFriendProfile> action = (profile) =>
                 {
                     _profile = profile;
-                    var p1 = CreateFormContent(profile);
-                    _contentPanel = p1;
-                    Button btn1 = new Button();
-                    btn1.Dock = DockStyle.Bottom;
-                    btn1.Text = "更新";
-                    btn1.Click += (s, args) =>
+                    if(profile != null)
                     {
-                        UpdateFriendProfile();
-                    };
-                    p1.Height += 50;
-                    p1.Controls.Add(btn1);
-                    this.splitContainer1.Panel1.Controls.Add(p1);
-                    this.splitContainer1.Panel1.SetBounds(0, 0, p1.Width, p1.Height);
+                        var p1 = CreateFormContent(profile);
+                        _contentPanel = p1;
+                        Button btn1 = new Button();
+                        btn1.Dock = DockStyle.Bottom;
+                        btn1.Text = "更新";
+                        btn1.Click += (s, args) =>
+                        {
+                            UpdateFriendProfile();
+                        };
+                        p1.Height += 50;
+                        p1.Controls.Add(btn1);
+                        this.splitContainer1.Panel1.Controls.Add(p1);
+                        this.splitContainer1.Panel1.SetBounds(0, 0, p1.Width, p1.Height);
+                    }
                 };
                 this.Invoke(action,ret);
             });

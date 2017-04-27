@@ -60,6 +60,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.recentSessionListbox = new System.Windows.Forms.ListBox();
+            this.订阅事件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -216,7 +217,8 @@
             this.rTSToolStripMenuItem,
             this.登录状态ToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.文档转换ToolStripMenuItem});
+            this.文档转换ToolStripMenuItem,
+            this.订阅事件ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(395, 25);
@@ -389,6 +391,13 @@
             this.recentSessionListbox.Size = new System.Drawing.Size(381, 489);
             this.recentSessionListbox.TabIndex = 0;
             // 
+            // 订阅事件ToolStripMenuItem
+            // 
+            this.订阅事件ToolStripMenuItem.MergeIndex = 6;
+            this.订阅事件ToolStripMenuItem.Name = "订阅事件ToolStripMenuItem";
+            this.订阅事件ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.订阅事件ToolStripMenuItem.Text = "订阅事件";
+            // 
             // FriendsListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -450,6 +459,7 @@
         private System.Windows.Forms.ToolStripMenuItem 登录状态ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 文档转换ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 订阅事件ToolStripMenuItem;
     }
 }
 

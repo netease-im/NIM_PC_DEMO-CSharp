@@ -1,17 +1,12 @@
 ﻿{
-    "configs": {
+  "configs": {
     "index": 0,
     "list": [
-        {
-            "global_config": {
-                "db_encrypt_key": "fe416640c8e8a72734219e1847ad2547",
-                "preload_attach": true,
-                "sdk_log_level": 6,
-                "private_server_setting": false
-            },
-		    "app_key": "45c6af3c98409b18a84451215d0bdd6e",
-            "roomlistserver": "https://app.netease.im/api/chatroom/homeList"
-		}
+      {
+        "server": "",
+        "app_key": "45c6af3c98409b18a84451215d0bdd6e",
+        "roomlistserver": "https://app.netease.im/api/chatroom/homeList"
+      }
     ]
-    }
+  }
 }

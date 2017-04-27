@@ -30,6 +30,7 @@
         {
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.peerPicBox = new System.Windows.Forms.PictureBox();
+			this.btnRecordAudio = new System.Windows.Forms.Button();
 			this.cb_vid = new System.Windows.Forms.CheckBox();
 			this.cb_ns = new System.Windows.Forms.CheckBox();
 			this.cb_aec = new System.Windows.Forms.CheckBox();
@@ -43,7 +44,8 @@
 			this.btnSetMute = new System.Windows.Forms.Button();
 			this.btnRecord = new System.Windows.Forms.Button();
 			this.minePicBox = new System.Windows.Forms.PictureBox();
-			this.btnRecordAudio = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
+			this.cb_video_clip_ = new System.Windows.Forms.ComboBox();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -64,6 +66,8 @@
 			// 
 			// splitContainer1.Panel2
 			// 
+			this.splitContainer1.Panel2.Controls.Add(this.cb_video_clip_);
+			this.splitContainer1.Panel2.Controls.Add(this.label2);
 			this.splitContainer1.Panel2.Controls.Add(this.btnRecordAudio);
 			this.splitContainer1.Panel2.Controls.Add(this.cb_vid);
 			this.splitContainer1.Panel2.Controls.Add(this.cb_ns);
@@ -78,8 +82,8 @@
 			this.splitContainer1.Panel2.Controls.Add(this.btnSetMute);
 			this.splitContainer1.Panel2.Controls.Add(this.btnRecord);
 			this.splitContainer1.Panel2.Controls.Add(this.minePicBox);
-			this.splitContainer1.Size = new System.Drawing.Size(393, 586);
-			this.splitContainer1.SplitterDistance = 337;
+			this.splitContainer1.Size = new System.Drawing.Size(384, 658);
+			this.splitContainer1.SplitterDistance = 378;
 			this.splitContainer1.TabIndex = 0;
 			// 
 			// peerPicBox
@@ -87,9 +91,18 @@
 			this.peerPicBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.peerPicBox.Location = new System.Drawing.Point(0, 0);
 			this.peerPicBox.Name = "peerPicBox";
-			this.peerPicBox.Size = new System.Drawing.Size(393, 337);
+			this.peerPicBox.Size = new System.Drawing.Size(384, 378);
 			this.peerPicBox.TabIndex = 0;
 			this.peerPicBox.TabStop = false;
+			// 
+			// btnRecordAudio
+			// 
+			this.btnRecordAudio.Location = new System.Drawing.Point(22, 64);
+			this.btnRecordAudio.Name = "btnRecordAudio";
+			this.btnRecordAudio.Size = new System.Drawing.Size(89, 23);
+			this.btnRecordAudio.TabIndex = 17;
+			this.btnRecordAudio.Text = "录制音频";
+			this.btnRecordAudio.Click += new System.EventHandler(this.btnRecordAudio_Click);
 			// 
 			// cb_vid
 			// 
@@ -224,20 +237,29 @@
 			this.minePicBox.TabIndex = 0;
 			this.minePicBox.TabStop = false;
 			// 
-			// btnRecordAudio
+			// label2
 			// 
-			this.btnRecordAudio.Location = new System.Drawing.Point(22, 64);
-			this.btnRecordAudio.Name = "btnRecordAudio";
-			this.btnRecordAudio.Size = new System.Drawing.Size(89, 23);
-			this.btnRecordAudio.TabIndex = 17;
-			this.btnRecordAudio.Text = "录制音频";
-			this.btnRecordAudio.Click += new System.EventHandler(this.btnRecordAudio_Click);
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(35, 255);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(53, 12);
+			this.label2.TabIndex = 18;
+			this.label2.Text = "画面裁剪";
+			// 
+			// cb_video_clip_
+			// 
+			this.cb_video_clip_.FormattingEnabled = true;
+			this.cb_video_clip_.Location = new System.Drawing.Point(161, 247);
+			this.cb_video_clip_.Name = "cb_video_clip_";
+			this.cb_video_clip_.Size = new System.Drawing.Size(215, 20);
+			this.cb_video_clip_.TabIndex = 19;
+			this.cb_video_clip_.SelectedIndexChanged += new System.EventHandler(this.cb_video_clip_SelectedIndexChanged);
 			// 
 			// VideoChatForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(393, 586);
+			this.ClientSize = new System.Drawing.Size(384, 658);
 			this.Controls.Add(this.splitContainer1);
 			this.Name = "VideoChatForm";
 			this.Text = "音视频通话";
@@ -274,5 +296,7 @@
         private System.Windows.Forms.CheckBox cb_ns;
         private System.Windows.Forms.CheckBox cb_aec;
 		private System.Windows.Forms.Button btnRecordAudio;
+		private System.Windows.Forms.ComboBox cb_video_clip_;
+		private System.Windows.Forms.Label label2;
 	}
 }

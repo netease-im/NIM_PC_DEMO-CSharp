@@ -243,9 +243,12 @@ namespace NIMDemo
 
         private void OnUserNameCardChanged(object sender, UserNameCardChangedArgs e)
         {
-            DemoTrace.WriteLine("用户名片变更:" + e.UserNameCardList.Dump());
-            var card = e.UserNameCardList.Find(c => c.AccountId == SelfId);
-            DisplayMyProfile(card);
+            if(e != null && e.UserNameCardList != null)
+            {
+                DemoTrace.WriteLine("用户名片变更:" + e.UserNameCardList.Dump());
+                var card = e.UserNameCardList.Find(c => c.AccountId == SelfId);
+                DisplayMyProfile(card);
+            }
         }
 
         private void OnUserRelationshipChanged(object sender, UserRelationshipChangedArgs e)
@@ -436,7 +439,7 @@ namespace NIMDemo
                 IDLabel.Text = card.AccountId;
                 NameLabel.Text = card.NickName;
                 SigLabel.Text = card.Signature;
-                if (!string.IsNullOrEmpty(card.IconUrl))
+                if (!string.IsNullOrEmpty(card.IconUrl) && Uri.IsWellFormedUriString(card.IconUrl,UriKind.Absolute))
                 {
                     var stream = System.Net.WebRequest.Create(card.IconUrl).GetResponse().GetResponseStream();
                     if (stream != null)
@@ -571,7 +574,7 @@ namespace NIMDemo
                         {
                             if (!string.IsNullOrEmpty(box.Text))
                             {
-                                NIM.Friend.FriendAPI.ProcessFriendRequest(box.Text, NIM.Friend.NIMVerifyType.kNIMVerifyTypeAdd, "加我加我",
+                                NIM.Friend.FriendAPI.ProcessFriendRequest(box.Text, NIM.Friend.NIMVerifyType.kNIMVerifyTypeAsk, "加我加我",
                                     (aa, bb, cc) =>
                                     {
                                         if (aa != 200)
@@ -696,7 +699,12 @@ namespace NIMDemo
             }
             if (e.ClickedItem.MergeIndex == 5)
             {
-                NIM.VChatAPI.DetectNetwork(null, OnNetDetection, IntPtr.Zero);
+                NIM.VChatAPI.DetectNetwork(null, OnNetDetection);
+            }
+            if (e.ClickedItem.MergeIndex == 6)
+            {
+                SubscribeEventForm form = new SubscribeEventForm();
+                form.Show();
             }
 
         }

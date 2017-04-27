@@ -226,11 +226,11 @@ namespace NIMDemo
 		{
             if (code == 200)
             {
-                json_extension = "{\"session_id\":\"leewp\"}";
+				NIM.NIMJoinRoomJsonEx joinRoomJsonEx = new NIMJoinRoomJsonEx();
                 //创建房间成功,将内容抛至UI线程  
                 Action action = () =>
                     {
-						if (VChatAPI.JoinRoom(NIMVideoChatMode.kNIMVideoChatModeVideo, room_name, json_extension, _joinroomcb, user_data))
+						if (VChatAPI.JoinRoom(NIMVideoChatMode.kNIMVideoChatModeVideo, room_name, joinRoomJsonEx, _joinroomcb))
 						{
 							//调用成功
 						}

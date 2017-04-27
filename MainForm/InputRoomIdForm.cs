@@ -49,10 +49,10 @@ namespace NIMDemo
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            string json_extension = "{\"session_id\":\"\"}";
+           // string json_extension = "{\"session_id\":\"\"}";
             _room_name = tb_roomid.Text;
-       
-            if(VChatAPI.JoinRoom(NIMVideoChatMode.kNIMVideoChatModeVideo, _room_name, json_extension, _joinroomcb, IntPtr.Zero))
+			NIM.NIMJoinRoomJsonEx joinRoomJsonEx = new NIMJoinRoomJsonEx();
+            if(VChatAPI.JoinRoom(NIMVideoChatMode.kNIMVideoChatModeVideo, _room_name, joinRoomJsonEx, _joinroomcb))
             {
                 //调用成功
             }

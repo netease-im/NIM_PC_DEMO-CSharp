@@ -48,6 +48,7 @@ namespace NIMDemo.MainForm
         {
             InitializeComponent();
 			InitQuality();
+			InitClipTypes();
 			_startcb = new nim_vchat_mp4_record_opt_cb_func(VChatRecordStartCallback); 
 
             this.Load += VideoChatForm_Load;
@@ -62,6 +63,16 @@ namespace NIMDemo.MainForm
 			}
 			if (cb_setquality.Items.Count > 0)
 				cb_setquality.SelectedIndex = 0;
+		}
+
+		private void InitClipTypes()
+		{
+			foreach (var quality in Enum.GetValues(typeof(NIMVChatVideoFrameScaleType)))
+			{
+				cb_video_clip_.Items.Add(quality);
+			}
+			if (cb_video_clip_.Items.Count > 0)
+				cb_video_clip_.SelectedIndex = 0;
 		}
 		private void VChatRecordStartCallback(bool ret, int code,string file,Int64 time,string json_extension,IntPtr user_data)
 		{
@@ -126,7 +137,7 @@ namespace NIMDemo.MainForm
                     NIMDemo.LivingStreamSDK.YUVHelper.i420Revert(ref i420,e.Frame.Width,e.Frame.Height);
                     IntPtr unmanagedPointer = Marshal.AllocHGlobal(i420.Length);
                     Marshal.Copy(i420, 0, unmanagedPointer, i420.Length);
-                    NIM.DeviceAPI.CustomVideoData(time, unmanagedPointer, size, (uint)e.Frame.Width, (uint)e.Frame.Height);
+                    NIM.DeviceAPI.CustomVideoData(time, unmanagedPointer, size, (uint)e.Frame.Width, (uint)e.Frame.Height,null);
                     Marshal.FreeHGlobal(unmanagedPointer);
                 }
                 catch(Exception ex)
@@ -179,12 +190,12 @@ namespace NIMDemo.MainForm
 			if(record)
 			{
 				btnRecord.Text = "停止录音";
-				NIM.VChatAPI.StartRecord(path, json_extension, _startcb, IntPtr.Zero);
+				NIM.VChatAPI.StartRecord(path, null, _startcb);
 			}
 			else
 			{
 				btnRecord.Text = "开始录音";
-				NIM.VChatAPI.StopRecord(json_extension, _stopcb, IntPtr.Zero);
+				NIM.VChatAPI.StopRecord(null, _stopcb);
 			}
 			
 		}
@@ -213,7 +224,7 @@ namespace NIMDemo.MainForm
 				//设置成功
 			});
 			NIMVChatVideoQuality quality =(NIMVChatVideoQuality)((ComboBox)sender).SelectedItem;
-			NIM.VChatAPI.SetVideoQuality(quality, "", _setvideoqualitycb, IntPtr.Zero);
+			NIM.VChatAPI.SetVideoQuality(quality, "", _setvideoqualitycb);
 		}
 
 		private void btn_beauty_Click(object sender, EventArgs e)
@@ -239,7 +250,7 @@ namespace NIMDemo.MainForm
                     //设置成功
                 });
             }
-            NIM.VChatAPI.SetCustomData(false, !beauty_, "", _set_custom_videocb, IntPtr.Zero);
+            NIM.VChatAPI.SetCustomData(false, !beauty_, "", _set_custom_videocb);
 
             //beauty_ = !beauty_;
             //Action action = () =>
@@ -337,6 +348,12 @@ namespace NIMDemo.MainForm
 					MessageBox.Show("结束录制操作失败-错误码:" + code.ToString());
 
 			}
+		}
+
+		private void cb_video_clip_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			NIMVChatVideoFrameScaleType scale_type = (NIMVChatVideoFrameScaleType)((ComboBox)sender).SelectedItem;
+			NIM.VChatAPI.SetVideoFrameScale(scale_type);
 		}
 	}
 }
