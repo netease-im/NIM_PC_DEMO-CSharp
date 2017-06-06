@@ -252,9 +252,9 @@ namespace NIMDemo
             {
                 System.Diagnostics.Debug.WriteLine(type.ToString() + ":" + ret.ToString());
             };
-            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioIn, "", 0, handle);//开启麦克风
-            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioOutChat, "", 0, handle);//开启扬声器播放对方语音
-            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeVideo, "", 0, handle);//开启摄像头
+            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioIn, "", 0, null,handle);//开启麦克风
+            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioOutChat, "", 0,null, handle);//开启扬声器播放对方语音
+            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeVideo, "", 0,null, handle);//开启摄像头
         }
         public static void EndDevices()
         {

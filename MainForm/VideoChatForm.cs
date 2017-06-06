@@ -282,7 +282,7 @@ namespace NIMDemo.MainForm
                 }
             };
             if (!accompany_)
-                NIM.DeviceAPI.StartDevice(NIMDeviceType.kNIMDeviceTypeAudioHook, tb_player_path_.Text, 0, cb);
+                NIM.DeviceAPI.StartDevice(NIMDeviceType.kNIMDeviceTypeAudioHook, tb_player_path_.Text, 0,null,cb);
             else
             {
                 NIM.DeviceAPI.EndDevice(NIMDeviceType.kNIMDeviceTypeAudioHook);

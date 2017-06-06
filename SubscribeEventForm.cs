@@ -26,12 +26,12 @@ namespace NIMDemo
 
         private void BatchPushEventCallback(ResponseCode code, List<NIMEventInfo> infoList)
         {
-            NimUtility.Log.InfoFormat("[BatchPushEventCallback code = {0},infoList:{1}]",infoList.Dump());
+            NimUtility.Log.Info(string.Format("[BatchPushEventCallback code = {0},infoList:{1}]", infoList.Dump()));
         }
 
         private void PushEventCallback(ResponseCode code, NIMEventInfo info)
         {
-            NimUtility.Log.InfoFormat("[PushEventCallback code = {0},infoList:{1}]", info.Dump());
+            NimUtility.Log.Info(string.Format("[PushEventCallback code = {0},infoList:{1}]", info.Dump()));
         }
 
         private void SubscribeEventForm_Load_1(object sender, EventArgs e)
@@ -68,7 +68,7 @@ namespace NIMDemo
 
         private void OnPublishCompleted(ResponseCode code, NIMEventInfo info)
         {
-            NimUtility.Log.InfoFormat("[OnPublishCompleted :code = {0},info:{1}]",code, info.Dump());
+            NimUtility.Log.Info(string.Format("[OnPublishCompleted :code = {0},info:{1}]", code, info.Dump()));
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -80,7 +80,7 @@ namespace NIMDemo
             long period = 0;
             long.TryParse(textBox9.Text, out period);
 
-            if(!string.IsNullOrEmpty(textBox8.Text))
+            if (!string.IsNullOrEmpty(textBox8.Text))
             {
                 var idlist = textBox8.Text.Split(new char[] { ',' });
                 NIM.NIMSubscribeApi.Subscribe(type, period, (NIMEventSubscribeSyncEventType)sync, idlist.ToList(), OnSubscribeCompleted);
@@ -89,8 +89,8 @@ namespace NIMDemo
 
         private void OnSubscribeCompleted(ResponseCode code, int type, List<string> failedIDList)
         {
-            NimUtility.Log.InfoFormat("[OnPublishCompleted :code = {0},type = {1} failed:{2}]", code, type,
-                failedIDList != null ? failedIDList.Aggregate((a, b) => a + "," + b) : "null");
+            NimUtility.Log.Info(string.Format("[OnPublishCompleted :code = {0},type = {1} failed:{2}]", code, type,
+                failedIDList != null ? failedIDList.Aggregate((a, b) => a + "," + b) : "null"));
         }
 
         private void label9_Click(object sender, EventArgs e)
@@ -116,8 +116,8 @@ namespace NIMDemo
 
         private void OnUnsubscribeCompleted(ResponseCode code, int type, List<string> failedIDList)
         {
-            NimUtility.Log.InfoFormat("[OnUnsubscribeCompleted :code = {0},type = {1} failed:{2}]", code, type,
-                 failedIDList != null ? failedIDList.Aggregate((a, b) => a + "," + b) : "null");
+            NimUtility.Log.Info(string.Format("[OnUnsubscribeCompleted :code = {0},type = {1} failed:{2}]", code, type,
+                 failedIDList != null ? failedIDList.Aggregate((a, b) => a + "," + b) : "null"));
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -129,8 +129,8 @@ namespace NIMDemo
 
         private void OnBatchUnsubscribeCompleted(ResponseCode code, int type)
         {
-            NimUtility.Log.InfoFormat("[OnBatchUnsubscribeCompleted :code = {0},type = {1}", code, type);
-                 
+            NimUtility.Log.Info(string.Format("[OnBatchUnsubscribeCompleted :code = {0},type = {1}", code, type));
+
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -151,7 +151,7 @@ namespace NIMDemo
 
         private void OnQueryCompleted(ResponseCode code, List<NIMSubscribeStatus> subscribeList)
         {
-            NimUtility.Log.InfoFormat("[OnQueryCompleted :code = {0},subscribe list:{1}", code, subscribeList.Dump());
+            NimUtility.Log.Info(string.Format("[OnQueryCompleted :code = {0},subscribe list:{1}", code, subscribeList.Dump()));
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -163,7 +163,7 @@ namespace NIMDemo
 
         private void OnBatchQueryCompleted(ResponseCode code, List<NIMSubscribeStatus> subscribeList)
         {
-            NimUtility.Log.InfoFormat("[OnBatchQueryCompleted :code = {0},subscribe list:{1}", code, subscribeList.Dump());
+            NimUtility.Log.Info(string.Format("[OnBatchQueryCompleted :code = {0},subscribe list:{1}", code, subscribeList.Dump()));
         }
     }
 }

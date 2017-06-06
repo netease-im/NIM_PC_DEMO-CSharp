@@ -56,7 +56,7 @@ namespace NIMDemo
             var i = tag == "0" ? open : close;
             if (tag == "0")
             {
-                NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioIn, "", 0, null); 
+				NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioIn, "", 0,null, null); 
             }
             else
             {
@@ -116,7 +116,7 @@ namespace NIMDemo
             _myDrawingGraphics = panel1.CreateGraphics();
             _selfPaintingRecord.BaseSize = panel1.Size;
             SetRtsNotifyCallback();
-            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioOutChat, "", 0, null);//开启扬声器播放对方语音
+            NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioOutChat, "", 0,null,null);//开启扬声器播放对方语音
         }
 
         void OnReceiveRtsData(string sessionId, int channelType, string uid, IntPtr data, int size)

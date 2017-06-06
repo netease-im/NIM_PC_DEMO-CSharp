@@ -25,7 +25,9 @@ namespace NIMDemo
         private readonly HashSet<string> _blacklistSet = new HashSet<string>();
         private readonly HashSet<string> _mutedlistSet = new HashSet<string>();
         private readonly ListViewGroup[] _groups = new ListViewGroup[]
-        {new ListViewGroup("friend", "好友"), new ListViewGroup("blacklist", "黑名单"), new ListViewGroup("mutedlist", "静音")};
+        {
+            new ListViewGroup("friend", "好友"), new ListViewGroup("blacklist", "黑名单"), new ListViewGroup("mutedlist", "静音")
+        };
         private readonly Team.TeamList _teamList = null;
         private readonly SessionList _sessionList = null;
         private RecentSessionList _recentSessionList = null;
@@ -45,9 +47,38 @@ namespace NIMDemo
             listView1.Groups.AddRange(_groups);
             _teamList = new Team.TeamList(TeamListView);
             _sessionList = new SessionList(chatListView);
+            _recentSessionList = new RecentSessionList(recentSessionListbox);
 
             this.HandleCreated += FriendsListForm_HandleCreated;
             _actionWrapper = new InvokeActionWrapper(this);
+            tabControl1.Selected += TabControl1_Selected;
+        }
+
+        private void TabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            if(e.Action == TabControlAction.Selected)
+            {
+                if(e.TabPageIndex == 1)
+                {
+                    _teamList.LoadTeams();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 注册全局回调
+        /// </summary>
+        private void RegisterNimCallback()
+        {
+            NIM.Friend.FriendAPI.FriendProfileChangedHandler += OnFriendChanged;
+            NIM.User.UserAPI.UserRelationshipListSyncHander += OnUserRelationshipSync;
+            NIM.User.UserAPI.UserRelationshipChangedHandler += OnUserRelationshipChanged;
+            NIM.User.UserAPI.UserNameCardChangedHandler += OnUserNameCardChanged;
+            NIM.ClientAPI.RegMulitiportPushEnableChangedCb(SyncMultipushState);
+            NIM.TalkAPI.OnReceiveMessageHandler += OnReceiveMessage;
+            NIM.TalkAPI.RegRecallMessageCallback(OnRecallMessage);
+            NIM.SysMessage.SysMsgAPI.ReceiveSysMsgHandler += OnReceivedSysNotification;
+            NIM.DataSync.DataSyncAPI.RegCompleteCb(OnDataSyncCompleted);
         }
 
         private void FriendsListForm_HandleCreated(object sender, EventArgs e)
@@ -60,23 +91,14 @@ namespace NIMDemo
                     return;
                 DisplayMyProfile(a[0]);
             });
-            NIM.Friend.FriendAPI.FriendProfileChangedHandler += OnFriendChanged;
-            NIM.User.UserAPI.UserRelationshipListSyncHander += OnUserRelationshipSync;
-            NIM.User.UserAPI.UserRelationshipChangedHandler += OnUserRelationshipChanged;
-            NIM.User.UserAPI.UserNameCardChangedHandler += OnUserNameCardChanged;
-            NIM.ClientAPI.RegMulitiportPushEnableChangedCb(SyncMultipushState);
+            RegisterNimCallback();
             NIM.ClientAPI.IsMultiportPushEnabled(InitMultipushState);
-            NIM.TalkAPI.OnReceiveMessageHandler += OnReceiveMessage;
-            NIM.TalkAPI.RegRecallMessageCallback(OnRecallMessage);
             multipushCheckbox.CheckedChanged += MultipushCheckbox_CheckedChanged;
-            NIM.SysMessage.SysMsgAPI.ReceiveSysMsgHandler += OnReceivedSysNotification;
-            _teamList.LoadTeams();
+            //_teamList.LoadTeams();
             _sessionList.GetRecentSessionList();
-            _recentSessionList = new RecentSessionList(recentSessionListbox);
             _recentSessionList.LoadSessionList();
             _multimediaHandler = new MultimediaHandler(this);
             MultimediaHandler.InitVChatInfo();
-            NIM.DataSync.DataSyncAPI.RegCompleteCb(OnDataSyncCompleted);
             _rtsHandler = new RtsHandler(this);
         }
 
@@ -243,7 +265,7 @@ namespace NIMDemo
 
         private void OnUserNameCardChanged(object sender, UserNameCardChangedArgs e)
         {
-            if(e != null && e.UserNameCardList != null)
+            if (e != null && e.UserNameCardList != null)
             {
                 DemoTrace.WriteLine("用户名片变更:" + e.UserNameCardList.Dump());
                 var card = e.UserNameCardList.Find(c => c.AccountId == SelfId);
@@ -434,19 +456,23 @@ namespace NIMDemo
             if (card == null)
                 return;
             _selfNameCard = card;
-            Action action = () =>
+            _actionWrapper.InvokeAction(() =>
             {
                 IDLabel.Text = card.AccountId;
                 NameLabel.Text = card.NickName;
                 SigLabel.Text = card.Signature;
-                if (!string.IsNullOrEmpty(card.IconUrl) && Uri.IsWellFormedUriString(card.IconUrl,UriKind.Absolute))
+
+                if (!string.IsNullOrEmpty(card.IconUrl))
                 {
-                    var stream = System.Net.WebRequest.Create(card.IconUrl).GetResponse().GetResponseStream();
-                    if (stream != null)
-                        IconPictureBox.Image = Image.FromStream(stream);
+                    var url = Uri.UnescapeDataString(card.IconUrl);
+                    if (Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
+                    {
+                        var stream = System.Net.WebRequest.Create(card.IconUrl).GetResponse().GetResponseStream();
+                        if (stream != null)
+                            IconPictureBox.Image = Image.FromStream(stream);
+                    }
                 }
-            };
-            _actionWrapper.InvokeAction(action);
+            });
         }
 
         private void listView1_DoubleClick(object sender, EventArgs e)
@@ -500,107 +526,105 @@ namespace NIMDemo
             CloseForm(MainFormExitType.Logout);
         }
 
+        //好友列表右键菜单
         private void listView1_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button != MouseButtons.Right)
+                return;
+            ContextMenu cm = new ContextMenu();
+            if (listView1.SelectedItems.Count > 0)
             {
-                ContextMenu cm = new ContextMenu();
-                if (listView1.SelectedItems.Count > 0)
+                var id = listView1.SelectedItems[0].Text;
+
+                cm.MenuItems.Add("查看详情", (s, args) =>
                 {
-                    var id = listView1.SelectedItems[0].Text;
-                    MenuItem i1 = new MenuItem("查看详情", (o, ex) =>
-                    {
-                        FriendProfileForm card = new FriendProfileForm(id);
-                        card.Show();
-                    });
-                    MenuItem i2 = new MenuItem("删除", (o, ex) =>
-                    {
-                        NIM.Friend.FriendAPI.DeleteFriend(id, (a, b, c) =>
-                        {
-                            if (a != 200)
-                            {
-                                MessageBox.Show("删除失败");
-                            }
-                        });
-                    });
-                    bool isBlacklist = _blacklistSet.Contains(id);
-                    string m3 = isBlacklist ? "取消黑名单" : "设置黑名单";
-                    MenuItem i3 = new MenuItem(m3, (o, ex) =>
-                    {
-                        NIM.User.UserAPI.SetBlacklist(id, !isBlacklist, (a, b, c, d, e1) =>
-                        {
+                    new FriendProfileForm(id).Show();
+                });
 
-                        });
-                    });
-
-                    bool muted = _mutedlistSet.Contains(id);
-                    string m4 = muted ? "取消静音" : "静音";
-                    MenuItem i4 = new MenuItem(m4, (o, ex) =>
-                    {
-                        NIM.User.UserAPI.SetUserMuted(id, !muted, (a, b, c, d, e1) =>
-                        {
-
-                        });
-                    });
-
-                    MenuItem i5 = new MenuItem("是否好友", (o, ex) =>
-                    {
-                        var ret = NIM.Friend.FriendAPI.IsActiveFriend(id);
-                        DemoTrace.WriteLine("{0} is friend:{1}", id, ret);
-                    });
-
-                    cm.MenuItems.Add(i1);
-                    cm.MenuItems.Add(i2);
-                    cm.MenuItems.Add(i3);
-                    cm.MenuItems.Add(i4);
-                    cm.MenuItems.Add(i5);
-                    cm.Show(listView1, e.Location);
-                }
-                else
+                cm.MenuItems.Add("删除", (s, args) =>
                 {
-                    MenuItem item = new MenuItem("添加好友", (s, args) =>
+                    NIM.Friend.FriendAPI.DeleteFriend(id, (a, b, c) =>
                     {
-                        Form form = new Form();
-                        form.Size = new Size(300, 200);
-                        TextBox box = new TextBox();
-                        box.Location = new Point(10, 10);
-                        box.Size = new Size(160, 50);
-                        Button b = new Button();
-                        b.Location = new Point(70, 70);
-                        b.Text = "添加";
-                        form.Controls.Add(box);
-                        form.Controls.Add(b);
-                        b.Click += (ss, a) =>
+                        if (a != 200)
                         {
-                            if (!string.IsNullOrEmpty(box.Text))
-                            {
-                                NIM.Friend.FriendAPI.ProcessFriendRequest(box.Text, NIM.Friend.NIMVerifyType.kNIMVerifyTypeAsk, "加我加我",
-                                    (aa, bb, cc) =>
-                                    {
-                                        if (aa != 200)
-                                        {
-                                            MessageBox.Show("添加失败:" + aa.ToString());
-                                        }
-                                    });
-                            }
-                        };
-                        form.StartPosition = FormStartPosition.CenterScreen;
-                        form.Show();
+                            MessageBox.Show("删除失败");
+                        }
                     });
-                    cm.MenuItems.Add(item);
-                    cm.Show(listView1, e.Location);
+                });
 
-                }
+                bool isBlacklist = _blacklistSet.Contains(id);
+                string m3 = isBlacklist ? "取消黑名单" : "设置黑名单";
 
+                cm.MenuItems.Add(m3, (o, ex) =>
+                {
+                    NIM.User.UserAPI.SetBlacklist(id, !isBlacklist, (a, b, c, d, e1) =>
+                    {
+
+                    });
+                });
+
+                bool muted = _mutedlistSet.Contains(id);
+                string m4 = muted ? "取消静音" : "静音";
+                cm.MenuItems.Add(m4, (o, ex) =>
+                {
+                    NIM.User.UserAPI.SetUserMuted(id, !muted, (a, b, c, d, e1) =>
+                    {
+
+                    });
+                });
+
+                cm.MenuItems.Add("是否好友", (o, ex) =>
+                {
+                    var ret = NIM.Friend.FriendAPI.IsActiveFriend(id);
+                    DemoTrace.WriteLine("{0} is friend:{1}", id, ret);
+                });
             }
+            else
+            {
+                var item = CreateAddFriendMenuItem();
+                cm.MenuItems.Add(item);
+            }
+            cm.Show(listView1, e.Location);
+        }
 
+        MenuItem CreateAddFriendMenuItem()
+        {
+            MenuItem item = new MenuItem("添加好友", (s, args) =>
+            {
+                Form form = new Form();
+                form.Size = new Size(300, 200);
+                TextBox box = new TextBox();
+                box.Location = new Point(10, 10);
+                box.Size = new Size(160, 50);
+                Button b = new Button();
+                b.Location = new Point(70, 70);
+                b.Text = "添加";
+                form.Controls.Add(box);
+                form.Controls.Add(b);
+                b.Click += (ss, a) =>
+                {
+                    if (!string.IsNullOrEmpty(box.Text))
+                    {
+                        NIM.Friend.FriendAPI.ProcessFriendRequest(box.Text, NIM.Friend.NIMVerifyType.kNIMVerifyTypeAdd, "加我加我",
+                            (aa, bb, cc) =>
+                            {
+                                if (aa != 200)
+                                {
+                                    MessageBox.Show("添加失败:" + aa.ToString());
+                                }
+                            });
+                    }
+                };
+                form.StartPosition = FormStartPosition.CenterScreen;
+                form.Show();
+            });
+            return item;
         }
 
         void DownCallback(int a, string b, string c, string d)
         {
 
         }
-
 
 
         private void MyProfileBtn_Click(object sender, EventArgs e)

@@ -38,10 +38,11 @@ namespace NIMDemo
         private string _appKey = null;
         private bool InitSdk()
         {
+            //读取配置信息,用户可以自己定义配置文件格式和读取方式，使用默认配置项config设置为null即可
             var config = ConfigReader.GetSdkConfig();
             if (!NIM.ClientAPI.Init(config.AppKey, "NIMCSharpDemo", null, config))
             {
-               // NimUtility.NimLogManager.NimCoreLog.ErrorFormat("sdk init faild");
+                NimUtility.Log.Error(string.Format("Nim init failed,config:{0}", config.Serialize()));
                 MessageBox.Show("NIM init failed!");
                 return false;
             }
@@ -49,8 +50,14 @@ namespace NIMDemo
             return true;
         }
 
+        /// <summary>
+        /// 执行登录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLoginButtonClicked(object sender, EventArgs e)
         {
+            //必须保证 NIM.ClientAPI.Init 调用成功
             if (!InitSdk())
                 return;
             var ps = ProxySettingForm.GetProxySetting();
@@ -60,6 +67,7 @@ namespace NIMDemo
             }
             _userName = UserNameComboBox.Text;
             _password = textBox2.Text;
+            //使用明文密码或者其他加密方式请修改此处代码
             var password = NIM.ToolsAPI.GetMd5(_password);
             if (!string.IsNullOrEmpty(_userName) && !string.IsNullOrEmpty(password))
             {
@@ -78,6 +86,10 @@ namespace NIMDemo
         {
         }
 
+        /// <summary>
+        /// 登录结果处理
+        /// </summary>
+        /// <param name="result"></param>
         private void HandleLoginResult(NIM.NIMLoginResult result)
         {
             DemoTrace.WriteLine(result.LoginStep.ToString());

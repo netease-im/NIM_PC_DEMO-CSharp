@@ -41,11 +41,12 @@
             this.IDLabel = new System.Windows.Forms.Label();
             this.IconPictureBox = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.语音ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rTSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.登录状态ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.LoginStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.文档转换ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DocTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.EventSubsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -60,7 +61,6 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.recentSessionListbox = new System.Windows.Forms.ListBox();
-            this.订阅事件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -213,12 +213,12 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.语音ToolStripMenuItem,
+            this.AudioToolStripMenuItem,
             this.rTSToolStripMenuItem,
-            this.登录状态ToolStripMenuItem,
+            this.LoginStateToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.文档转换ToolStripMenuItem,
-            this.订阅事件ToolStripMenuItem});
+            this.DocTransToolStripMenuItem,
+            this.EventSubsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(395, 25);
@@ -226,12 +226,12 @@
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.OnMenuClicked);
             // 
-            // 语音ToolStripMenuItem
+            // AudioToolStripMenuItem
             // 
-            this.语音ToolStripMenuItem.MergeIndex = 0;
-            this.语音ToolStripMenuItem.Name = "语音ToolStripMenuItem";
-            this.语音ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.语音ToolStripMenuItem.Text = "语音";
+            this.AudioToolStripMenuItem.MergeIndex = 0;
+            this.AudioToolStripMenuItem.Name = "AudioToolStripMenuItem";
+            this.AudioToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
+            this.AudioToolStripMenuItem.Text = "语音";
             // 
             // rTSToolStripMenuItem
             // 
@@ -240,12 +240,12 @@
             this.rTSToolStripMenuItem.Size = new System.Drawing.Size(42, 21);
             this.rTSToolStripMenuItem.Text = "RTS";
             // 
-            // 登录状态ToolStripMenuItem
+            // LoginStateToolStripMenuItem
             // 
-            this.登录状态ToolStripMenuItem.MergeIndex = 2;
-            this.登录状态ToolStripMenuItem.Name = "登录状态ToolStripMenuItem";
-            this.登录状态ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.登录状态ToolStripMenuItem.Text = "登录状态";
+            this.LoginStateToolStripMenuItem.MergeIndex = 2;
+            this.LoginStateToolStripMenuItem.Name = "LoginStateToolStripMenuItem";
+            this.LoginStateToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.LoginStateToolStripMenuItem.Text = "登录状态";
             // 
             // toolStripMenuItem1
             // 
@@ -254,12 +254,19 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(43, 21);
             this.toolStripMenuItem1.Text = "http";
             // 
-            // 文档转换ToolStripMenuItem
+            // DocTransToolStripMenuItem
             // 
-            this.文档转换ToolStripMenuItem.MergeIndex = 4;
-            this.文档转换ToolStripMenuItem.Name = "文档转换ToolStripMenuItem";
-            this.文档转换ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.文档转换ToolStripMenuItem.Text = "文档转换";
+            this.DocTransToolStripMenuItem.MergeIndex = 4;
+            this.DocTransToolStripMenuItem.Name = "DocTransToolStripMenuItem";
+            this.DocTransToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.DocTransToolStripMenuItem.Text = "文档转换";
+            // 
+            // EventSubsToolStripMenuItem
+            // 
+            this.EventSubsToolStripMenuItem.MergeIndex = 6;
+            this.EventSubsToolStripMenuItem.Name = "EventSubsToolStripMenuItem";
+            this.EventSubsToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
+            this.EventSubsToolStripMenuItem.Text = "订阅事件";
             // 
             // tabControl1
             // 
@@ -321,9 +328,11 @@
             this.columnHeader2,
             this.columnHeader3});
             this.TeamListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TeamListView.FullRowSelect = true;
             this.TeamListView.Location = new System.Drawing.Point(3, 3);
             this.TeamListView.Name = "TeamListView";
             this.TeamListView.Size = new System.Drawing.Size(381, 489);
+            this.TeamListView.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.TeamListView.TabIndex = 0;
             this.TeamListView.UseCompatibleStateImageBehavior = false;
             this.TeamListView.View = System.Windows.Forms.View.Details;
@@ -331,7 +340,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "群ID";
-            this.columnHeader2.Width = 171;
+            this.columnHeader2.Width = 196;
             // 
             // columnHeader3
             // 
@@ -391,13 +400,6 @@
             this.recentSessionListbox.Size = new System.Drawing.Size(381, 489);
             this.recentSessionListbox.TabIndex = 0;
             // 
-            // 订阅事件ToolStripMenuItem
-            // 
-            this.订阅事件ToolStripMenuItem.MergeIndex = 6;
-            this.订阅事件ToolStripMenuItem.Name = "订阅事件ToolStripMenuItem";
-            this.订阅事件ToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
-            this.订阅事件ToolStripMenuItem.Text = "订阅事件";
-            // 
             // FriendsListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -454,12 +456,12 @@
 		private System.Windows.Forms.Button btn_livingstream;
         private System.Windows.Forms.CheckBox multipushCheckbox;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 语音ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AudioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rTSToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 登录状态ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem LoginStateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem 文档转换ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 订阅事件ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem DocTransToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem EventSubsToolStripMenuItem;
     }
 }
 

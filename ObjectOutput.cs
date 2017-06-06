@@ -56,10 +56,8 @@ namespace NIMDemo
                     builder.AppendLine(ParseArray(obj as ICollection, depth + 1));
                 }
             }
-            
             else if (type.IsClass)
             {
-                
                 builder.AppendLine(GetLine(name, null, depth));
                 var propertys = type.GetProperties();
                 if (!propertys.Any())

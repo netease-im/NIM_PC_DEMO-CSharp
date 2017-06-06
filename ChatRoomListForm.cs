@@ -125,10 +125,34 @@ namespace NIMDemo
                     msg.MessageAttachment = "这是一条测试消息 " + DateTime.Now.ToString() + " " + new Random().NextDouble().ToString();
                     NIMChatRoom.ChatRoomApi.SendMessage(roomId, msg);
                 });
+
                 menu.MenuItems.Add(item2);
                 menu.MenuItems.Add(item3);
                 menu.MenuItems.Add(item4);
                 menu.MenuItems.Add(item5);
+
+                menu.MenuItems.Add("发送文件", (s, arg) => 
+                {
+                    var files = System.IO.Directory.GetFiles(".");
+                    if(files != null && files.Any())
+                    {
+                        NIM.Nos.NosAPI.Upload(files[0], (ret,url)=> 
+                        {
+                            if(ret == 200)
+                            {
+                                NIM.NIMMessageAttachment attach = new NIM.NIMMessageAttachment();
+                                attach.RemoteUrl = url;
+                                attach.DisplayName = System.IO.Path.GetFileName(files[0]);
+                                attach.FileExtension = System.IO.Path.GetExtension(files[0]);
+                                NIMChatRoom.Message msg = new NIMChatRoom.Message();
+                                msg.MessageType = NIMChatRoomMsgType.kNIMChatRoomMsgTypeFile;
+                                msg.RoomId = roomId;
+                                msg.MessageAttachment = attach.Serialize();
+                                NIMChatRoom.ChatRoomApi.SendMessage(roomId, msg);
+                            }
+                        }, null);
+                    }
+                });
             }
 
             menu.MenuItems.Add(item1);

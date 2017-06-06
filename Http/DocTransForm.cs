@@ -80,6 +80,7 @@ namespace NIMDemo.Http
                     return;
                 }
             }
+            NIM.DocTransition.DocTransApi.RegisterNotifyCallback(OnTransDocCompleted);
             param.PictureType = NIM.DocTransition.NIMDocTranscodingImageType.kNIMDocTranscodingImageTypeJPG;
             param.TransitionFileName = System.IO.Path.GetFileName(filePath);
             param.DocTransitionExt = "DocTransForm";
@@ -91,6 +92,11 @@ namespace NIMDemo.Http
                 OnUploadProgress, IntPtr.Zero,
                 null, IntPtr.Zero,
                 null, IntPtr.Zero);
+        }
+
+        private void OnTransDocCompleted(int code, DocTransInfo info)
+        {
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
