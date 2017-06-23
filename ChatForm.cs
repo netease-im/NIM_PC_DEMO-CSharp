@@ -371,11 +371,11 @@ namespace NIMDemo
         {
             NIMDemo.Helper.VChatHelper.CurrentVChatType = NIMDemo.Helper.VChatType.kMulti;
             string custom_info = "custom_info";
-            string json_extension = "";
+            //string json_extension = "";
             room_name = Guid.NewGuid().ToString("N");
 
 			//
-            VChatAPI.CreateRoom(room_name, custom_info, json_extension, _createroomcb);
+            VChatAPI.CreateRoom(room_name, custom_info, null, _createroomcb);
         }
 
         private void btn_joinmultiroom_Click(object sender, EventArgs e)

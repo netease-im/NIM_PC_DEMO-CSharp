@@ -172,7 +172,15 @@ namespace NIMDemo
             NIM.DeviceAPI.SetVideoReceiveDataCb(VideoDataRecHandler,null);
             //注册视频采集数据回调
             NIM.DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureHandler,null);
+
+			NIM.DeviceAPI.AddDeviceStatusCb(NIM.NIMDeviceType.kNIMDeviceTypeVideo, DeviceStatusHandler);
         }
+
+		private static void DeviceStatusHandler(NIM.NIMDeviceType type,uint status,string devicePath)
+		{
+
+		}
+
        private static void AudioDataRecHandler(UInt64 time, IntPtr data, UInt32 size, Int32 rate)
         {
 

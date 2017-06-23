@@ -4,27 +4,26 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace NIMDemo
 {
-    [XmlRoot("Account", IsNullable = false)]
+
     public class Account
     {
-        [XmlElement("Name", IsNullable = false)]
+        [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [XmlElement("Password", IsNullable = false)]
+        [JsonProperty("Password")]
         public string Password { get; set; }
     }
 
-    [XmlRoot("NIMAccounts", IsNullable = false)]
     public class AccountCollection
     {
-        [XmlAttribute("LastIndex", DataType = "int")]
+        [JsonProperty("LastIndex")]
         public int LastIndex { get; set; }
 
-        [XmlArray("List")]
+        [JsonProperty("List")]
         public List<Account> List { get; set; }
 
         public AccountCollection()
@@ -55,7 +54,7 @@ namespace NIMDemo
 
     class AccountManager
     {
-        private const string SettingFilePath = "Accounts.xml";
+        private const string SettingFilePath = "Accounts.json";
         private const string DESKey = "nim.2016";
         private const string DESIV = "2016.nim";
 
@@ -64,7 +63,7 @@ namespace NIMDemo
             var path = System.IO.Path.Combine(System.Environment.CurrentDirectory, SettingFilePath);
             if (!File.Exists(path))
                 return null;
-            var obj = LoadFromXml<AccountCollection>(path);
+            var obj = LoadData(path);
             if (obj != null && obj.List != null)
             {
                 foreach (var item in obj.List)
@@ -80,32 +79,25 @@ namespace NIMDemo
             var path = System.IO.Path.Combine(System.Environment.CurrentDirectory, SettingFilePath);
             foreach (var item in collection.List)
                 item.Password = DESEncrypt(item.Password, DESKey, DESIV);
-            SaveToXml<AccountCollection>(path, collection);
+            SaveData(path, collection);
         }
 
-        private static void SaveToXml<T>(string filePath, T sourceObj)
+        private static void SaveData(string filePath, AccountCollection sourceObj)
         {
             if (!string.IsNullOrEmpty(filePath) && sourceObj != null)
             {
-                using (StreamWriter writer = new StreamWriter(filePath))
-                {
-                    System.Xml.Serialization.XmlSerializer xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof (T));
-                    xmlSerializer.Serialize(writer, sourceObj);
-                }
+                var json = NimUtility.Json.JsonParser.SerializeWithIndented(sourceObj);
+                File.WriteAllText(filePath, json);
             }
         }
 
-        private static T LoadFromXml<T>(string filePath)
+        private static AccountCollection LoadData(string filePath)
         {
-            T result = default(T);
-
+            AccountCollection result = null;
             if (File.Exists(filePath))
             {
-                using (StreamReader reader = new StreamReader(filePath))
-                {
-                    System.Xml.Serialization.XmlSerializer xmlSerializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
-                    result = (T)xmlSerializer.Deserialize(reader);
-                }
+                var content = File.ReadAllText(filePath);
+                result = NimUtility.Json.JsonParser.Deserialize<AccountCollection>(content);
             }
 
             return result;

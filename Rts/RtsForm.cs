@@ -121,7 +121,10 @@ namespace NIMDemo
 
         void OnReceiveRtsData(string sessionId, int channelType, string uid, IntPtr data, int size)
         {
+            if (_sessionId != sessionId)
+                return;
             var content = Marshal.PtrToStringAnsi(data, size);
+            System.Diagnostics.Debug.WriteLine(content);
             var lines = content.Split(new char[] {';'}, StringSplitOptions.RemoveEmptyEntries);
             var s = _peerPaintingRecord.Count;
             foreach (var item in lines)
@@ -280,7 +283,7 @@ namespace NIMDemo
             {
                 SetPromptTip(uid+" 离开会话");
                 MessageBox.Show(uid + " 挂断");
-                Invoke(this.Close);
+                Invoke(Close);
             });
 
             NIM.RtsAPI.SetConnectionNotifyCallback((string sessionId, int channelType, int code) =>

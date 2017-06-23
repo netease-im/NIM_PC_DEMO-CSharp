@@ -45,7 +45,7 @@ namespace NIMDemo
 		private void btn_bypass_Click(object sender, EventArgs e)
 		{
 			string appkey = ConfigReader.GetAppKey();
-			if (!appkey.Equals("6f49e3f759ccd47810b445444eebc090"))
+			if (appkey==null||!appkey.Equals("6f49e3f759ccd47810b445444eebc090"))
 			{
 				MessageBox.Show("请将appkey更改为6f49e3f759ccd47810b445444eebc090！");
 				return; 

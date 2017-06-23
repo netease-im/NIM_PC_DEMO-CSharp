@@ -33,13 +33,17 @@ namespace NIMDemo
 
         void Response(int code, string sessionId, int channelType, bool accept)
         {
-            if (accept)
+            if (accept && code == (int)NIM.ResponseCode.kNIMResSuccess)
             {
                 InvokeOnForm(() =>
                 {
                     var form = new RtsForm(sessionId);
                     form.Show();
                 });
+            }
+            else if(code != (int)NIM.ResponseCode.kNIMResSuccess)
+            {
+                MessageBox.Show("建立白板会话失败:" + code.ToString());
             }
         }
 
