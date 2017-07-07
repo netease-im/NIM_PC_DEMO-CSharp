@@ -147,10 +147,11 @@
     <Compile Include="ChatForm.Designer.cs">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ChatRoomListForm.cs">
+    <Compile Include="Chatroom\AvailableRooms.cs" />
+    <Compile Include="Chatroom\ChatRoomListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChatRoomListForm.Designer.cs">
+    <Compile Include="Chatroom\ChatRoomListForm.Designer.cs">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\UserHelper.cs" />
@@ -245,12 +246,19 @@
     <Compile Include="ObjectPropertyInfoForm.Designer.cs">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="RobotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RobotForm.Designer.cs">
+      <DependentUpon>RobotForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SubscribeEventForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SubscribeEventForm.Designer.cs">
       <DependentUpon>SubscribeEventForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ConfigReader.cs" />
     <Compile Include="Tools\OutputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -318,7 +326,7 @@
     <EmbeddedResource Include="ChatForm.resx">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChatRoomListForm.resx">
+    <EmbeddedResource Include="Chatroom\ChatRoomListForm.resx">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Http\DocTransForm.resx">
@@ -360,6 +368,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ObjectPropertyInfoForm.resx">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RobotForm.resx">
+      <DependentUpon>RobotForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SubscribeEventForm.resx">
       <DependentUpon>SubscribeEventForm.cs</DependentUpon>

@@ -24,6 +24,7 @@ namespace NIMDemo
         private nim_vchat_opt2_cb_func _joinroomcb = null;
         string room_name = "154145";
         private string _lastSendedMsgId = null;
+        private bool _isRobot = false;
 
         private ChatForm()
         {
@@ -53,17 +54,25 @@ namespace NIMDemo
                 e.Effect = DragDropEffects.None;
         }
 
-        public ChatForm(string id, NIM.Session.NIMSessionType st = NIM.Session.NIMSessionType.kNIMSessionTypeP2P)
+        public ChatForm(string id, NIM.Session.NIMSessionType st = NIM.Session.NIMSessionType.kNIMSessionTypeP2P,bool isRobot = false)
             : this()
         {
             _peerId = id;
             room_name = "1554554";
             _sessionType = st;
-            base.Text = string.Format("与 {0} 聊天中", _peerId);
             if (st != NIM.Session.NIMSessionType.kNIMSessionTypeP2P)
             {
                 testMediaBtn.Visible = false;
                 testRtsBtn.Visible = false;
+            }
+            _isRobot = isRobot;
+            if (_isRobot)
+            {
+                base.Text = string.Format("与 机器人-{0} 聊天中", _peerId);
+            }
+            else
+            {
+                base.Text = string.Format("与 {0} 聊天中", _peerId);
             }
         }
 
@@ -77,6 +86,16 @@ namespace NIMDemo
         private void SendMessageToFriend(object sender, EventArgs e)
         {
             string message = this.textBox1.Text;
+
+            if(_isRobot)
+            {
+                NIM.Robot.TextMessage msg = new NIM.Robot.TextMessage();
+                msg.Content = message;
+                msg.Text = message;
+                NIM.Robot.NIMRobotAPI.SendMessage(_peerId, msg);
+                return;
+            } 
+
             if (_fileDroped)
             {
                 _fileDroped = false;
@@ -124,7 +143,10 @@ namespace NIMDemo
                 fileMsg.FileAttachment.FileExtension = extension;
                 fileMsg.ReceiverID = _peerId;
                 fileMsg.SessionType = _sessionType;
-                NIM.TalkAPI.SendMessage(fileMsg);
+                NIM.TalkAPI.SendMessage(fileMsg, (uploaded, total, obj) => 
+                {
+                    OutputForm.Instance.SetOutput(string.Format("upload file:{0} {1}/{2}",path,uploaded,total));
+                });
             }
         }
 

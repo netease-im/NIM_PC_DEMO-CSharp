@@ -170,10 +170,11 @@ namespace NIMDemo.MainForm
             var scale = Math.Min(sa, sb);
             var newWidth = frame.Width*scale;
             var newHeight = frame.Height*scale;
-            stream.Dispose();
+            
             graphics.DrawImage(img, new Rectangle((int)(w-newWidth)/2, (int)(h-newHeight)/2, (int)newWidth,(int)newHeight), 
                 new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
-            img.Dispose();
+			img.Dispose();
+			stream.Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)

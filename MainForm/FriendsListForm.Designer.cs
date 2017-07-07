@@ -61,6 +61,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.recentSessionListbox = new System.Windows.Forms.ListBox();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -218,7 +219,8 @@
             this.LoginStateToolStripMenuItem,
             this.toolStripMenuItem1,
             this.DocTransToolStripMenuItem,
-            this.EventSubsToolStripMenuItem});
+            this.EventSubsToolStripMenuItem,
+            this.toolStripMenuItem2});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(395, 25);
@@ -267,6 +269,7 @@
             this.EventSubsToolStripMenuItem.Name = "EventSubsToolStripMenuItem";
             this.EventSubsToolStripMenuItem.Size = new System.Drawing.Size(68, 21);
             this.EventSubsToolStripMenuItem.Text = "订阅事件";
+            this.EventSubsToolStripMenuItem.Click += new System.EventHandler(this.EventSubsToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -400,6 +403,13 @@
             this.recentSessionListbox.Size = new System.Drawing.Size(381, 489);
             this.recentSessionListbox.TabIndex = 0;
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.MergeIndex = 7;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(56, 21);
+            this.toolStripMenuItem2.Text = "Robot";
+            // 
             // FriendsListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -462,6 +472,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem DocTransToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EventSubsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
 

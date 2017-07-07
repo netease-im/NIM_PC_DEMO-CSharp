@@ -65,7 +65,7 @@ namespace NIMDemo
             
         }
 
-        private static void OnSessionCalleeAckNotify(long channel_id, string uid, int mode, bool accept)
+        private static void OnSessionCalleeAckNotify(long channel_id, string uid, int mode, bool accept,string customInfo)
         {
             if (accept)
             {
@@ -115,10 +115,10 @@ namespace NIMDemo
 
         }
 
-        private static void OnSessionNetStatus(long channel_id, int status)
+        private static void OnSessionNetStatus(long channel_id, int status,string uid)
         {
-
-        }
+			DemoTrace.WriteLine("channel_id->" + channel_id.ToString() + " status->" + status.ToString() + " uid->" + uid);
+		}
 
         private static void OnSessionHangupRes(long channel_id, int code)
         {

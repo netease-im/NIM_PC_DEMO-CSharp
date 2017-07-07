@@ -112,7 +112,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependents\NimHttp.dll</HintPath>
     </Reference>
-    <Reference Include="NimUtility">
+    <Reference Include="NimUtility, Version=2.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependents\NimUtility.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -158,10 +159,11 @@
     <Compile Include="ChatForm.Designer.cs">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ChatRoomListForm.cs">
+    <Compile Include="Chatroom\AvailableRooms.cs" />
+    <Compile Include="Chatroom\ChatRoomListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChatRoomListForm.Designer.cs">
+    <Compile Include="Chatroom\ChatRoomListForm.Designer.cs">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\UserHelper.cs" />
@@ -266,6 +268,12 @@
       <DependentUpon>FriendProfileForm.cs</DependentUpon>
     </Compile>
     <Compile Include="RecentSessionList.cs" />
+    <Compile Include="RobotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RobotForm.Designer.cs">
+      <DependentUpon>RobotForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rts\PaintingRecord.cs" />
     <Compile Include="Rts\RtsConference.cs">
       <SubType>Form</SubType>
@@ -307,6 +315,7 @@
     <Compile Include="Team\TeamMembersForm.Designer.cs">
       <DependentUpon>TeamMembersForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ConfigReader.cs" />
     <Compile Include="Tools\OutputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -329,7 +338,7 @@
     <EmbeddedResource Include="ChatForm.resx">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChatRoomListForm.resx">
+    <EmbeddedResource Include="Chatroom\ChatRoomListForm.resx">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Http\DocTransForm.resx">
@@ -384,6 +393,9 @@
     </Compile>
     <EmbeddedResource Include="FriendProfileForm.resx">
       <DependentUpon>FriendProfileForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RobotForm.resx">
+      <DependentUpon>RobotForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Rts\RtsConference.resx">
       <DependentUpon>RtsConference.cs</DependentUpon>

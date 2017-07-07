@@ -730,12 +730,21 @@ namespace NIMDemo
                 SubscribeEventForm form = new SubscribeEventForm();
                 form.Show();
             }
-
+            if (e.ClickedItem.MergeIndex == 7)
+            {
+                RobotForm form = new RobotForm();
+                form.Show();
+            }
         }
 
         private void OnNetDetection(bool ret, int code, string json_extension, IntPtr user_data)
         {
             DemoTrace.WriteLine(string.Format("网络测试:{0} code = {1},result = {2}", ret, code, json_extension));
+        }
+
+        private void EventSubsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
