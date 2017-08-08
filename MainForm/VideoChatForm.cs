@@ -191,7 +191,9 @@ namespace NIMDemo.MainForm
 			if(record)
 			{
 				btnRecord.Text = "停止录音";
-				NIM.VChatAPI.StartRecord(path, null, _startcb);
+				NIMVChatMP4RecordJsonEx recordInfo = new NIMVChatMP4RecordJsonEx();
+				recordInfo.RecordPeopleType = 1;//混录
+				NIM.VChatAPI.StartRecord(path, recordInfo, _startcb);
 			}
 			else
 			{

@@ -101,42 +101,40 @@ namespace NIMDemo.Team
             {
                 var tid = items[0].Name;
                 var tinfo = NIM.Team.TeamAPI.QueryCachedTeamInfo(tid);
-                MenuItem m1 = null;
                 if (tinfo.TeamType == NIMTeamType.kNIMTeamTypeAdvanced)
                 {
-                    m1 = new MenuItem("解散群", (s, args) =>
-                    {
-                        NIM.Team.TeamAPI.DismissTeam(tid, (ret) =>
-                        {
-                            if (ret.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
-                            {
-                                RemoveTeamItem(tid);
-                            }
-                            else
-                            {
-                                MessageBox.Show("解散群失败:" + ret.TeamEvent.ResponseCode.ToString());
-                            }
-                        });
-                    });
+                    var mt = new MenuItem("解散群", (s, args) =>
+                     {
+                         NIM.Team.TeamAPI.DismissTeam(tid, (ret) =>
+                         {
+                             if (ret.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
+                             {
+                                 RemoveTeamItem(tid);
+                             }
+                             else
+                             {
+                                 MessageBox.Show("解散群失败:" + ret.TeamEvent.ResponseCode.ToString());
+                             }
+                         });
+                     });
+                    contextMenu.MenuItems.Add(mt);
                 }
-                else
+
+                var m1 = new MenuItem("退群", (s, args) =>
                 {
-                    m1 = new MenuItem("退群", (s, args) =>
+                    NIM.Team.TeamAPI.LeaveTeam(tid, (ret) =>
                     {
-                        NIM.Team.TeamAPI.LeaveTeam(tid, (ret) =>
+                        if (ret != null && ret.TeamEvent != null && ret.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
                         {
-                            if (ret.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
-                            {
-                                RemoveTeamItem(tid);
-                            }
-                            else
-                            {
-                                MessageBox.Show("退出群失败:" + ret.TeamEvent.ResponseCode.ToString());
-                            }
-                        });
+                            RemoveTeamItem(tid);
+                        }
+                        else
+                        {
+                            MessageBox.Show("退出群失败:" + ret.TeamEvent.ResponseCode.ToString());
+                        }
                     });
-                }
-               
+                });
+
                 MenuItem m3 = new MenuItem("群信息", (s, args) =>
                 {
                     Action<NIM.Team.NIMTeamInfo, string> action = (info, text) =>
@@ -197,7 +195,7 @@ namespace NIMDemo.Team
 
         void UpdateTeamItem(NIM.Team.NIMTeamInfo info)
         {
-            if (info == null)
+            if (info == null || !info.TeamValid)
                 return;
             _actionWrapper.InvokeAction(() => 
             {
@@ -231,7 +229,8 @@ namespace NIMDemo.Team
             Action action = () =>
             {
                 var index = _teamListView.Items.IndexOfKey(tid);
-                _teamListView.Items.RemoveAt(index);
+                if (index >= 0)
+                    _teamListView.Items.RemoveAt(index);
             };
             _actionWrapper.InvokeAction(action);
         }

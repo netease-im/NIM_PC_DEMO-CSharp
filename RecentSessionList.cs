@@ -50,20 +50,14 @@ namespace NIMDemo
                 NIM.Session.SessionAPI.DeleteRecentSession(info.SessionType, info.Id, (a, b, c) =>
                 {
                     DeleteSession(info);
-                    NIM.Session.SessionAPI.QueryAllRecentSession((m, n) =>
-                    {
-                    });
                 });
             });
             MenuItem item2 = new MenuItem("标记为已读", (s, e) =>
             {
                 NIM.Session.SessionAPI.SetUnreadCountZero(info.SessionType, info.Id, (a, b, c) =>
                 {
+                    NIM.Session.SessionAPI.SetUnreadCountZero(info.SessionType, info.Id, null);
                     Update(info, b);
-                    NIM.Session.SessionAPI.QueryAllRecentSession((m, n) =>
-                    {
-
-                    });
                 });
             });
 

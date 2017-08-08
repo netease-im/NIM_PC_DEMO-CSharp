@@ -19,7 +19,7 @@ namespace NIMDemo
             SessionAPI.RecentSessionChangedHandler += OnSessionChanged;
         }
 
-        void OnSessionChanged(object sender,SessionChangedEventArgs args)
+        void OnSessionChanged(object sender, SessionChangedEventArgs args)
         {
             DemoTrace.WriteLine(args.Dump());
         }

@@ -100,6 +100,11 @@ namespace NIMDemo
             _multimediaHandler = new MultimediaHandler(this);
             MultimediaHandler.InitVChatInfo();
             _rtsHandler = new RtsHandler(this);
+
+            NIM.TalkAPI.RegReceiveBatchMessagesCb((list) => 
+            {
+
+            });
         }
 
         /// <summary>
