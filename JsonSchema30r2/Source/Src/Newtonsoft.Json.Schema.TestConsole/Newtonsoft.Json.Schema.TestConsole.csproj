@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net46</TargetFramework>
+    <RootNamespace>Newtonsoft.Json.Schema.TestConsole</RootNamespace>
+    <AssemblyName>Newtonsoft.Json.Schema.TestConsole</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="BenchmarkDotNet.Artifacts\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Newtonsoft.Json.Schema.Tests\Newtonsoft.Json.Schema.Tests.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>

@@ -364,6 +364,14 @@ namespace NIMDemo
             //    msg.CustomContent.ImagePath = b;
             //    NIM.TalkAPI.SendMessage(msg);
             //}, null);
+
+            //var obj = new { name = "",count=123,abc="aaaaaaaaaa"};
+            //var json = JsonConvert.SerializeObject(obj, Formatting.None);
+            //NIMTipMessage tipMsg = new NIMTipMessage();
+            //tipMsg.ReceiverID = _peerId;
+            //tipMsg.TextContent = "this is a tip message";
+            //tipMsg.Attachment = json;
+            //NIM.TalkAPI.SendMessage(tipMsg);
         }
 
         private void SysmsgLogBtn_Click(object sender, EventArgs e)

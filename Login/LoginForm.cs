@@ -87,6 +87,24 @@ namespace NIMDemo
         }
 
         /// <summary>
+        /// 发布登录通知
+        /// </summary>
+        void PublishLoginEvent()
+        {
+            NIM.NIMEventInfo info = new NIM.NIMEventInfo();
+            info.Value = 200000;
+            info.Type = 1;
+            info.Sync = 1;
+            info.ClientMsgID = Guid.NewGuid().ToString();
+            info.BroadcastType = 1;
+            info.ValidityPeriod = 24 * 60 * 60;
+            NIM.NIMSubscribeApi.Publish(info, (ret, eventInfo) => 
+            {
+                System.Diagnostics.Debug.Assert(ret == NIM.ResponseCode.kNIMResSuccess);
+            });
+        }
+
+        /// <summary>
         /// 登录结果处理
         /// </summary>
         /// <param name="result"></param>
@@ -103,10 +121,6 @@ namespace NIMDemo
                     toolStripProgressBar1.Value = 100;
                     if (result.Code == NIM.ResponseCode.kNIMResSuccess)
                     {
-                        if (!NIM.VChatAPI.Init())
-                        {
-                            MessageBox.Show("NIM VChatAPI init failed!");
-                        }
                         this.Hide();
                         new FriendsListForm(_userName).Show();
                         toolStripProgressBar1.Value = 0;
@@ -115,6 +129,8 @@ namespace NIMDemo
                         {
                             SaveLoginAccount();
                         });
+                        //PublishLoginEvent();
+                        
                     }
                     else
                     {

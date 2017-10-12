@@ -255,12 +255,19 @@ namespace NIMDemo
         }
         private void ChatRoomApi_ReceiveMessageHandler(long roomId, NIMChatRoom.Message message)
         {
-            string item = string.Format("{0}:\r\n{1}\r\n", message.SenderNickName, message.MessageAttachment);
-            Action action = () =>
+            if(message.MessageType == NIMChatRoomMsgType.kNIMChatRoomMsgTypeRobot)
             {
-                this.receivedmsgListbox.Items.Add(item);
-            };
-            this.Invoke(action);
+                OutputForm.SetText("机器人消息:\n" + message.MessageAttachment + "\n" + message.Body);
+            }
+            else
+            {
+                string item = string.Format("{0}:\r\n{1}\r\n", message.SenderNickName, message.MessageAttachment);
+                Action action = () =>
+                {
+                    this.receivedmsgListbox.Items.Add(item);
+                };
+                this.Invoke(action);
+            }
         }
         private void ChatRoomApi_ReceiveNotificationHandler(long roomId, NIMChatRoom.Notification notification)
         {

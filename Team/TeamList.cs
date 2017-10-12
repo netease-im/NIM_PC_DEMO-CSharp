@@ -75,11 +75,17 @@ namespace NIMDemo.Team
                         NIM.Team.NIMTeamInfo i = new NIM.Team.NIMTeamInfo();
                         i.TeamType = NIMTeamType.kNIMTeamTypeNormal;
                         i.Name = n;
+                        
                         NIM.Team.TeamAPI.CreateTeam(i, ids, "", (ret) =>
                         {
                             if (ret.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
                             {
                                 AddTeamItem(ret.TeamEvent.TeamId);
+                                if(ret.TeamEvent.InvalidIDList != null && ret.TeamEvent.InvalidIDList.Count > 0)
+                                {
+                                    var failed = ret.TeamEvent.InvalidIDList.Aggregate((a, b) => { return a + "  " + b; });
+                                    MessageBox.Show(string.Format("{0} 加入群 {1} 失败", failed, ret.TeamEvent.TeamId));
+                                }
                             }
                             else
                             {
@@ -94,8 +100,18 @@ namespace NIMDemo.Team
                     CreateAdvancedTeamForm f = new CreateAdvancedTeamForm(this);
                     f.Show();
                 });
+
+                MenuItem mi3 = new MenuItem("查询自己在群中的信息", (s, args) => 
+                {
+                    NIM.Team.TeamAPI.QueryMyInfoInEachTeam((list) => 
+                    {
+
+                    });
+                });
+
                 contextMenu.MenuItems.Add(mi);
                 contextMenu.MenuItems.Add(mi2);
+                contextMenu.MenuItems.Add(mi3);
             }
             else
             {
@@ -144,7 +160,14 @@ namespace NIMDemo.Team
                         form.Text = text;
                         form.UpdateObjectAction = (obj) =>
                         {
-                            NIM.Team.TeamAPI.UpdateTeamInfo(tid, obj as NIMTeamInfo, (ret) =>
+                            var newInfo = obj as NIMTeamInfo;
+                            var tmp = new NIMTeamInfo();
+                            tmp.TeamId = newInfo.TeamId;
+                            tmp.Name = newInfo.Name;
+                            tmp.Announcement = newInfo.Announcement;
+                            tmp.Custom = newInfo.Custom;
+                            tmp.TeamType = newInfo.TeamType;
+                            NIM.Team.TeamAPI.UpdateTeamInfo(tid, tmp, (ret) =>
                             {
                                 if (ret.TeamEvent.ResponseCode == NIM.ResponseCode.kNIMResSuccess)
                                 {

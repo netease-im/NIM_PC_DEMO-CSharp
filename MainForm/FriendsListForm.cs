@@ -35,6 +35,7 @@ namespace NIMDemo
         private RtsHandler _rtsHandler = null;
         private MainFormExitType _exitType = MainFormExitType.Exit;
         private readonly InvokeActionWrapper _actionWrapper;
+        private bool _nrtcInit = false;
 
         private FriendsListForm()
         {
@@ -52,6 +53,48 @@ namespace NIMDemo
             this.HandleCreated += FriendsListForm_HandleCreated;
             _actionWrapper = new InvokeActionWrapper(this);
             tabControl1.Selected += TabControl1_Selected;
+
+            NIM.NIMSubscribeApi.RegPushEventCb(OnSubscribedEventChanged);
+            NIM.NIMSubscribeApi.RegBatchPushEventCb(OnBatchSubscribedEventChanged);
+        }
+
+        public FriendsListForm(string id)
+          : this()
+        {
+            _selfId = id;
+            Helper.UserHelper.SelfId = id;
+        }
+
+        private void OnBatchSubscribedEventChanged(ResponseCode code, List<NIMEventInfo> infoList)
+        {
+            foreach (var item in infoList)
+                OnSubscribedEventChanged(code, item);
+        }
+
+        private void OnSubscribedEventChanged(ResponseCode code, NIMEventInfo info)
+        {
+            this.Invoke(new Action(()=> 
+            {
+                if (code == ResponseCode.kNIMResSuccess)
+                {
+                    if (info.Type == 1)
+                        UpdateFriendLoginState(info.PublisherID, info.Value);
+                }
+            }));
+        }
+
+        void UpdateFriendLoginState(string id, int state)
+        {
+            for (int i = 0; i < listView1.Items.Count; i++)
+            {
+                var item = listView1.Items[i] as ListViewItem;
+                if (item.Group != _groups[0])
+                    continue;
+                if (item.Name.IndexOf(id) == 0)
+                {
+                    item.Text = string.Format("{0,-50}{1}", id, state == 1 ? "在线" : "离线");
+                }
+            }
         }
 
         private void TabControl1_Selected(object sender, TabControlEventArgs e)
@@ -97,13 +140,40 @@ namespace NIMDemo
             //_teamList.LoadTeams();
             _sessionList.GetRecentSessionList();
             _recentSessionList.LoadSessionList();
-            _multimediaHandler = new MultimediaHandler(this);
-            MultimediaHandler.InitVChatInfo();
+
             _rtsHandler = new RtsHandler(this);
 
             NIM.TalkAPI.RegReceiveBatchMessagesCb((list) => 
             {
 
+            });
+
+            this.Text = string.Format("{0}  [{1}]", this.Text, _selfId);
+
+            InitVChat();
+        }
+
+        private void InitVChat()
+        {
+            System.Threading.ThreadPool.QueueUserWorkItem((args) =>
+            {
+                try
+                {
+                    if (_nrtcInit = NIM.VChatAPI.Init())
+                    {
+                        _multimediaHandler = new MultimediaHandler(this);
+                        MultimediaHandler.InitVChatInfo();
+                    }
+                    else
+                    {
+                        MessageBox.Show("NIM VChatAPI init failed!");
+                    }
+
+                }
+                catch (Exception exception)
+                {
+                    System.Diagnostics.Debug.WriteLine(exception.ToString());
+                }
             });
         }
 
@@ -122,6 +192,13 @@ namespace NIMDemo
             if (syncType == NIMDataSyncType.kNIMDataSyncTypeTeamInfo)
             {
                 _teamList.LoadTeams();
+            }
+            if(syncType == NIMDataSyncType.kNIMDataSyncTypeTeamUserList)
+            {
+                NIM.Team.TeamAPI.QueryTeamMembersInfo(jsonAttachment, true, false, (a, b, c, d) => 
+                {
+
+                });
             }
         }
 
@@ -170,13 +247,6 @@ namespace NIMDemo
             });
         }
 
-        public FriendsListForm(string id)
-           : this()
-        {
-            _selfId = id;
-            Helper.UserHelper.SelfId = id;
-        }
-
         private bool _notifyNetworkDisconnect = true;
         private bool _beKicked = false;
         private void FriendsListForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -188,11 +258,15 @@ namespace NIMDemo
         {
             if (_exitType == MainFormExitType.Exit)
             {
-                //退出前需要结束音视频设备，防止错误的数据上报
-                MultimediaHandler.EndDevices();
-                System.Threading.Thread.Sleep(500);
-                //在释放前需要按步骤清理音视频模块和nim client模块
-                NIM.VChatAPI.Cleanup();
+                if(_nrtcInit)
+                {
+                    //退出前需要结束音视频设备，防止错误的数据上报
+                    MultimediaHandler.EndDevices();
+                    System.Threading.Thread.Sleep(500);
+                    //在释放前需要按步骤清理音视频模块和nim client模块
+                    NIM.VChatAPI.Cleanup();
+                }
+               
                 if (!_beKicked)
                 {
                     System.Threading.Semaphore s = new System.Threading.Semaphore(0, 1);
@@ -370,8 +444,11 @@ namespace NIMDemo
                 var item = listView1.Items[i] as ListViewItem;
                 if (item.Group != _groups[0])
                     continue;
-                if (!_friendsDictionary.ContainsKey(item.Text))
+                if (!_friendsDictionary.ContainsKey(item.Tag.ToString()))
+                {
                     listView1.Items.RemoveByKey(item.Name);
+                    NIM.NIMSubscribeApi.UnSubscribe(1, new List<string> { item.Tag.ToString() }, null);
+                }
             }
             listView1.EndUpdate();
         }
@@ -410,7 +487,7 @@ namespace NIMDemo
                 var item = listView1.Items[i] as ListViewItem;
                 if (item.Group != _groups[int.Parse(group)])
                     continue;
-                if (!set.Contains(item.Text))
+                if (!set.Contains(item.Tag.ToString()))
                     listView1.Items.RemoveByKey(item.Name);
             }
             listView1.EndUpdate();
@@ -421,9 +498,16 @@ namespace NIMDemo
             ListViewItem item = new ListViewItem();
             item.SubItems.Add(profile.AccountId);
             item.Text = profile.AccountId;
+            item.Tag = profile.AccountId;
             item.Name = string.Format("{0}_{1}", profile.AccountId, group);
             item.Group = _groups[group];
             listView1.Items.Add(item);
+            UpdateFriendLoginState(profile.AccountId, 2);
+            NIM.NIMSubscribeApi.Subscribe(1, 24 * 60 * 60, NIMEventSubscribeSyncEventType.kNIMEventSubscribeSyncTypeSync, new List<string> { profile.AccountId },
+                (ResponseCode code, int type, List<string> failedIDList) =>
+                {
+
+                });
         }
 
         private void RegisterClientCallback()
@@ -485,7 +569,7 @@ namespace NIMDemo
             var x = listView1.SelectedItems;
             if (x != null && x.Count > 0)
             {
-                string id = x[0].Text;
+                string id = x[0].Tag.ToString();
                 new ChatForm(id).Show();
             }
         }
@@ -539,7 +623,7 @@ namespace NIMDemo
             ContextMenu cm = new ContextMenu();
             if (listView1.SelectedItems.Count > 0)
             {
-                var id = listView1.SelectedItems[0].Text;
+                var id = listView1.SelectedItems[0].Tag.ToString();
 
                 cm.MenuItems.Add("查看详情", (s, args) =>
                 {

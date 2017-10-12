@@ -30,9 +30,10 @@
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.receivedmsgListbox = new System.Windows.Forms.ListBox();
             this.membersListview = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.receivedmsgListbox = new System.Windows.Forms.ListBox();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -64,16 +65,6 @@
             this.treeView1.Size = new System.Drawing.Size(265, 506);
             this.treeView1.TabIndex = 0;
             // 
-            // receivedmsgListbox
-            // 
-            this.receivedmsgListbox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.receivedmsgListbox.FormattingEnabled = true;
-            this.receivedmsgListbox.ItemHeight = 12;
-            this.receivedmsgListbox.Location = new System.Drawing.Point(0, 0);
-            this.receivedmsgListbox.Name = "receivedmsgListbox";
-            this.receivedmsgListbox.Size = new System.Drawing.Size(305, 232);
-            this.receivedmsgListbox.TabIndex = 0;
-            // 
             // membersListview
             // 
             this.membersListview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -90,6 +81,17 @@
             this.columnHeader1.Text = "聊天室成员";
             this.columnHeader1.Width = 285;
             // 
+            // receivedmsgListbox
+            // 
+            this.receivedmsgListbox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.receivedmsgListbox.FormattingEnabled = true;
+            this.receivedmsgListbox.HorizontalScrollbar = true;
+            this.receivedmsgListbox.ItemHeight = 12;
+            this.receivedmsgListbox.Location = new System.Drawing.Point(0, 0);
+            this.receivedmsgListbox.Name = "receivedmsgListbox";
+            this.receivedmsgListbox.Size = new System.Drawing.Size(305, 232);
+            this.receivedmsgListbox.TabIndex = 0;
+            // 
             // ChatRoomListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -101,6 +103,7 @@
             this.Text = "聊天室列表";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
