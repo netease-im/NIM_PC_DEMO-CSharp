@@ -34,8 +34,8 @@ namespace NIMDemo.MainForm
         const int MaxFrameCount = 3;
 
         private static VideoChatForm videoChatForm_ = null;
-        
-        public static VideoChatForm GetInstance()
+
+		public static VideoChatForm GetInstance()
         {
             if(videoChatForm_==null)
             {
@@ -85,13 +85,6 @@ namespace NIMDemo.MainForm
 				MessageBox.Show("录制失败-错误码:" + code.ToString());
 			}
 		}
-
-        //public VideoChatForm(MultimediaHandler mh)
-        //    : this()
-        //{
-        //   // _multimediaHandler = mh;
-       
-        //}
 
         private void VideoChatForm_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -253,19 +246,7 @@ namespace NIMDemo.MainForm
                     //设置成功
                 });
             }
-            NIM.VChatAPI.SetCustomData(false, !beauty_, "", _set_custom_videocb);
-
-            //beauty_ = !beauty_;
-            //Action action = () =>
-            //{
-            //    if (beauty_)
-            //        btn_beauty.Text = "美颜(关)";
-            //    else
-            //        btn_beauty.Text = "美颜(开)";
-            //};
-            //this.Invoke(action);
-       
-            
+            NIM.VChatAPI.SetCustomData(false, !beauty_, "", _set_custom_videocb);     
 		}
 
         private void btn_accompany_Click(object sender, EventArgs e)

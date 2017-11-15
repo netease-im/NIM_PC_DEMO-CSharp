@@ -8,15 +8,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-
+using NIM;
 namespace NIMDemo
 {
     public class MultimediaHandler
     {
         private static NIM.NIMVChatSessionStatus _vchatHandlers;
         private static  Form _ownerFriendsListForm = null;
-      
-        public static void SetFriendsListForm(Form owner)
+		public static void SetFriendsListForm(Form owner)
         {
             _ownerFriendsListForm=owner;
         }
@@ -34,13 +33,13 @@ namespace NIMDemo
             {
                 if (code != 200)
                 {
-                    MessageBox.Show("发起音视频聊天失败");
+					MessageBox.Show("发起音视频聊天失败");
                 }
             };
             _ownerFriendsListForm.Invoke(action);
         }
 
-        private static void OnSessionInviteNotify(long channel_id, string uid, int mode, long time)
+        private static void OnSessionInviteNotify(long channel_id, string uid, int mode, long time,string custom_info)
         {
             Action a = () =>
             {
@@ -85,7 +84,44 @@ namespace NIMDemo
 
         private static void OnSessionControlNotify(long channel_id, string uid, int type)
         {
-
+			if (Enum.IsDefined(typeof(NIM.NIMVChatControlType),type))
+			{
+				NIM.NIMVChatControlType control_type = (NIM.NIMVChatControlType)type;
+				switch(control_type)
+				{
+					case NIMVChatControlType.kNIMTagControlOpenAudio:
+						break;
+					case NIMVChatControlType.kNIMTagControlCloseAudio:
+						break;
+					case NIMVChatControlType.kNIMTagControlOpenVideo:
+						break;
+					case NIMVChatControlType.kNIMTagControlCloseVideo:
+						break;
+					case NIMVChatControlType.kNIMTagControlAudioToVideo:
+						break;
+					case NIMVChatControlType.kNIMTagControlAgreeAudioToVideo:
+						break;
+					case NIMVChatControlType.kNIMTagControlRejectAudioToVideo:
+						break;
+					case NIMVChatControlType.kNIMTagControlVideoToAudio:
+						break;
+					case NIMVChatControlType.kNIMTagControlBusyLine:
+						{
+							NIM.VChatAPI.End();
+						}
+						break;
+					case NIMVChatControlType.kNIMTagControlCamaraNotAvailable:
+						break;
+					case NIMVChatControlType.kNIMTagControlEnterBackground:
+						break;
+					case NIMVChatControlType.kNIMTagControlReceiveStartNotifyFeedback:
+						break;
+					case NIMVChatControlType.kNIMTagControlMp4StartRecord:
+						break;
+					case NIMVChatControlType.kNIMTagControlMp4StopRecord:
+						break;
+				}
+			}
         }
 
         private static void OnSessionConnectNotify(long channel_id, int code, string record_file, string video_record_file)
@@ -94,11 +130,13 @@ namespace NIMDemo
             {
                 Action a = () =>
                 {
-                    if (NIMDemo.Helper.VChatHelper.CurrentVChatType == NIMDemo.Helper.VChatType.kP2P)
-                    {
-                        MainForm.VideoChatForm vform = MainForm.VideoChatForm.GetInstance();
-                        vform.Show();
-                    }
+					if (NIMDemo.Helper.VChatHelper.CurrentVChatType == NIMDemo.Helper.VChatType.kP2P)
+					{
+
+						MainForm.VideoChatForm vform = MainForm.VideoChatForm.GetInstance();
+						vform.Show();
+
+					}
                 };
                 _ownerFriendsListForm.Invoke(a);
                 StartDevices();
@@ -112,12 +150,12 @@ namespace NIMDemo
 
         private static void OnSessionPeopleStatus(long channel_id, string uid, int status)
         {
-
-        }
+			DemoTrace.WriteLine("SessionPeopleStatus channel_id:" + channel_id.ToString() + " status:" + status.ToString() + " uid:" + uid);
+		}
 
         private static void OnSessionNetStatus(long channel_id, int status,string uid)
         {
-			DemoTrace.WriteLine("channel_id->" + channel_id.ToString() + " status->" + status.ToString() + " uid->" + uid);
+			DemoTrace.WriteLine("SessionNetStatus channel_id:" + channel_id.ToString() + " status:" + status.ToString() + " uid:" + uid);
 		}
 
         private static void OnSessionHangupRes(long channel_id, int code)
@@ -133,12 +171,12 @@ namespace NIMDemo
 				Action action = () =>
 				{
 					MessageBox.Show("已挂断");
-                    MainForm.VideoChatForm vform = MainForm.VideoChatForm.GetInstance();
-                    if(vform!=null)
-                    {
-                        vform.Close();
-                    }
-                  
+
+					MainForm.VideoChatForm vform = MainForm.VideoChatForm.GetInstance();
+					if (vform != null)
+					{
+						vform.Close();
+					}
 				};
 				_ownerFriendsListForm.Invoke(action);
 			}
@@ -223,36 +261,6 @@ namespace NIMDemo
 			}
         }
 
-        //Stream ParseVedioData(IntPtr data, uint size, uint width, uint height)
-        //{
-        //    byte[] buffer = new byte[size];
-        //    int offset = 0;
-        //    while (offset < size)
-        //    {
-        //        var b = Marshal.ReadByte(data, offset);
-        //        buffer[offset++] = b;
-        //    }
-        //    using (Bitmap resultBitmap = new Bitmap((int) width, (int) height, PixelFormat.Format32bppArgb))
-        //    {
-        //        MemoryStream curImageStream = new MemoryStream();
-
-        //        resultBitmap.Save(curImageStream, System.Drawing.Imaging.ImageFormat.Bmp);
-
-        //        byte[] tempData = new byte[4];
-
-        //        //bmp format: https://en.wikipedia.org/wiki/BMP_file_format
-        //        //读取数据开始位置，写入字节流
-        //        curImageStream.Position = 10;
-
-        //        curImageStream.Read(tempData, 0, 4);
-
-        //        var dataOffset = BitConverter.ToInt32(tempData, 0);
-        //        curImageStream.Position = dataOffset;
-        //        curImageStream.Write(buffer, 0, (int)size);
-        //        curImageStream.Flush();
-        //        return curImageStream;
-        //    }
-        //}
 
         private static void StartDevices()
         {

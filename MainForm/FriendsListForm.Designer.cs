@@ -47,6 +47,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.DocTransToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EventSubsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
@@ -61,8 +62,7 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.recentSessionListbox = new System.Windows.Forms.ListBox();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.btn_net_detect = new System.Windows.Forms.Button();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -85,6 +85,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Window;
+            this.splitContainer1.Panel1.Controls.Add(this.btn_net_detect);
             this.splitContainer1.Panel1.Controls.Add(this.multipushCheckbox);
             this.splitContainer1.Panel1.Controls.Add(this.btn_livingstream);
             this.splitContainer1.Panel1.Controls.Add(this.sysMsgBtn);
@@ -101,7 +102,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(395, 728);
+            this.splitContainer1.Size = new System.Drawing.Size(408, 728);
             this.splitContainer1.SplitterDistance = 203;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -223,7 +224,7 @@
             this.toolStripMenuItem2});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(395, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(408, 25);
             this.menuStrip1.TabIndex = 13;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.OnMenuClicked);
@@ -271,6 +272,13 @@
             this.EventSubsToolStripMenuItem.Text = "订阅事件";
             this.EventSubsToolStripMenuItem.Click += new System.EventHandler(this.EventSubsToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.MergeIndex = 7;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(56, 21);
+            this.toolStripMenuItem2.Text = "Robot";
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
@@ -281,7 +289,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(395, 521);
+            this.tabControl1.Size = new System.Drawing.Size(408, 521);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -290,7 +298,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(387, 495);
+            this.tabPage1.Size = new System.Drawing.Size(400, 495);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "好友";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -302,7 +310,7 @@
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(381, 489);
+            this.listView1.Size = new System.Drawing.Size(394, 489);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -403,18 +411,21 @@
             this.recentSessionListbox.Size = new System.Drawing.Size(381, 489);
             this.recentSessionListbox.TabIndex = 0;
             // 
-            // toolStripMenuItem2
+            // btn_net_detect
             // 
-            this.toolStripMenuItem2.MergeIndex = 7;
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(56, 21);
-            this.toolStripMenuItem2.Text = "Robot";
+            this.btn_net_detect.Location = new System.Drawing.Point(142, 135);
+            this.btn_net_detect.Name = "btn_net_detect";
+            this.btn_net_detect.Size = new System.Drawing.Size(75, 23);
+            this.btn_net_detect.TabIndex = 14;
+            this.btn_net_detect.Text = "网络探测";
+            this.btn_net_detect.UseVisualStyleBackColor = true;
+            this.btn_net_detect.Click += new System.EventHandler(this.NetDetectClicked);
             // 
             // FriendsListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(395, 728);
+            this.ClientSize = new System.Drawing.Size(408, 728);
             this.Controls.Add(this.splitContainer1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FriendsListForm";
@@ -423,7 +434,6 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.IconPictureBox)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -473,6 +483,7 @@
         private System.Windows.Forms.ToolStripMenuItem DocTransToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem EventSubsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.Button btn_net_detect;
     }
 }
 

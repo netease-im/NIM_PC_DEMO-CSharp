@@ -120,6 +120,8 @@ namespace NIMDemo
             NIM.ClientAPI.RegMulitiportPushEnableChangedCb(SyncMultipushState);
             NIM.TalkAPI.OnReceiveMessageHandler += OnReceiveMessage;
             NIM.TalkAPI.RegRecallMessageCallback(OnRecallMessage);
+            NIM.TalkAPI.RegReceiveBroadcastCb(OnReceiveBroadcast);
+            NIM.TalkAPI.RegReceiveBroadcastMsgsCb(OnReceiveBroadMsgs);
             NIM.SysMessage.SysMsgAPI.ReceiveSysMsgHandler += OnReceivedSysNotification;
             NIM.DataSync.DataSyncAPI.RegCompleteCb(OnDataSyncCompleted);
         }
@@ -145,7 +147,10 @@ namespace NIMDemo
 
             NIM.TalkAPI.RegReceiveBatchMessagesCb((list) => 
             {
-
+                foreach(var m in list)
+                {
+                    DisplayReceivedMessage(m.MessageContent);
+                }
             });
 
             this.Text = string.Format("{0}  [{1}]", this.Text, _selfId);
@@ -321,10 +326,10 @@ namespace NIMDemo
             }
         }
 
-        void OnReceiveMessage(object sender, NIMReceiveMessageEventArgs args)
+        void DisplayReceivedMessage(NIMIMMessage msg)
         {
-            var sid = args.Message.MessageContent.SenderID;
-            var msgType = args.Message.MessageContent.MessageType;
+            var sid = msg.SenderID;
+            var msgType = msg.MessageType;
             Action action = () =>
             {
                 ListViewItem item = new ListViewItem(sid);
@@ -332,14 +337,29 @@ namespace NIMDemo
                     item.SubItems.Add(msgType.ToString());
                 else
                 {
-                    var m = args.Message.MessageContent as NIM.NIMTextMessage;
+                    var m = msg as NIM.NIMTextMessage;
                     item.SubItems.Add(m.TextContent);
                 }
-                item.Tag = args.Message.MessageContent;
+                item.Tag = msg;
                 chatListView.Items.Add(item);
             };
             _actionWrapper.InvokeAction(action);
+        }
+
+        void OnReceiveMessage(object sender, NIMReceiveMessageEventArgs args)
+        {
+            DisplayReceivedMessage(args.Message.MessageContent);
             DemoTrace.WriteLine(args.Dump());
+        }
+
+        private void OnReceiveBroadMsgs(List<NIMBroadcastMessage> msg)
+        {
+            DemoTrace.WriteLine(msg.Dump());
+        }
+
+        private void OnReceiveBroadcast(NIMBroadcastMessage msg)
+        {
+            DemoTrace.WriteLine(msg.Dump());
         }
 
         private void OnUserNameCardChanged(object sender, UserNameCardChangedArgs e)
@@ -814,11 +834,6 @@ namespace NIMDemo
             {
                 NIM.VChatAPI.DetectNetwork(null, OnNetDetection);
             }
-            if (e.ClickedItem.MergeIndex == 6)
-            {
-                SubscribeEventForm form = new SubscribeEventForm();
-                form.Show();
-            }
             if (e.ClickedItem.MergeIndex == 7)
             {
                 RobotForm form = new RobotForm();
@@ -834,6 +849,15 @@ namespace NIMDemo
         private void EventSubsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void NetDetectClicked(object sender, EventArgs e)
+        {
+            NIMVChatNetDetectJsonEx json = new NIMVChatNetDetectJsonEx();
+            json.DetectTime = 10000;
+            json.DetectType =0;
+            
+            NIM.VChatAPI.DetectNetwork(json, OnNetDetection);
         }
     }
 }

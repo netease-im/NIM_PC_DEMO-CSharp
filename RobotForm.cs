@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using NIM;
 
 namespace NIMDemo
 {
@@ -51,6 +52,8 @@ namespace NIMDemo
                 return;
             }
             robotlistView.Items.Clear();
+            if (robots == null)
+                return;
             foreach (var r in robots)
             {
                 ListViewItem item = new ListViewItem(r.RID);
@@ -78,6 +81,30 @@ namespace NIMDemo
                 NIM.Robot.NIMRobotAPI.SendMessage(id, msg);
             }
             
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            NIM.Robot.NIMRobotAPI.GetRobots(0, OnQueryCompleted);
+        }
+
+        private void OnQueryCompleted(ResponseCode result, List<RobotInfo> robots)
+        {
+            Action action = () => 
+            {
+                robotlistView.Items.Clear();
+                if (robots == null)
+                    return;
+                foreach (var r in robots)
+                {
+                    ListViewItem item = new ListViewItem(r.RID);
+                    item.Name = r.Accid;
+                    item.SubItems.Add(r.Accid);
+                    item.SubItems.Add(r.Name);
+                    robotlistView.Items.Add(item);
+                }
+            };
+            this.Invoke(action);
         }
     }
 }

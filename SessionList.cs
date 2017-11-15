@@ -30,7 +30,19 @@ namespace NIMDemo
             {
                 var selectedItems = _targetListView.SelectedItems;
                 if (selectedItems.Count == 0)
+                {
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem item1 = new MenuItem("清空未读数", (s, arg) =>
+                    {
+                        NIM.Session.SessionAPI.ResetAllUnreadCount((int rescode, SessionInfo result, int totalUnreadCounts) =>
+                        {
+                            DemoTrace.WriteLine(string.Format("清空会话未读数:{0}", rescode));
+                        });
+                    });
+                    contextMenu.MenuItems.Add(item1);
+                    contextMenu.Show(_targetListView, e.Location);
                     return;
+                }
                 var msg = selectedItems[0].Tag as NIM.NIMIMMessage;
                 if (selectedItems.Count > 0)
                 {

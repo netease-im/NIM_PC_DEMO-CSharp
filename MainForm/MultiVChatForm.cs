@@ -278,17 +278,17 @@ namespace NIMDemo
             NIM.DeviceAPI.EndDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioOutChat);
             NIM.DeviceAPI.EndDevice(NIM.NIMDeviceType.kNIMDeviceTypeVideo);
         }
-
+        private static string select_id_ = "";
         private void lv_members_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
                 if (lv_members.SelectedItems.Count > 0)
                 {
-                    var id = lv_members.SelectedItems[0].Text;
-                    if (id.Equals(NIMDemo.Helper.UserHelper.SelfId))
+                    select_id_ = lv_members.SelectedItems[0].Text;
+                    if (select_id_.Equals(NIMDemo.Helper.UserHelper.SelfId))
                         return;
-                    bool isBlacklist = _audioblacklist.Contains(id);
+                    bool isBlacklist = _audioblacklist.Contains(select_id_);
                     if(cm_item1==null)
                     {
                         cm_item1 = new MenuItem();
@@ -298,13 +298,13 @@ namespace NIMDemo
                                 {
                                     if (ret)
                                     {
-                                        bool blackmember = _audioblacklist.Contains(id);
+                                        bool blackmember = _audioblacklist.Contains(select_id_);
                                         if (!blackmember)
                                         {
                                             Action action = () =>
                                             {
-                                                rtb_multichat_info.Text += id + "加入音频黑名单成功\n";
-                                                _audioblacklist.Add(id);
+                                                rtb_multichat_info.Text += select_id_ + "加入音频黑名单成功\n";
+                                                _audioblacklist.Add(select_id_);
                                             };
                                             this.BeginInvoke(action);
                                         }
@@ -312,8 +312,8 @@ namespace NIMDemo
                                         {
                                             Action action = () =>
                                             {
-                                                rtb_multichat_info.Text+=id+"取消音频黑名单成功\n";
-                                                _audioblacklist.Remove(id);
+                                                rtb_multichat_info.Text+= select_id_ + "取消音频黑名单成功\n";
+                                                _audioblacklist.Remove(select_id_);
 
                                             };
                                             this.BeginInvoke(action);
@@ -328,15 +328,15 @@ namespace NIMDemo
                             );
                         cm_item1.Click += (o, ex) =>
                         {
-                            isBlacklist = _audioblacklist.Contains(id);
-                            VChatAPI.SetMemberInBlackList(id, !isBlacklist, true, "",
+                            isBlacklist = _audioblacklist.Contains(select_id_);
+                            VChatAPI.SetMemberInBlackList(select_id_, !isBlacklist, true, "",
                                _audiosetblacklistop);
                         };
                     }
 
                     cm_item1.Text= isBlacklist ? "取消音频黑名单" : "加入音频黑名单";
                    
-                    bool muted = _vedioblacklist.Contains(id);
+                    bool muted = _vedioblacklist.Contains(select_id_);
                     if(cm_item2==null)
                     {
                         cm_item2 = new MenuItem();
@@ -346,13 +346,13 @@ namespace NIMDemo
                               {
                                   if (ret)
                                   {
-                                      bool blackmember = _vedioblacklist.Contains(id);
+                                      bool blackmember = _vedioblacklist.Contains(select_id_);
                                       if (!blackmember)
                                       {
                                           Action action = () =>
                                           {
-                                              rtb_multichat_info.Text += id + "加入视频黑名单成功\n";
-                                              _vedioblacklist.Add(id);
+                                              rtb_multichat_info.Text += select_id_ + "加入视频黑名单成功\n";
+                                              _vedioblacklist.Add(select_id_);
                                           };
                                           this.BeginInvoke(action);
                                       }
@@ -360,8 +360,8 @@ namespace NIMDemo
                                       {
                                           Action action = () =>
                                           {
-                                              rtb_multichat_info.Text += id + "取消视频黑名单成功\n";
-                                              _vedioblacklist.Remove(id);
+                                              rtb_multichat_info.Text += select_id_ + "取消视频黑名单成功\n";
+                                              _vedioblacklist.Remove(select_id_);
                                           };
                                           this.BeginInvoke(action);
                                       }
@@ -380,8 +380,8 @@ namespace NIMDemo
                             );
                         cm_item2.Click += (o, ex) =>
                         {
-                            muted = _vedioblacklist.Contains(id);
-                            VChatAPI.SetMemberInBlackList(id, !muted, false, "",
+                            muted = _vedioblacklist.Contains(select_id_);
+                            VChatAPI.SetMemberInBlackList(select_id_, !muted, false, "",
                               _vediosetblacklistop);
                         };
                     }
