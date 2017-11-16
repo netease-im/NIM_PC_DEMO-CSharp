@@ -30,8 +30,8 @@ namespace NIMDemo
         private List<string> _vedioblacklist=new List<string>();//视频黑名单
         private NIM.NIMVChatSessionStatus _vchatHandlers;
 
-        nim_vchat_opt_cb_func _audiosetblacklistop = null;
-        nim_vchat_opt_cb_func _vediosetblacklistop = null;
+        NIMVChatOptHandler _audiosetblacklistop = null;
+        NIMVChatOptHandler _vediosetblacklistop = null;
 
         private string _roomId;
      
@@ -58,7 +58,7 @@ namespace NIMDemo
             
 		}
 
-        void AudioSetBlackListOP(bool ret, int code,string json_extension,IntPtr user_data)
+        void AudioSetBlackListOP(bool ret, int code,string json_extension)
         {
             if(ret)
             {
@@ -135,7 +135,7 @@ namespace NIMDemo
 
             //启动设备在MultimediaHandler onSessionConnectNotify回调通知中
            // StartDevices();
-            _audiosetblacklistop = new nim_vchat_opt_cb_func(AudioSetBlackListOP);
+            _audiosetblacklistop = new NIMVChatOptHandler(AudioSetBlackListOP);
         }
 
        
@@ -264,7 +264,7 @@ namespace NIMDemo
 
         void StartDevices()
         {
-            NIM.DeviceAPI.StartDeviceResultHandler handle = (type, ret) =>
+            NIM.StartDeviceResultHandler handle = (type, ret) =>
             {
 
             };
@@ -293,8 +293,8 @@ namespace NIMDemo
                     {
                         cm_item1 = new MenuItem();
                         cm.MenuItems.Add(cm_item1);
-                        _audiosetblacklistop = new nim_vchat_opt_cb_func(
-                             (ret, code, json_extension, user_data) =>
+                        _audiosetblacklistop = new NIMVChatOptHandler(
+                             (ret, code, json_extension) =>
                                 {
                                     if (ret)
                                     {
@@ -341,8 +341,8 @@ namespace NIMDemo
                     {
                         cm_item2 = new MenuItem();
                         cm.MenuItems.Add(cm_item2);
-                        _vediosetblacklistop = new nim_vchat_opt_cb_func(
-                            (ret, code, json_extension, user_data) =>
+                        _vediosetblacklistop = new NIMVChatOptHandler(
+                            (ret, code, json_extension) =>
                               {
                                   if (ret)
                                   {

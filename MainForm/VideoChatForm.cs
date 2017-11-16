@@ -20,12 +20,12 @@ namespace NIMDemo.MainForm
         private Graphics _peerRegionGraphics;
         private Graphics _mineRegionGraphics;
         //private MultimediaHandler _multimediaHandler;
-		private nim_vchat_mp4_record_opt_cb_func _startcb = null;
-		private nim_vchat_mp4_record_opt_cb_func _stopcb = null;
-		private nim_vchat_audio_record_opt_cb_func _start_audio_record_cb = null;
-		private nim_vchat_audio_record_opt_cb_func _stop_audio_record_cb = null;
-		private nim_vchat_opt_cb_func _setvideoqualitycb = null;
-        private nim_vchat_opt_cb_func _set_custom_videocb = null;
+		private NIMVChatMp4RecordOptHandler _startcb = null;
+		private NIMVChatMp4RecordOptHandler _stopcb = null;
+		private NIMVChatAudioRecordOptHandler _start_audio_record_cb = null;
+		private NIMVChatAudioRecordOptHandler _stop_audio_record_cb = null;
+		private NIMVChatOptHandler _setvideoqualitycb = null;
+        private NIMVChatOptHandler _set_custom_videocb = null;
 
 		private bool mute = false;
 		private bool record = false;
@@ -49,7 +49,7 @@ namespace NIMDemo.MainForm
             InitializeComponent();
 			InitQuality();
 			InitClipTypes();
-			_startcb = new nim_vchat_mp4_record_opt_cb_func(VChatRecordStartCallback); 
+			_startcb = new NIMVChatMp4RecordOptHandler(VChatRecordStartCallback); 
 
             this.Load += VideoChatForm_Load;
             this.FormClosed += VideoChatForm_FormClosed;
@@ -74,16 +74,20 @@ namespace NIMDemo.MainForm
 			if (cb_video_clip_.Items.Count > 0)
 				cb_video_clip_.SelectedIndex = 0;
 		}
-		private void VChatRecordStartCallback(bool ret, int code,string file,Int64 time,string json_extension,IntPtr user_data)
+		private void VChatRecordStartCallback(bool ret, int code,string file,Int64 time,string json_extension)
 		{
-			if(ret)
-			{
-				MessageBox.Show("开始录制");
-			}
-			else
-			{
-				MessageBox.Show("录制失败-错误码:" + code.ToString());
-			}
+            Action action = () =>
+            {
+                if (ret)
+                {
+                    MessageBox.Show("开始录制MP4");
+                }
+                else
+                {
+                    MessageBox.Show("录制Mp4失败-错误码:" + code.ToString());
+                }
+            };
+            this.Invoke(action);
 		}
 
         private void VideoChatForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -183,14 +187,14 @@ namespace NIMDemo.MainForm
 			record = !record;
 			if(record)
 			{
-				btnRecord.Text = "停止录音";
+				btnRecord.Text = "停止MP4录制";
 				NIMVChatMP4RecordJsonEx recordInfo = new NIMVChatMP4RecordJsonEx();
 				recordInfo.RecordPeopleType = 1;//混录
 				NIM.VChatAPI.StartRecord(path, recordInfo, _startcb);
 			}
 			else
 			{
-				btnRecord.Text = "开始录音";
+				btnRecord.Text = "开始MP4录制";
 				NIM.VChatAPI.StopRecord(null, _stopcb);
 			}
 			
@@ -214,7 +218,7 @@ namespace NIMDemo.MainForm
 
 		private void cb_setquality_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			_setvideoqualitycb = new nim_vchat_opt_cb_func((ret, code, json, intptr) =>
+			_setvideoqualitycb = new NIMVChatOptHandler((ret, code, json) =>
 			{
 				//ret  true
 				//设置成功
@@ -227,7 +231,7 @@ namespace NIMDemo.MainForm
 		{
             if (_set_custom_videocb == null)
             {
-                _set_custom_videocb = new nim_vchat_opt_cb_func((ret, code, json, intptr) =>
+                _set_custom_videocb = new NIMVChatOptHandler((ret, code, json) =>
                 {
                     if (ret)
                     {
@@ -252,7 +256,7 @@ namespace NIMDemo.MainForm
         private void btn_accompany_Click(object sender, EventArgs e)
         {
 #if WIN32
-            DeviceAPI.StartDeviceResultHandler cb = (type, ret) =>
+            StartDeviceResultHandler cb = (type, ret) =>
             {
                 if (ret)
                 {
@@ -303,19 +307,19 @@ namespace NIMDemo.MainForm
 			audio_record = !audio_record;
 			if (audio_record)
 			{
-				_start_audio_record_cb = new nim_vchat_audio_record_opt_cb_func(VChatAudioRecordCallback);
+				_start_audio_record_cb = new NIMVChatAudioRecordOptHandler(VChatAudioRecordCallback);
 				btnRecordAudio.Text = "停止录音";
 				NIM.VChatAPI.StartAudioRecord(path, _start_audio_record_cb);
 			}
 			else
 			{
-				_stop_audio_record_cb = new nim_vchat_audio_record_opt_cb_func(VChatAudioRecordCallback);
+				_stop_audio_record_cb = new NIMVChatAudioRecordOptHandler(VChatAudioRecordCallback);
 				btnRecordAudio.Text = "录制音频";
 				NIM.VChatAPI.StopAudioRecord(_start_audio_record_cb);
 			}
 		}
 
-		private void VChatAudioRecordCallback(bool ret, int code, string file, Int64 time, string json_extension, IntPtr user_data)
+		private void VChatAudioRecordCallback(bool ret, int code, string file, Int64 time, string json_extension)
 		{
 			if (ret)
 			{

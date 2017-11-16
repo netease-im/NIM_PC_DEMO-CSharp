@@ -164,7 +164,7 @@ namespace NIMDemo
             {
                 try
                 {
-                    if (_nrtcInit = NIM.VChatAPI.Init())
+                    if (_nrtcInit = NIM.VChatAPI.Init(""))
                     {
                         _multimediaHandler = new MultimediaHandler(this);
                         MultimediaHandler.InitVChatInfo();
@@ -841,7 +841,7 @@ namespace NIMDemo
             }
         }
 
-        private void OnNetDetection(bool ret, int code, string json_extension, IntPtr user_data)
+        private void OnNetDetection(bool ret, int code, string json_extension)
         {
             DemoTrace.WriteLine(string.Format("网络测试:{0} code = {1},result = {2}", ret, code, json_extension));
         }

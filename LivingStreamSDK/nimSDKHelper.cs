@@ -26,7 +26,7 @@ namespace NIMDemo.LivingStreamSDK
 		}
 		public static void StartDevices()
 		{
-			NIM.DeviceAPI.StartDeviceResultHandler handle = (type, ret) =>
+			NIM.StartDeviceResultHandler handle = (type, ret) =>
 			{
 				System.Diagnostics.Debug.WriteLine(type.ToString() + ":" + ret.ToString());
 			};

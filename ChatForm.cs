@@ -20,8 +20,8 @@ namespace NIMDemo
         private readonly string _peerId = null;
         private readonly NIM.Session.NIMSessionType _sessionType;
         private bool _fileDroped = false;
-        private nim_vchat_opt2_cb_func _createroomcb = null;
-        private nim_vchat_opt2_cb_func _joinroomcb = null;
+        private NIMVChatOpt2Handler _createroomcb = null;
+        private NIMVChatOpt2Handler _joinroomcb = null;
         string room_name = "154145";
         private string _lastSendedMsgId = null;
         private bool _isRobot = false;
@@ -35,8 +35,8 @@ namespace NIMDemo
             this.textBox1.DragEnter += TextBox1_DragEnter;
             this.textBox1.DragDrop += TextBox1_DragDrop;
 
-            _createroomcb = new nim_vchat_opt2_cb_func(CreateMultiVChatRoomCallback);
-            _joinroomcb = new nim_vchat_opt2_cb_func(JoinMultiVChatRoomCallback);
+            _createroomcb = new NIMVChatOpt2Handler(CreateMultiVChatRoomCallback);
+            _joinroomcb = new NIMVChatOpt2Handler(JoinMultiVChatRoomCallback);
         }
 
         private void TextBox1_DragDrop(object sender, DragEventArgs e)
@@ -223,7 +223,7 @@ namespace NIMDemo
             NIMVChatInfo info = new NIMVChatInfo();
             info.Uids = new System.Collections.Generic.List<string>();
             info.Uids.Add(_peerId);
-            VChatAPI.Start(NIMVideoChatMode.kNIMVideoChatModeVideo, info);//邀请test_id进行语音通话
+            VChatAPI.Start(NIMVideoChatMode.kNIMVideoChatModeVideo,"C# demo呼叫", info);//邀请test_id进行语音通话
         }
 
         private void QueryMsglogBtn_Click(object sender, EventArgs e)
@@ -244,7 +244,7 @@ namespace NIMDemo
             form.Show();
         }
 
-        private void CreateMultiVChatRoomCallback(int code, long channel_id, string json_extension, IntPtr user_data)
+        private void CreateMultiVChatRoomCallback(int code, long channel_id, string json_extension)
 		{
             if (code == 200)
             {
@@ -276,7 +276,7 @@ namespace NIMDemo
             }
 		}
 
-		private void JoinMultiVChatRoomCallback(int code, Int64 channel_id, string json_extension,IntPtr user_data)
+		private void JoinMultiVChatRoomCallback(int code, Int64 channel_id, string json_extension)
 		{
 			if (code==200)
 			{

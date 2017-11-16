@@ -64,7 +64,7 @@ namespace NIMDemo
             
         }
 
-        private static void OnSessionCalleeAckNotify(long channel_id, string uid, int mode, bool accept,string customInfo)
+        private static void OnSessionCalleeAckNotify(long channel_id, string uid, int mode, bool accept)
         {
             if (accept)
             {
@@ -124,6 +124,24 @@ namespace NIMDemo
 			}
         }
 
+
+        private  static  void OnSessionMp4InfoStateNotify(long channel_id,int code, NIMVChatMP4State mp4_info)
+        {
+            string log = "";
+            if (mp4_info != null)
+            {
+                if (mp4_info.MP4_Close != null)
+                {
+                    log += "close:channel_id:" + channel_id.ToString() + " file_path:" + mp4_info.MP4_Close.FilePath + " duration:" + mp4_info.MP4_Close.Duration;
+                }
+                if (mp4_info.MP4_Start != null)
+                {
+                    log += "start:channel_id:" + channel_id.ToString() + "file_path:" + mp4_info.MP4_Start.FilePath + " duration:" + mp4_info.MP4_Start.Duration;
+                }
+            }
+            DemoTrace.WriteLine("SessionMp4Info " + log);
+        }
+            
         private static void OnSessionConnectNotify(long channel_id, int code, string record_file, string video_record_file)
         {
             if (code == 200)
@@ -192,6 +210,7 @@ namespace NIMDemo
             _vchatHandlers.onSessionControlRes = OnSessionControlRes;
             _vchatHandlers.onSessionControlNotify = OnSessionControlNotify;
             _vchatHandlers.onSessionConnectNotify = OnSessionConnectNotify;
+            _vchatHandlers.onSessionMp4InfoStateNotify = OnSessionMp4InfoStateNotify;
             _vchatHandlers.onSessionPeopleStatus = OnSessionPeopleStatus;
             _vchatHandlers.onSessionNetStatus = OnSessionNetStatus;
             _vchatHandlers.onSessionHangupRes = OnSessionHangupRes;
@@ -264,7 +283,7 @@ namespace NIMDemo
 
         private static void StartDevices()
         {
-            NIM.DeviceAPI.StartDeviceResultHandler handle = (type, ret) =>
+            NIM.StartDeviceResultHandler handle = (type, ret) =>
             {
                 System.Diagnostics.Debug.WriteLine(type.ToString() + ":" + ret.ToString());
             };

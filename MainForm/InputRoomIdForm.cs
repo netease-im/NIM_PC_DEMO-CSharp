@@ -13,15 +13,15 @@ namespace NIMDemo
 {
     public partial class InputRoomIdForm : Form
     {
-        private nim_vchat_opt2_cb_func _joinroomcb = null;
+        private NIMVChatOpt2Handler _joinroomcb = null;
         private string _room_name;
         public InputRoomIdForm()
         {
             InitializeComponent();
-            _joinroomcb = new nim_vchat_opt2_cb_func(JoinMultiVChatRoomCallback);
+            _joinroomcb = new NIMVChatOpt2Handler(JoinMultiVChatRoomCallback);
         }
 
-        private void JoinMultiVChatRoomCallback(int code, Int64 channel_id, string json_extension, IntPtr user_data)
+        private void JoinMultiVChatRoomCallback(int code, Int64 channel_id, string json_extension)
         {
             if (code == 200)
             {

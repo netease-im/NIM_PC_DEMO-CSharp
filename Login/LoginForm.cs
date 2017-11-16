@@ -42,7 +42,6 @@ namespace NIMDemo
             var config = ConfigReader.GetSdkConfig();
             if (!NIM.ClientAPI.Init(config.AppKey, "NIMCSharpDemo", null, config))
             {
-                NimUtility.Log.Error(string.Format("Nim init failed,config:{0}", config.Serialize()));
                 MessageBox.Show("NIM init failed!");
                 return false;
             }
