@@ -24,7 +24,7 @@
       {
         "server": "",
         "app_key": "45c6af3c98409b18a84451215d0bdd6e",
-        "roomlistserver": "http://app.netease.im/api/chatroom/homeList"
+        "roomlistserver": "https://app.netease.im/api/chatroom/homeList"
       }
     ]
   }
