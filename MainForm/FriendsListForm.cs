@@ -587,16 +587,31 @@ namespace NIMDemo
                 NameLabel.Text = card.NickName;
                 SigLabel.Text = card.Signature;
 
-                if (!string.IsNullOrEmpty(card.IconUrl))
+                ThreadPool.QueueUserWorkItem((arg) => 
                 {
-                    var url = Uri.UnescapeDataString(card.IconUrl);
-                    if (Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
+                    if (!string.IsNullOrEmpty(card.IconUrl))
                     {
-                        var stream = System.Net.WebRequest.Create(card.IconUrl).GetResponse().GetResponseStream();
-                        if (stream != null)
-                            IconPictureBox.Image = Image.FromStream(stream);
+                        var url = Uri.UnescapeDataString(card.IconUrl);
+                        if (Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
+                        {
+                            try
+                            {
+                                var stream = System.Net.WebRequest.Create(card.IconUrl).GetResponse().GetResponseStream();
+                                _actionWrapper.InvokeAction(() =>
+                                {
+                                    if (stream != null)
+                                        IconPictureBox.Image = Image.FromStream(stream);
+                                });
+                            }
+                            catch(Exception e)
+                            {
+                                System.Diagnostics.Debug.WriteLine("set user icon failed:%s", e.Message);
+                            }
+                           
+                            
+                        }
                     }
-                }
+                });
             });
         }
 

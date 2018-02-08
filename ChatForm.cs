@@ -249,6 +249,9 @@ namespace NIMDemo
             if (code == 200)
             {
 				NIM.NIMJoinRoomJsonEx joinRoomJsonEx = new NIMJoinRoomJsonEx();
+                joinRoomJsonEx.Layout = new CustomLayout();
+                joinRoomJsonEx.Layout.Hostarea = new HostArea();
+                joinRoomJsonEx.Layout.Background = new BackGround();
                 //创建房间成功,将内容抛至UI线程  
                 Action action = () =>
                     {

@@ -52,7 +52,10 @@ namespace NIMDemo
            // string json_extension = "{\"session_id\":\"\"}";
             _room_name = tb_roomid.Text;
 			NIM.NIMJoinRoomJsonEx joinRoomJsonEx = new NIMJoinRoomJsonEx();
-            if(VChatAPI.JoinRoom(NIMVideoChatMode.kNIMVideoChatModeVideo, _room_name, joinRoomJsonEx, _joinroomcb))
+            joinRoomJsonEx.Layout = new CustomLayout();
+            joinRoomJsonEx.Layout.Hostarea = new HostArea();
+            joinRoomJsonEx.Layout.Background = new BackGround();
+            if (VChatAPI.JoinRoom(NIMVideoChatMode.kNIMVideoChatModeVideo, _room_name, joinRoomJsonEx, _joinroomcb))
             {
                 //调用成功
             }

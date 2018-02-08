@@ -166,6 +166,7 @@
     <Compile Include="Chatroom\ChatRoomListForm.Designer.cs">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ScreenCaptureHelper.cs" />
     <Compile Include="Helper\UserHelper.cs" />
     <Compile Include="Http\DocTransForm.cs">
       <SubType>Form</SubType>
@@ -221,26 +222,26 @@
     <Compile Include="ApiTestForm.Designer.cs">
       <DependentUpon>ApiTestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\InputRoomIdForm.cs">
+    <Compile Include="VChat\InputRoomIdForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm\InputRoomIdForm.Designer.cs">
+    <Compile Include="VChat\InputRoomIdForm.Designer.cs">
       <DependentUpon>InputRoomIdForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\MultimediaHandler.cs" />
-    <Compile Include="MainForm\MultiVChatForm.cs">
+    <Compile Include="VChat\MultimediaHandler.cs" />
+    <Compile Include="VChat\MultiVChatForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm\MultiVChatForm.Designer.cs">
+    <Compile Include="VChat\MultiVChatForm.Designer.cs">
       <DependentUpon>MultiVChatForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\VideoChatForm.cs">
+    <Compile Include="VChat\VideoChatForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm\VideoChatForm.Designer.cs">
+    <Compile Include="VChat\VideoChatForm.Designer.cs">
       <DependentUpon>VideoChatForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\VideoFrame.cs" />
+    <Compile Include="VChat\VideoFrame.cs" />
     <Compile Include="ContextMenuGenerator.cs" />
     <Compile Include="MessageLogForm.cs">
       <SubType>Form</SubType>
@@ -363,13 +364,13 @@
     <EmbeddedResource Include="ApiTestForm.resx">
       <DependentUpon>ApiTestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\InputRoomIdForm.resx">
+    <EmbeddedResource Include="VChat\InputRoomIdForm.resx">
       <DependentUpon>InputRoomIdForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\MultiVChatForm.resx">
+    <EmbeddedResource Include="VChat\MultiVChatForm.resx">
       <DependentUpon>MultiVChatForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\VideoChatForm.resx">
+    <EmbeddedResource Include="VChat\VideoChatForm.resx">
       <DependentUpon>VideoChatForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageLogForm.resx">
@@ -455,6 +456,7 @@
   <ItemGroup>
     <Content Include="Assets\logo.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd /d $(ProjectDir)Dependents\dllimport\$(PlatformName)

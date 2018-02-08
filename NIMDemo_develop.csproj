@@ -154,6 +154,7 @@
     <Compile Include="Chatroom\ChatRoomListForm.Designer.cs">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ScreenCaptureHelper.cs" />
     <Compile Include="Helper\UserHelper.cs" />
     <Compile Include="Http\DocTransForm.cs">
       <SubType>Form</SubType>
@@ -209,26 +210,6 @@
     <Compile Include="ApiTestForm.Designer.cs">
       <DependentUpon>ApiTestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\InputRoomIdForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm\InputRoomIdForm.Designer.cs">
-      <DependentUpon>InputRoomIdForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm\MultimediaHandler.cs" />
-    <Compile Include="MainForm\MultiVChatForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm\MultiVChatForm.Designer.cs">
-      <DependentUpon>MultiVChatForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm\VideoChatForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm\VideoChatForm.Designer.cs">
-      <DependentUpon>VideoChatForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm\VideoFrame.cs" />
     <Compile Include="ContextMenuGenerator.cs" />
     <Compile Include="MessageLogForm.cs">
       <SubType>Form</SubType>
@@ -311,6 +292,26 @@
       <DependentUpon>TeamMembersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Tools\OutputInfoText.cs" />
+    <Compile Include="VChat\InputRoomIdForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VChat\InputRoomIdForm.Designer.cs">
+      <DependentUpon>InputRoomIdForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VChat\MultimediaHandler.cs" />
+    <Compile Include="VChat\MultiVChatForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VChat\MultiVChatForm.Designer.cs">
+      <DependentUpon>MultiVChatForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VChat\VideoChatForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VChat\VideoChatForm.Designer.cs">
+      <DependentUpon>VideoChatForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VChat\VideoFrame.cs" />
     <EmbeddedResource Include="Audio\AudioForm.resx">
       <DependentUpon>AudioForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -350,15 +351,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ApiTestForm.resx">
       <DependentUpon>ApiTestForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\InputRoomIdForm.resx">
-      <DependentUpon>InputRoomIdForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\MultiVChatForm.resx">
-      <DependentUpon>MultiVChatForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\VideoChatForm.resx">
-      <DependentUpon>VideoChatForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MessageLogForm.resx">
       <DependentUpon>MessageLogForm.cs</DependentUpon>
@@ -407,6 +399,15 @@
     <Content Include="config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="VChat\InputRoomIdForm.resx">
+      <DependentUpon>InputRoomIdForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VChat\MultiVChatForm.resx">
+      <DependentUpon>MultiVChatForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VChat\VideoChatForm.resx">
+      <DependentUpon>VideoChatForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
