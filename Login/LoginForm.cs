@@ -40,6 +40,8 @@ namespace NIMDemo
         {
             //读取配置信息,用户可以自己定义配置文件格式和读取方式，使用默认配置项config设置为null即可
             var config = ConfigReader.GetSdkConfig();
+            if (config != null && config.CommonSetting != null)
+                config.CommonSetting.TeamMsgAckEnabled = true;
             if (!NIM.ClientAPI.Init(config.AppKey, "NIMCSharpDemo", null, config))
             {
                 MessageBox.Show("NIM init failed!");

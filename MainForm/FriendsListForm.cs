@@ -769,6 +769,10 @@ namespace NIMDemo
 
         private void MyProfileBtn_Click(object sender, EventArgs e)
         {
+            //GlobalAPI.GetCacheFileInfo("wangpengtest", CacheFileType.Image, 0, (info) => 
+            //{
+
+            //});
             ObjectPropertyInfoForm form = new ObjectPropertyInfoForm();
             form.Text = "我的信息";
             form.TargetObject = _selfNameCard;

@@ -89,9 +89,31 @@ namespace NIMDemo
                 }
             });
 
+            MenuItem item4 = new MenuItem("群消息回执", (s, e) =>
+            {
+                List<NIMIMMessage> msgs = new List<NIMIMMessage>();
+                msg.NeedTeamAck = 1;
+                msgs.Add(msg);
+                NIM.Team.TeamAPI.MsgAckRead(msg.ReceiverID, msgs, (data) =>
+                {
+
+                });
+            });
+
+            MenuItem item5 = new MenuItem("群消息未读成员", (s, e) => 
+            {
+                msg.NeedTeamAck = 1;
+                NIM.Team.TeamAPI.QueryMsgUnreadList(msg.ReceiverID, msg, (data) => 
+                {
+
+                });
+            });
+
             contextMenu.MenuItems.Add(item1);
             contextMenu.MenuItems.Add(item2);
             contextMenu.MenuItems.Add(item3);
+            contextMenu.MenuItems.Add(item4);
+            contextMenu.MenuItems.Add(item5);
             contextMenu.Show(_targetListView, location);
         }
 

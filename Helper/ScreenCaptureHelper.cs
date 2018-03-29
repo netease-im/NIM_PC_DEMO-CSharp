@@ -19,7 +19,7 @@ namespace NIMDemo.Helper
         private static byte[] Bitmap2Bytes(Bitmap bm)
         {
             TimeSpan ts = new TimeSpan(DateTime.Now.Ticks);
-            DemoTrace.WriteLine("时间戳 start：" + ts.ToString());
+           // DemoTrace.WriteLine("时间戳 start：" + ts.ToString());
             int data_size = bm.Width * bm.Height * 3;
             Rectangle rect = new Rectangle(0, 0, bm.Width, bm.Height);
             System.Drawing.Imaging.BitmapData bmpData =
@@ -39,7 +39,7 @@ namespace NIMDemo.Helper
 
             bm.UnlockBits(bmpData);
             TimeSpan ts_end = new TimeSpan(DateTime.Now.Ticks);
-            DemoTrace.WriteLine("时间戳 end：" + ts_end.ToString());
+            //DemoTrace.WriteLine("时间戳 end：" + ts_end.ToString());
             return rgbValues;
         }
         public static byte[] GetScreenCapture(out int width,out int height)
