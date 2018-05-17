@@ -16,11 +16,12 @@ namespace NIMDemo.LivingStreamSDK
 		public static void Init()
 		{
 			//注册视频采集数据回调
-			JObject jo = new JObject();
-			jo.Add(new JProperty("subtype", NIMVideoSubType.kNIMVideoSubTypeI420));
-			string json_extention = jo.ToString();
+			//JObject jo = new JObject();
+			//jo.Add(new JProperty("subtype", NIMVideoSubType.kNIMVideoSubTypeI420));
+			//string json_extention = jo.ToString();
 			NIM.NIMVChatCustomAudioJsonEx audioJsonEx = new NIMVChatCustomAudioJsonEx();
 			NIM.NIMVChatCustomVideoJsonEx videoJsonEx = new NIMVChatCustomVideoJsonEx();
+            videoJsonEx.VideoSubType = Convert.ToInt32(NIMVideoSubType.kNIMVideoSubTypeI420);
 			NIM.DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureHandler, videoJsonEx);
 			NIM.DeviceAPI.SetAudioCaptureDataCb(AudioDataCaptureHandler, audioJsonEx);
 		}

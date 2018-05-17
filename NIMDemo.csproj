@@ -83,6 +83,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -93,6 +94,7 @@
     <LangVersion>default</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -153,12 +155,6 @@
     <Compile Include="ByPassLivingStream\BypassLivingStreamForm.Designer.cs">
       <DependentUpon>BypassLivingStreamForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ChatForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ChatForm.Designer.cs">
-      <DependentUpon>ChatForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Chatroom\AvailableRooms.cs" />
     <Compile Include="Chatroom\ChatRoomListForm.cs">
       <SubType>Form</SubType>
@@ -166,6 +162,13 @@
     <Compile Include="Chatroom\ChatRoomListForm.Designer.cs">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Chat\ChatForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Chat\ChatForm.Designer.cs">
+      <DependentUpon>ChatForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\ScreenCaptureHelper.cs" />
     <Compile Include="Helper\UserHelper.cs" />
     <Compile Include="Http\DocTransForm.cs">
       <SubType>Form</SubType>
@@ -179,7 +182,7 @@
     <Compile Include="Http\HttpForm.Designer.cs">
       <DependentUpon>HttpForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InvokeActionWrapper.cs" />
+    <Compile Include="Helper\InvokeActionWrapper.cs" />
     <Compile Include="Helper\VChatHelper.cs" />
     <Compile Include="LivingStreamSDK\LivingStreamDefine.cs" />
     <Compile Include="LivingStreamSDK\LSClientNativeMethods.cs" />
@@ -194,7 +197,9 @@
       <DependentUpon>LivingStreamForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\ProxySettingForm.cs" />
-    <Compile Include="Login\ProxySettingForm.Designer.cs" />
+    <Compile Include="Login\ProxySettingForm.Designer.cs">
+      <DependentUpon>ProxySettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm\ClientCallbacks.cs" />
     <Compile Include="MainForm\FriendsListForm.cs">
       <SubType>Form</SubType>
@@ -202,10 +207,10 @@
     <Compile Include="MainForm\FriendsListForm.Designer.cs">
       <DependentUpon>FriendsListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InfomationForm.cs">
+    <Compile Include="Helper\InfomationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InfomationForm.Designer.cs">
+    <Compile Include="Helper\InfomationForm.Designer.cs">
       <DependentUpon>InfomationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Login\AccountManager.cs" />
@@ -215,63 +220,66 @@
     <Compile Include="Login\LoginForm.Designer.cs">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ApiTestForm.cs">
+    <Compile Include="ApiTest\ApiTestForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ApiTestForm.Designer.cs">
+    <Compile Include="ApiTest\ApiTestForm.Designer.cs">
       <DependentUpon>ApiTestForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\InputRoomIdForm.cs">
+    <Compile Include="Rts\RtsForm.Designer.cs">
+      <DependentUpon>RtsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AVChat\InputRoomIdForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm\InputRoomIdForm.Designer.cs">
+    <Compile Include="AVChat\InputRoomIdForm.Designer.cs">
       <DependentUpon>InputRoomIdForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\MultimediaHandler.cs" />
-    <Compile Include="MainForm\MultiVChatForm.cs">
+    <Compile Include="AVChat\MultimediaHandler.cs" />
+    <Compile Include="AVChat\MultiVChatForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm\MultiVChatForm.Designer.cs">
+    <Compile Include="AVChat\MultiVChatForm.Designer.cs">
       <DependentUpon>MultiVChatForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\VideoChatForm.cs">
+    <Compile Include="AVChat\VideoChatForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm\VideoChatForm.Designer.cs">
+    <Compile Include="AVChat\VideoChatForm.Designer.cs">
       <DependentUpon>VideoChatForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm\VideoFrame.cs" />
-    <Compile Include="ContextMenuGenerator.cs" />
-    <Compile Include="MessageLogForm.cs">
+    <Compile Include="AVChat\VideoFrame.cs" />
+    <Compile Include="Helper\ContextMenuGenerator.cs" />
+    <Compile Include="Msg\MessageLogForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MsgAttachmentInfoForm.cs">
+    <Compile Include="Msg\MsgAttachmentInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MsgAttachmentInfoForm.Designer.cs">
+    <Compile Include="Msg\MsgAttachmentInfoForm.Designer.cs">
       <DependentUpon>MsgAttachmentInfoForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectOutput.cs" />
-    <Compile Include="ObjectPropertyInfoForm.cs">
+    <Compile Include="Helper\ObjectOutput.cs" />
+    <Compile Include="Helper\ObjectPropertyInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ObjectPropertyInfoForm.Designer.cs">
+    <Compile Include="Helper\ObjectPropertyInfoForm.Designer.cs">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DemoTrace.cs" />
-    <Compile Include="FriendProfileForm.cs">
+    <Compile Include="Helper\DemoTrace.cs" />
+    <Compile Include="Friend\FriendProfileForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FriendProfileForm.Designer.cs">
+    <Compile Include="Friend\FriendProfileForm.Designer.cs">
       <DependentUpon>FriendProfileForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="RecentSessionList.cs" />
-    <Compile Include="RobotForm.cs">
+    <Compile Include="Session\RecentSessionList.cs" />
+    <Compile Include="Robot\RobotForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RobotForm.Designer.cs">
+    <Compile Include="Robot\RobotForm.Designer.cs">
       <DependentUpon>RobotForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Rts\PaintingRecord.cs" />
@@ -284,16 +292,15 @@
     <Compile Include="Rts\RtsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Rts\RtsForm.Designer.cs" />
     <Compile Include="Rts\RtsHandler.cs" />
-    <Compile Include="SessionList.cs" />
-    <Compile Include="SubscribeEventForm.cs">
+    <Compile Include="Session\SessionList.cs" />
+    <Compile Include="SubscribeEvent\SubscribeEventForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SubscribeEventForm.Designer.cs">
+    <Compile Include="SubscribeEvent\SubscribeEventForm.Designer.cs">
       <DependentUpon>SubscribeEventForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SysMsgForm.cs">
+    <Compile Include="Msg\SysMsgForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Team\CreateAdvancedTeamForm.cs">
@@ -335,11 +342,11 @@
     <EmbeddedResource Include="ByPassLivingStream\BypassLivingStreamForm.resx">
       <DependentUpon>BypassLivingStreamForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ChatForm.resx">
-      <DependentUpon>ChatForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Chatroom\ChatRoomListForm.resx">
       <DependentUpon>ChatRoomListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Chat\ChatForm.resx">
+      <DependentUpon>ChatForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Http\DocTransForm.resx">
       <DependentUpon>DocTransForm.cs</DependentUpon>
@@ -350,35 +357,40 @@
     <EmbeddedResource Include="LivingStream\LivingStreamForm.resx">
       <DependentUpon>LivingStreamForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Login\ProxySettingForm.resx" />
+    <EmbeddedResource Include="Login\ProxySettingForm.resx">
+      <DependentUpon>ProxySettingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm\FriendsListForm.resx">
       <DependentUpon>FriendsListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InfomationForm.resx">
+    <EmbeddedResource Include="Helper\InfomationForm.resx">
       <DependentUpon>InfomationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ApiTestForm.resx">
+    <EmbeddedResource Include="ApiTest\ApiTestForm.resx">
       <DependentUpon>ApiTestForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\InputRoomIdForm.resx">
+    <EmbeddedResource Include="Rts\RtsForm.resx">
+      <DependentUpon>RtsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AVChat\InputRoomIdForm.resx">
       <DependentUpon>InputRoomIdForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\MultiVChatForm.resx">
+    <EmbeddedResource Include="AVChat\MultiVChatForm.resx">
       <DependentUpon>MultiVChatForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm\VideoChatForm.resx">
+    <EmbeddedResource Include="AVChat\VideoChatForm.resx">
       <DependentUpon>VideoChatForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MessageLogForm.resx">
+    <EmbeddedResource Include="Msg\MessageLogForm.resx">
       <DependentUpon>MessageLogForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MsgAttachmentInfoForm.resx">
+    <EmbeddedResource Include="Msg\MsgAttachmentInfoForm.resx">
       <DependentUpon>MsgAttachmentInfoForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ObjectPropertyInfoForm.resx">
+    <EmbeddedResource Include="Helper\ObjectPropertyInfoForm.resx">
       <DependentUpon>ObjectPropertyInfoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -391,17 +403,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="FriendProfileForm.resx">
+    <EmbeddedResource Include="Friend\FriendProfileForm.resx">
       <DependentUpon>FriendProfileForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RobotForm.resx">
+    <EmbeddedResource Include="Robot\RobotForm.resx">
       <DependentUpon>RobotForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Rts\RtsConference.resx">
       <DependentUpon>RtsConference.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Rts\RtsForm.resx" />
-    <EmbeddedResource Include="SubscribeEventForm.resx">
+    <EmbeddedResource Include="SubscribeEvent\SubscribeEventForm.resx">
       <DependentUpon>SubscribeEventForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Team\CreateAdvancedTeamForm.resx">
@@ -417,9 +428,9 @@
       <DependentUpon>OutputForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <Content Include="config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -455,6 +466,7 @@
   <ItemGroup>
     <Content Include="Assets\logo.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd /d $(ProjectDir)Dependents\dllimport\$(PlatformName)

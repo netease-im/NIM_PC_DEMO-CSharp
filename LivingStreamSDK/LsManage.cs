@@ -68,7 +68,7 @@ namespace NIMDemo.LivingStreamSDK
 			int ls_ret_default = -1;
 			try
 			{
-				Marshal.StructureToPtr(ls_para_, ptr_ls, true);
+				Marshal.StructureToPtr(ls_para_, ptr_ls, false);
 				ls_ret_default = LSClientNativeMethods.Nlss_GetDefaultParam(pls_client_, ptr_ls);
 				ls_para_ = (struct_NLSS_PARAM)Marshal.PtrToStructure(ptr_ls, typeof(struct_NLSS_PARAM));
 			}

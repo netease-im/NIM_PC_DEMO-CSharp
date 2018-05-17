@@ -10,7 +10,7 @@ using NIMDemo.LivingStreamSDK;
 using System.Threading;
 using NIMDemo.AVChat;
 using System.Drawing.Drawing2D;
-using NIMDemo.MainForm;
+//using NIMDemo.MainForm;
 using NIM;
 using NimUtility;
 
@@ -62,7 +62,7 @@ namespace NIMDemo
 			choiceform.ShowDialog();
 		}
 
-		public void ShowVideoFrame(VideoFrame frame)
+		public void ShowVideoFrame(MainForm.VideoFrame frame)
 		{
 			int w = pb_livingstream.Width;
 			int h = pb_livingstream.Height;

@@ -340,6 +340,18 @@ namespace NIMDemo
 
                 });
             }
+            if(e.Message.Content.MsgType == NIMSysMsgType.kNIMSysMsgTypeFriendAdd)
+            {
+                var vt = Newtonsoft.Json.JsonConvert.DeserializeObject<FriendVT>(e.Message.Content.Attachment);
+                //if(vt.VT == NIM.Friend.NIMVerifyType.kNIMVerifyTypeAsk)
+                //    NIM.Friend.FriendAPI.ProcessFriendRequest(e.Message.Content.SenderId, NIM.Friend.NIMVerifyType.kNIMVerifyTypeReject, "sssssss", null);
+            }
+        }
+
+        class FriendVT
+        {
+            [Newtonsoft.Json.JsonProperty("vt")]
+            public NIM.Friend.NIMVerifyType VT { get; set; }
         }
 
         void DisplayReceivedMessage(NIMIMMessage msg)
@@ -587,16 +599,31 @@ namespace NIMDemo
                 NameLabel.Text = card.NickName;
                 SigLabel.Text = card.Signature;
 
-                if (!string.IsNullOrEmpty(card.IconUrl))
+                ThreadPool.QueueUserWorkItem((arg) => 
                 {
-                    var url = Uri.UnescapeDataString(card.IconUrl);
-                    if (Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
+                    if (!string.IsNullOrEmpty(card.IconUrl))
                     {
-                        var stream = System.Net.WebRequest.Create(card.IconUrl).GetResponse().GetResponseStream();
-                        if (stream != null)
-                            IconPictureBox.Image = Image.FromStream(stream);
+                        var url = Uri.UnescapeDataString(card.IconUrl);
+                        if (Uri.IsWellFormedUriString(url, UriKind.RelativeOrAbsolute))
+                        {
+                            try
+                            {
+                                var stream = System.Net.WebRequest.Create(card.IconUrl).GetResponse().GetResponseStream();
+                                _actionWrapper.InvokeAction(() =>
+                                {
+                                    if (stream != null)
+                                        IconPictureBox.Image = Image.FromStream(stream);
+                                });
+                            }
+                            catch(Exception e)
+                            {
+                                System.Diagnostics.Debug.WriteLine("set user icon failed:%s", e.Message);
+                            }
+                           
+                            
+                        }
                     }
-                }
+                });
             });
         }
 
@@ -730,7 +757,7 @@ namespace NIMDemo
                 {
                     if (!string.IsNullOrEmpty(box.Text))
                     {
-                        NIM.Friend.FriendAPI.ProcessFriendRequest(box.Text, NIM.Friend.NIMVerifyType.kNIMVerifyTypeAdd, "加我加我",
+                        NIM.Friend.FriendAPI.ProcessFriendRequest(box.Text, NIM.Friend.NIMVerifyType.kNIMVerifyTypeAsk, "加我加我",
                             (aa, bb, cc) =>
                             {
                                 if (aa != 200)
@@ -754,6 +781,10 @@ namespace NIMDemo
 
         private void MyProfileBtn_Click(object sender, EventArgs e)
         {
+            //GlobalAPI.GetCacheFileInfo("wangpengtest", CacheFileType.Image, 0, (info) => 
+            //{
+
+            //});
             ObjectPropertyInfoForm form = new ObjectPropertyInfoForm();
             form.Text = "我的信息";
             form.TargetObject = _selfNameCard;
