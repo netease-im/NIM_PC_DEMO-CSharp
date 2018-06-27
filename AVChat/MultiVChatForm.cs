@@ -112,8 +112,11 @@ namespace NIMDemo
             _multiVChatFormGraphics_pb04 = pb_multivchat_04.CreateGraphics();
 
 
-            _vchatHandlers.onSessionConnectNotify = (channel_id, code, record_addr, record_file) =>
+            _vchatHandlers.onSessionConnectNotify = (channel_id, code, record_addr, record_file,chat_time,chat_rx,chat_tx) =>
             {
+                DemoTrace.WriteLine("Session Connect channel_id:" + channel_id.ToString() +
+               " code:" + code.ToString() + " record_file:" + record_addr + " video_record_file" + record_file +
+               "chat_time:" + chat_time.ToString() + "chat_rx:" + chat_rx.ToString() + "chat_tx" + chat_tx.ToString());
                 if (code == 200)
                 {
                     StartDevices();

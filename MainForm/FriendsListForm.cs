@@ -180,7 +180,7 @@ namespace NIMDemo
             {
                 try
                 {
-                    if (_nrtcInit = NIM.VChatAPI.Init(""))
+                    if (_nrtcInit = NIM.VChatAPI.Init("",IntPtr.Zero))
                     {
                         _multimediaHandler = new MultimediaHandler(this);
                         MultimediaHandler.InitVChatInfo();
@@ -378,6 +378,15 @@ namespace NIMDemo
         {
             DisplayReceivedMessage(args.Message.MessageContent);
             DemoTrace.WriteLine(args.Dump());
+            if(args.Message.MessageContent.SessionType == NIM.Session.NIMSessionType.kNIMSessionTypeTeam)
+            {
+                var tid = args.Message.MessageContent.ReceiverID;
+                var msgs = new List<NIMIMMessage> { args.Message.MessageContent };
+                NIM.Team.TeamAPI.MsgAckRead(tid, msgs, (data) => 
+                {
+
+                });
+            }
         }
 
         private void OnReceiveBroadMsgs(List<NIMBroadcastMessage> msg)

@@ -55,6 +55,7 @@ namespace NIMDemo
             CustomLayout  layout= new CustomLayout();
             layout.Hostarea = new HostArea();
             layout.Background = new BackGround();
+            joinRoomJsonEx.VEncodeMode = Convert.ToInt32(NIMVChatVideoEncodeMode.kNIMVChatVEModeScreen);
             joinRoomJsonEx.Layout = layout.Serialize();
             if (VChatAPI.JoinRoom(NIMVideoChatMode.kNIMVideoChatModeVideo, _room_name, joinRoomJsonEx, _joinroomcb))
             {

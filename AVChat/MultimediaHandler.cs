@@ -142,8 +142,11 @@ namespace NIMDemo
             DemoTrace.WriteLine("SessionMp4Info " + log);
         }
             
-        private static void OnSessionConnectNotify(long channel_id, int code, string record_file, string video_record_file)
+        private static void OnSessionConnectNotify(long channel_id, int code, string record_file, string video_record_file,long chat_time,ulong chat_rx,ulong chat_tx)
         {
+            DemoTrace.WriteLine("Session Connect channel_id:" + channel_id.ToString() +
+                " code:" + code.ToString() + " record_file:" + record_file + " video_record_file" + video_record_file + 
+                "chat_time:" + chat_time.ToString() + "chat_rx:" + chat_rx.ToString() + "chat_tx" + chat_tx.ToString());
             if (code == 200)
             {
                 Action a = () =>
