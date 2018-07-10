@@ -33,7 +33,9 @@ namespace NIMDemo.LivingStreamSDK
 			};
 			NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioIn, "", 0,null,handle);//开启麦克风
 			NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeAudioOutChat, "", 0,null,handle);//开启扬声器播放对方语音
-			NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeVideo, "", 0,null,handle);//开启摄像头
+            NIMDeviceInfoList device_list = NIM.DeviceAPI.GetDeviceList(NIM.NIMDeviceType.kNIMDeviceTypeVideo);
+            if (device_list.DeviceList.Count > 0)
+                NIM.DeviceAPI.StartDevice(NIM.NIMDeviceType.kNIMDeviceTypeVideo, device_list.DeviceList[0].Path, 0, null, handle);//开启摄像头
 		}
 		public static void EndDevices()
 		{

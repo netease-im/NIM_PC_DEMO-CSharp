@@ -180,7 +180,7 @@ namespace NIMDemo
             {
                 try
                 {
-                    if (_nrtcInit = NIM.VChatAPI.Init("",IntPtr.Zero))
+                    if (_nrtcInit = NIM.VChatAPI.Init(""))
                     {
                         _multimediaHandler = new MultimediaHandler(this);
                         MultimediaHandler.InitVChatInfo();

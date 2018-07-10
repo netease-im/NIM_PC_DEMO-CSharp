@@ -214,7 +214,7 @@ namespace NIMDemo.LivingStreamSDK
 
 	/**
 	* 视频截图的结构体参数
-*/
+    */
 	struct struct_NLSS_VIDEO_SAMPLER
 	{
 		public int iWidth;                        //!< 视频截图图像的宽度.
@@ -227,7 +227,7 @@ namespace NIMDemo.LivingStreamSDK
 
 	/**
 	* 设备信息
-*/
+    */
 	struct struct_NLSS_INDEVICE_INF
 	{
 		public string paPath;
