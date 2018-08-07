@@ -92,7 +92,11 @@ namespace NIMDemo
 
         void MultiVChatForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            SetVChatCallbackNull();
+            EndDevices();
+           
             NIM.VChatAPI.End();
+
             _multiVChatFormGraphics_pb01.Dispose();
             _multiVChatFormGraphics_pb02.Dispose();
             _multiVChatFormGraphics_pb03.Dispose();
@@ -102,6 +106,30 @@ namespace NIMDemo
             MultimediaHandler.InitVChatInfo();
            
         }
+
+        void SetVChatCallback()
+        {
+            NIM.VChatAPI.SetSessionStatusCb(_vchatHandlers);
+            //注册音频接收回调
+            DeviceAPI.SetAudioReceiveDataCb(AudioDataReceiveCallBack, null);
+            //注册视频接收回调
+            DeviceAPI.SetVideoReceiveDataCb(VideoDataReceiveCallBack, null);
+            //注册视频捕获回调
+            DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureCallBack, null);
+
+            _audiosetblacklistop = new NIMVChatOptHandler(AudioSetBlackListOP);
+        }
+
+        void SetVChatCallbackNull()
+        {
+            //注册音频接收回调
+            DeviceAPI.SetAudioReceiveDataCb(null, null);
+            //注册视频接收回调
+            DeviceAPI.SetVideoReceiveDataCb(null, null);
+            //注册视频捕获回调
+            DeviceAPI.SetVideoCaptureDataCb(null, null);
+        }
+
 
         void MultiVChatForm_Load(object sender, EventArgs e)
         {
@@ -127,18 +155,8 @@ namespace NIMDemo
                 }
             };
 
+            SetVChatCallback();
 
-            NIM.VChatAPI.SetSessionStatusCb(_vchatHandlers);
-            //注册音频接收回调
-            DeviceAPI.SetAudioReceiveDataCb(AudioDataReceiveCallBack,null);
-            //注册视频接收回调
-            DeviceAPI.SetVideoReceiveDataCb(VideoDataReceiveCallBack,null);
-            //注册视频捕获回调
-            DeviceAPI.SetVideoCaptureDataCb(VideoDataCaptureCallBack,null);
-
-            //启动设备在MultimediaHandler onSessionConnectNotify回调通知中
-           // StartDevices();
-            _audiosetblacklistop = new NIMVChatOptHandler(AudioSetBlackListOP);
         }
 
        
