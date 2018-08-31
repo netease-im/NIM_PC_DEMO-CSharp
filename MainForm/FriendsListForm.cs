@@ -342,10 +342,16 @@ namespace NIMDemo
             }
             if(e.Message.Content.MsgType == NIMSysMsgType.kNIMSysMsgTypeFriendAdd)
             {
-                var vt = Newtonsoft.Json.JsonConvert.DeserializeObject<FriendRequestVerify>(e.Message.Content.Attachment);
+                var vt = Newtonsoft.Json.JsonConvert.DeserializeObject<FriendVT>(e.Message.Content.Attachment);
                 //if(vt.VT == NIM.Friend.NIMVerifyType.kNIMVerifyTypeAsk)
                 //    NIM.Friend.FriendAPI.ProcessFriendRequest(e.Message.Content.SenderId, NIM.Friend.NIMVerifyType.kNIMVerifyTypeReject, "sssssss", null);
             }
+        }
+
+        class FriendVT
+        {
+            [Newtonsoft.Json.JsonProperty("vt")]
+            public NIM.Friend.NIMVerifyType VT { get; set; }
         }
 
         void DisplayReceivedMessage(NIMIMMessage msg)
