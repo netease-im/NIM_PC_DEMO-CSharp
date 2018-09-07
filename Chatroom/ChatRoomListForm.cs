@@ -110,11 +110,13 @@ namespace NIMDemo
 
                 MenuItem item4 = new MenuItem("消息历史", (s, arg) =>
                 {
-                    NIMChatRoom.ChatRoomApi.QueryMessageHistoryOnline(roomId, 0, 50, (a, b, c) =>
-                    {
-                        if (b == NIM.ResponseCode.kNIMResSuccess)
-                            OutputForm.SetText(c.Dump());
-                    });
+                    NIMChatRoom.ChatRoomApi.QueryMessageHistoryOnline(roomId, 0, 50, false, 
+                        new List<NIMChatRoomMsgType> { NIMChatRoomMsgType.kNIMChatRoomMsgTypeText }, 
+                        (a, b, c) =>
+                     {
+                         if (b == NIM.ResponseCode.kNIMResSuccess)
+                             OutputForm.SetText(c.Dump());
+                     });
 
                 });
 
