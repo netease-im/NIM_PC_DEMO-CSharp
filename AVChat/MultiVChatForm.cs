@@ -23,12 +23,11 @@ namespace NIMDemo
         private Dictionary<string, Graphics> _multichatlist = new Dictionary<string, Graphics>();//大小为4.
       
 
-        static string kNIMDeviceDataUid = "uid"; 			/**< 用户id int64 */
+        static string kNIMDeviceDataUid = "uid"; 			    /**< 用户id int64 */
         static string kNIMDeviceDataAccount = "account";		/**< 用户账号 string */
 
         private List<string> _audioblacklist=new List<string>();//音频黑名单
         private List<string> _vedioblacklist=new List<string>();//视频黑名单
-        private NIM.NIMVChatSessionStatus _vchatHandlers;
 
         NIMVChatOptHandler _audiosetblacklistop = null;
         NIMVChatOptHandler _vediosetblacklistop = null;
@@ -52,7 +51,7 @@ namespace NIMDemo
             this.tb_roomid.Text = roomId;
             this.Load += MultiVChatForm_Load;
             this.FormClosed += MultiVChatForm_FormClosed;
-            _vchatHandlers.onSessionPeopleStatus = OnMultiChatStatus;
+            MultimediaHandler.GetInstance().PeopleStatusHandler += OnMultiChatStatus;
             this.lv_members.Items.Add(NIMDemo.Helper.UserHelper.SelfId, NIMDemo.Helper.UserHelper.SelfId, 0);
            
             
@@ -66,28 +65,28 @@ namespace NIMDemo
                 {
                     MessageBox.Show("操作成功");
                 };
-                this.Invoke(action);
+                this.BeginInvoke(action);
             }
 
         }
-        void OnMultiChatStatus(long channel_id, string uid, int status)
+        void OnMultiChatStatus(object sender, PeopleStatusEventAgrs args)
         {
             Action action = () =>
             {
-                if (status == 0)
+                if (args.status == 0)
                 {
-                    lv_members.Items.Add(uid, uid, 0);
-                    rtb_multichat_info.Text += uid + "进入房间\n";
+                    lv_members.Items.Add(args.uid, args.uid, 0);
+                    rtb_multichat_info.Text += args.uid + "进入房间\n";
                 }
                 else
                 {
-                    lv_members.Items.RemoveByKey(uid);
-                    rtb_multichat_info.Text += uid + "离开房间\n";
+                    lv_members.Items.RemoveByKey(args.uid);
+                    rtb_multichat_info.Text += args.uid + "离开房间\n";
                 }
                     
              
             };
-            this.Invoke(action);
+            this.BeginInvoke(action);
         }
 
         void MultiVChatForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -102,14 +101,11 @@ namespace NIMDemo
             _multiVChatFormGraphics_pb03.Dispose();
             _multiVChatFormGraphics_pb04.Dispose();
 
-            //将音视频通知重新交回给p2p
-            MultimediaHandler.InitVChatInfo();
            
         }
 
         void SetVChatCallback()
         {
-            NIM.VChatAPI.SetSessionStatusCb(_vchatHandlers);
             //注册音频接收回调
             DeviceAPI.SetAudioReceiveDataCb(AudioDataReceiveCallBack, null);
             //注册视频接收回调
@@ -138,22 +134,6 @@ namespace NIMDemo
             _multiVChatFormGraphics_pb02 = pb_multivchat_02.CreateGraphics();
             _multiVChatFormGraphics_pb03 = pb_multivchat_03.CreateGraphics();
             _multiVChatFormGraphics_pb04 = pb_multivchat_04.CreateGraphics();
-
-
-            _vchatHandlers.onSessionConnectNotify = (channel_id, code, record_addr, record_file,chat_time,chat_rx,chat_tx) =>
-            {
-                DemoTrace.WriteLine("Session Connect channel_id:" + channel_id.ToString() +
-               " code:" + code.ToString() + " record_file:" + record_addr + " video_record_file" + record_file +
-               "chat_time:" + chat_time.ToString() + "chat_rx:" + chat_rx.ToString() + "chat_tx" + chat_tx.ToString());
-                if (code == 200)
-                {
-                    StartDevices();
-                }
-                else
-                {
-                    NIM.VChatAPI.End();
-                }
-            };
 
             SetVChatCallback();
 
@@ -394,7 +374,7 @@ namespace NIMDemo
                                           MessageBox.Show("操作失败");
                                           //_vedioblacklist.Remove(id);
                                       };
-                                      this.Invoke(action);
+                                      this.BeginInvoke(action);
                                   }
                               }
                             

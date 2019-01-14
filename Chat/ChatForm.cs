@@ -78,7 +78,6 @@ namespace NIMDemo
 
         void ChatForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            NIMDemo.Helper.VChatHelper.CurrentVChatType = NIMDemo.Helper.VChatType.kP2P;
             NIM.TalkAPI.OnReceiveMessageHandler -= ReceiveMessageHandler;
             NIM.TalkAPI.OnSendMessageCompleted -= SendMessageResultHandler;
         }
@@ -212,18 +211,20 @@ namespace NIMDemo
 
         private void button2_Click(object sender, EventArgs e)
         {
-            System.Threading.ThreadPool.QueueUserWorkItem((obj) =>
+            MainForm.VideoChatForm vchat_form = MainForm.VideoChatForm.GetInstance();
+            if(vchat_form.VchatInfo.state==MainForm.VChatState.kVChatUnknow)
             {
-                VideoTest();
-            });
-        }
-
-        public void VideoTest()
-        {
-            NIMVChatInfo info = new NIMVChatInfo();
-            info.Uids = new System.Collections.Generic.List<string>();
-            info.Uids.Add(_peerId);
-            VChatAPI.Start(NIMVideoChatMode.kNIMVideoChatModeVideo,"C# demo呼叫", info);//邀请test_id进行语音通话
+                MainForm.VideoChatInfo vchat_info = vchat_form.VchatInfo;
+                vchat_info.state = MainForm.VChatState.kVChatInvite;
+                vchat_info.uid = _peerId;
+                vchat_info.chat_mode = NIMVideoChatMode.kNIMVideoChatModeVideo;
+                vchat_form.VchatInfo = vchat_info;
+                vchat_form.Show();
+            }
+            else
+            {
+                vchat_form.Activate();
+            }
         }
 
         private void QueryMsglogBtn_Click(object sender, EventArgs e)
@@ -403,8 +404,7 @@ namespace NIMDemo
 
         private void btn_createmultiroom_Click(object sender, EventArgs e)
         {
-            NIMDemo.Helper.VChatHelper.CurrentVChatType = NIMDemo.Helper.VChatType.kMulti;
-            string custom_info = "custom_info";
+            string custom_info = "你们好";
             //string json_extension = "";
             room_name = Guid.NewGuid().ToString("N");
 

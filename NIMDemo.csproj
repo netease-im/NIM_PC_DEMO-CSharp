@@ -168,6 +168,7 @@
     <Compile Include="Chat\ChatForm.Designer.cs">
       <DependentUpon>ChatForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\DumpHelper.cs" />
     <Compile Include="Helper\ScreenCaptureHelper.cs" />
     <Compile Include="Helper\UserHelper.cs" />
     <Compile Include="Http\DocTransForm.cs">
@@ -183,7 +184,6 @@
       <DependentUpon>HttpForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\InvokeActionWrapper.cs" />
-    <Compile Include="Helper\VChatHelper.cs" />
     <Compile Include="LivingStreamSDK\LivingStreamDefine.cs" />
     <Compile Include="LivingStreamSDK\LSClientNativeMethods.cs" />
     <Compile Include="LivingStreamSDK\LSGlobalDef.cs" />
@@ -294,6 +294,12 @@
     </Compile>
     <Compile Include="Rts\RtsHandler.cs" />
     <Compile Include="Session\SessionList.cs" />
+    <Compile Include="Signaling\SignalingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Signaling\SignalingForm.Designer.cs">
+      <DependentUpon>SignalingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SubscribeEvent\SubscribeEventForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -411,6 +417,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Rts\RtsConference.resx">
       <DependentUpon>RtsConference.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Signaling\SignalingForm.resx">
+      <DependentUpon>SignalingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SubscribeEvent\SubscribeEventForm.resx">
       <DependentUpon>SubscribeEventForm.cs</DependentUpon>

@@ -28,12 +28,11 @@ namespace NIMDemo
                 //进入房间成功
                 Action action = () =>
                 {
-                    Helper.VChatHelper.CurrentVChatType = Helper.VChatType.kMulti;
                     MultiVChatForm vchat = new MultiVChatForm(_room_name);
                     vchat.Show();
                     this.Close();
                 };
-                this.Invoke(action);
+                this.BeginInvoke(action);
             }
             else
             {
@@ -43,7 +42,7 @@ namespace NIMDemo
 					VChatAPI.End();
 
 				};
-                this.Invoke(action);
+                this.BeginInvoke(action);
 
             }
         }

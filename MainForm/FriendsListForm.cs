@@ -129,7 +129,6 @@ namespace NIMDemo
         /// </summary>
         private void RegisterNimCallback()
         {
-            NIM.ClientAPI.RegisterSdkCallbacks();
             NIM.Friend.FriendAPI.FriendProfileChangedHandler += OnFriendChanged;
             NIM.User.UserAPI.UserRelationshipListSyncHander += OnUserRelationshipSync;
             NIM.User.UserAPI.UserRelationshipChangedHandler += OnUserRelationshipChanged;
@@ -183,8 +182,8 @@ namespace NIMDemo
                 {
                     if (_nrtcInit = NIM.VChatAPI.Init(""))
                     {
-                        _multimediaHandler = new MultimediaHandler(this);
-                        MultimediaHandler.InitVChatInfo();
+                         MultimediaHandler.GetInstance().Init(this);
+  
                     }
                     else
                     {
@@ -376,7 +375,6 @@ namespace NIMDemo
             if(args.Message.MessageContent.SessionType == NIM.Session.NIMSessionType.kNIMSessionTypeTeam)
             {
                 var tid = args.Message.MessageContent.ReceiverID;
-                args.Message.MessageContent.NeedTeamAck = 1;
                 var msgs = new List<NIMIMMessage> { args.Message.MessageContent };
                 NIM.Team.TeamAPI.MsgAckRead(tid, msgs, (data) => 
                 {
@@ -670,7 +668,7 @@ namespace NIMDemo
             NIM.TalkAPI.OnReceiveMessageHandler -= OnReceiveMessage;
             NIM.SysMessage.SysMsgAPI.ReceiveSysMsgHandler -= OnReceivedSysNotification;
             NIM.VChatAPI.Cleanup();
-            NIM.ClientAPI.Cleanup();
+            //NIM.ClientAPI.Cleanup();
 
             Action action = ChangeAccount;
             _actionWrapper.InvokeAction(action);
@@ -910,6 +908,12 @@ namespace NIMDemo
             json.DetectType =0;
             
             NIM.VChatAPI.DetectNetwork(json, OnNetDetection);
+        }
+
+        private void Btn_Signaling_Click(object sender, EventArgs e)
+        {
+            SignalingForm signalingForm = new SignalingForm();
+            signalingForm.Show();
         }
     }
 }

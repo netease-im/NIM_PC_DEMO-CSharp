@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btn_net_detect = new System.Windows.Forms.Button();
             this.multipushCheckbox = new System.Windows.Forms.CheckBox();
             this.btn_livingstream = new System.Windows.Forms.Button();
             this.sysMsgBtn = new System.Windows.Forms.Button();
@@ -62,7 +63,8 @@
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.recentSessionListbox = new System.Windows.Forms.ListBox();
-            this.btn_net_detect = new System.Windows.Forms.Button();
+            this.Btn_Signaling = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -85,6 +87,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.Window;
+            this.splitContainer1.Panel1.Controls.Add(this.Btn_Signaling);
             this.splitContainer1.Panel1.Controls.Add(this.btn_net_detect);
             this.splitContainer1.Panel1.Controls.Add(this.multipushCheckbox);
             this.splitContainer1.Panel1.Controls.Add(this.btn_livingstream);
@@ -105,6 +108,16 @@
             this.splitContainer1.Size = new System.Drawing.Size(408, 728);
             this.splitContainer1.SplitterDistance = 203;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // btn_net_detect
+            // 
+            this.btn_net_detect.Location = new System.Drawing.Point(142, 135);
+            this.btn_net_detect.Name = "btn_net_detect";
+            this.btn_net_detect.Size = new System.Drawing.Size(75, 23);
+            this.btn_net_detect.TabIndex = 14;
+            this.btn_net_detect.Text = "网络探测";
+            this.btn_net_detect.UseVisualStyleBackColor = true;
+            this.btn_net_detect.Click += new System.EventHandler(this.NetDetectClicked);
             // 
             // multipushCheckbox
             // 
@@ -328,7 +341,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(387, 495);
+            this.tabPage2.Size = new System.Drawing.Size(400, 495);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "群组";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -342,7 +355,7 @@
             this.TeamListView.FullRowSelect = true;
             this.TeamListView.Location = new System.Drawing.Point(3, 3);
             this.TeamListView.Name = "TeamListView";
-            this.TeamListView.Size = new System.Drawing.Size(381, 489);
+            this.TeamListView.Size = new System.Drawing.Size(394, 489);
             this.TeamListView.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.TeamListView.TabIndex = 0;
             this.TeamListView.UseCompatibleStateImageBehavior = false;
@@ -364,7 +377,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(387, 495);
+            this.tabPage3.Size = new System.Drawing.Size(400, 495);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "消息";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -377,7 +390,7 @@
             this.chatListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chatListView.Location = new System.Drawing.Point(3, 3);
             this.chatListView.Name = "chatListView";
-            this.chatListView.Size = new System.Drawing.Size(381, 489);
+            this.chatListView.Size = new System.Drawing.Size(394, 489);
             this.chatListView.TabIndex = 0;
             this.chatListView.UseCompatibleStateImageBehavior = false;
             this.chatListView.View = System.Windows.Forms.View.Details;
@@ -396,7 +409,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(387, 495);
+            this.tabPage4.Size = new System.Drawing.Size(400, 495);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "会话";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -408,18 +421,18 @@
             this.recentSessionListbox.ItemHeight = 12;
             this.recentSessionListbox.Location = new System.Drawing.Point(3, 3);
             this.recentSessionListbox.Name = "recentSessionListbox";
-            this.recentSessionListbox.Size = new System.Drawing.Size(381, 489);
+            this.recentSessionListbox.Size = new System.Drawing.Size(394, 489);
             this.recentSessionListbox.TabIndex = 0;
             // 
-            // btn_net_detect
+            // Btn_Signaling
             // 
-            this.btn_net_detect.Location = new System.Drawing.Point(142, 135);
-            this.btn_net_detect.Name = "btn_net_detect";
-            this.btn_net_detect.Size = new System.Drawing.Size(75, 23);
-            this.btn_net_detect.TabIndex = 14;
-            this.btn_net_detect.Text = "网络探测";
-            this.btn_net_detect.UseVisualStyleBackColor = true;
-            this.btn_net_detect.Click += new System.EventHandler(this.NetDetectClicked);
+            this.Btn_Signaling.Location = new System.Drawing.Point(142, 106);
+            this.Btn_Signaling.Name = "Btn_Signaling";
+            this.Btn_Signaling.Size = new System.Drawing.Size(75, 23);
+            this.Btn_Signaling.TabIndex = 15;
+            this.Btn_Signaling.Text = "信令";
+            this.Btn_Signaling.UseVisualStyleBackColor = true;
+            this.Btn_Signaling.Click += new System.EventHandler(this.Btn_Signaling_Click);
             // 
             // FriendsListForm
             // 
@@ -434,6 +447,7 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.IconPictureBox)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -484,6 +498,7 @@
         private System.Windows.Forms.ToolStripMenuItem EventSubsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.Button btn_net_detect;
+        private System.Windows.Forms.Button Btn_Signaling;
     }
 }
 

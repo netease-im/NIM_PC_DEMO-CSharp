@@ -65,7 +65,6 @@ namespace NIMDemo
             //必须保证 NIM.ClientAPI.Init 调用成功
             if (!InitSdk())
                 return;
-            DemoTrace.WriteLine("sdk version:" + NIM.ClientAPI.GetVersion());
             var ps = ProxySettingForm.GetProxySetting();
             if (ps != null && ps.IsValid)
             {

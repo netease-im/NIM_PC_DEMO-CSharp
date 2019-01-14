@@ -30,6 +30,7 @@ namespace NIMDemo
             }
             msg = msg.TrimEnd(',');
             System.Diagnostics.Debug.WriteLine(msg);
+            Console.WriteLine(msg);
             OutputForm.SetText(msg);
         }
     }

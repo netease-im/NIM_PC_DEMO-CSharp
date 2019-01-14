@@ -75,4 +75,6 @@ namespace NIMDemo.MainForm
             Frame = frame;
         }
     }
+
+
 }

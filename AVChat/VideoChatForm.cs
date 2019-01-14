@@ -17,26 +17,41 @@ namespace NIMDemo.MainForm
 {
     public partial class VideoChatForm : Form
     {
-        private bool accompany_ = false;//是否已开启伴奏
-		private bool beauty_ = false;//是否已开启美颜
-        private Graphics _peerRegionGraphics;
-        private Graphics _mineRegionGraphics;
-        //private MultimediaHandler _multimediaHandler;
-		private NIMVChatMp4RecordOptHandler _startcb = null;
-		private NIMVChatMp4RecordOptHandler _stopcb = null;
-		private NIMVChatAudioRecordOptHandler _start_audio_record_cb = null;
-		private NIMVChatAudioRecordOptHandler _stop_audio_record_cb = null;
-		private NIMVChatOptHandler _setvideoqualitycb = null;
+        private static VideoChatForm videoChatForm_ = null;
+
+        private NIMVChatMp4RecordOptHandler _startcb = null;
+        private NIMVChatMp4RecordOptHandler _stopcb = null;
+        private NIMVChatAudioRecordOptHandler _start_audio_record_cb = null;
+        private NIMVChatAudioRecordOptHandler _stop_audio_record_cb = null;
+        private NIMVChatOptHandler _setvideoqualitycb = null;
         private NIMVChatOptHandler _set_custom_videocb = null;
 
+        private bool accompany_ = false;//是否已开启伴奏
+		private bool beauty_ = false;//是否已开启美颜
 		private bool mute = false;
 		private bool record = false;
 		private bool audio_record = false;
-        const int RenderInterval = 60;
-        const int MaxFrameCount = 3;
+       
+       
+        private VideoChatInfo vchat_info = new VideoChatInfo();
+        private Graphics _peerRegionGraphics;
+        private Graphics _mineRegionGraphics;
 
-        private static VideoChatForm videoChatForm_ = null;
-        private System.Timers.Timer sendCaptureScreenDataTimer_ = null;
+        private System.Timers.Timer sendCaptureScreenDataTimer_ = new System.Timers.Timer();
+
+        public VideoChatInfo VchatInfo
+        {
+            get
+            {
+                return vchat_info;
+            }
+            set
+            {
+                vchat_info = value;
+                ChangeVchatState(vchat_info.state);
+            }
+        }
+
         public static VideoChatForm GetInstance()
         {
             if(videoChatForm_==null)
@@ -46,20 +61,20 @@ namespace NIMDemo.MainForm
             return videoChatForm_;
         }
 
+        
+
         private VideoChatForm()
         {
             InitializeComponent();
 			InitQuality();
 			InitClipTypes();
-			_startcb = new NIMVChatMp4RecordOptHandler(VChatRecordStartCallback); 
+			_startcb = new NIMVChatMp4RecordOptHandler(VChatRecordStartCallback);
+            _start_audio_record_cb = new NIMVChatAudioRecordOptHandler(VChatAudioRecordCallback);
+            _stop_audio_record_cb = new NIMVChatAudioRecordOptHandler(VChatAudioRecordCallback);
 
             this.Load += VideoChatForm_Load;
             this.FormClosed += VideoChatForm_FormClosed;
 
-            if (sendCaptureScreenDataTimer_ == null)
-            {
-                sendCaptureScreenDataTimer_ = new System.Timers.Timer();
-            }
             sendCaptureScreenDataTimer_.Interval = 100;
             sendCaptureScreenDataTimer_.Elapsed += SendCustomVideoTick;
         }
@@ -96,14 +111,27 @@ namespace NIMDemo.MainForm
                     MessageBox.Show("录制Mp4失败-错误码:" + code.ToString());
                 }
             };
-            this.Invoke(action);
+            this.BeginInvoke(action);
 		}
 
         private void VideoChatForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //if (_multimediaHandler != null)
             sendCaptureScreenDataTimer_.Stop();
-             NIM.VChatAPI.End();
+            switch(vchat_info.state)
+            {
+                case VChatState.kVChatNotify:
+                    {
+                        NIM.VChatAPI.CalleeAck(vchat_info.channel_id, false, null);
+                    }
+                    break;
+                case VChatState.kVChatInvite:
+                case VChatState.kVChating:
+                    NIM.VChatAPI.End();
+                    break;
+                case VChatState.VChatEnd:
+                    break;
+            }
+            
             {
                 MultimediaHandler.ReceiveVideoFrameHandler -= OnReceivedVideoFrame;
                 MultimediaHandler.CapturedVideoFrameHandler -= OnCapturedVideoFrame;
@@ -112,6 +140,7 @@ namespace NIMDemo.MainForm
             _peerRegionGraphics.Dispose();
             _mineRegionGraphics.Dispose();
             videoChatForm_ = null;
+            vchat_info.channel_id = 0;
            // _multimediaHandler = null;
         }
 
@@ -317,13 +346,13 @@ namespace NIMDemo.MainForm
 			audio_record = !audio_record;
 			if (audio_record)
 			{
-				_start_audio_record_cb = new NIMVChatAudioRecordOptHandler(VChatAudioRecordCallback);
+				
 				btnRecordAudio.Text = "停止录音";
 				NIM.VChatAPI.StartAudioRecord(path, _start_audio_record_cb);
 			}
 			else
 			{
-				_stop_audio_record_cb = new NIMVChatAudioRecordOptHandler(VChatAudioRecordCallback);
+
 				btnRecordAudio.Text = "录制音频";
 				NIM.VChatAPI.StopAudioRecord(_start_audio_record_cb);
 			}
@@ -382,6 +411,138 @@ namespace NIMDemo.MainForm
             info.VideoSubType = Convert.ToInt32(NIMVideoSubType.kNIMVideoSubTypeRGB);
             NIM.DeviceAPI.CustomVideoData(0, unmanagedPointer, Convert.ToUInt32(size), (uint)width, (uint)height, info);
             Marshal.FreeHGlobal(unmanagedPointer);
+        }
+
+        private void BtnAcceptClick(object sender, EventArgs e)
+        {
+            NIM.NIMVChatInfo info = new NIM.NIMVChatInfo();
+            NIM.VChatAPI.CalleeAck(vchat_info.channel_id, true, info);
+        }
+
+        private void BtnRefuseClick(object sender, EventArgs e)
+        {
+            NIM.NIMVChatInfo info = new NIM.NIMVChatInfo();
+            NIM.VChatAPI.CalleeAck(vchat_info.channel_id, false, info);
+            Close();
+        }
+
+        private void ChangeVchatState(VChatState state)
+        {
+            switch(state)
+            {
+                case VChatState.kVChatInvite:
+                    {
+                        panel_invite.Visible = true;
+                        panel_notify.Visible = false;
+                        panel_chating.Visible = false;
+                        panel_end.Visible = false;
+                        lb_invite_info.Text = "正在呼叫" + vchat_info.uid + " ，请稍等";
+                        btn_invite_cancel.Enabled = true;
+                        CallFriend(vchat_info.uid);
+                    }
+                    break;
+                case VChatState.kVChatInviteRefuse:
+                    {
+                        panel_invite.Visible = true;
+                        panel_notify.Visible = false;
+                        panel_chating.Visible = false;
+                        panel_end.Visible = false;
+                        lb_invite_info.Text = "对方已拒绝";
+                        btn_invite_cancel.Enabled = false;
+                        TimerCloseForm();
+                    }
+                    break;
+                case VChatState.kVChatNotify:
+                    {
+                        panel_invite.Visible = false;
+                        panel_notify.Visible = true;
+                        panel_chating.Visible = false;
+                        panel_end.Visible = false;
+                        lb_notify_info.Text = vchat_info.uid +
+                            (vchat_info.chat_mode == NIMVideoChatMode.kNIMVideoChatModeAudio ? "向你发来音频通话" : "向你发来视频通话");
+                    }
+                    break;
+                case VChatState.kVChating:
+                    {
+                        panel_invite.Visible = false;
+                        panel_notify.Visible = false;
+                        panel_chating.Visible = true;
+                        panel_end.Visible = false;
+                    }
+                    break;
+                case VChatState.VChatEnd:
+                    {
+                        panel_invite.Visible = false;
+                        panel_notify.Visible = false;
+                        panel_chating.Visible = false;
+                        panel_end.Visible = true;
+                        lb_end_info.Text = "对方已挂断";
+                        TimerCloseForm();
+                    }
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 定时关闭窗口
+        /// </summary>
+        private void TimerCloseForm()
+        {
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 5000; //5s后关闭窗口
+            timer.Elapsed += TimerClose;
+            timer.Start();
+        }
+
+
+        private void TimerClose(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            System.Timers.Timer timer = (System.Timers.Timer)sender;
+            Close();
+            timer.Stop();
+        }
+
+        private void BtnInviteCancelClick(object sender, EventArgs e)
+        {
+            lb_invite_info.Text = "正在取消中....";
+            NIM.VChatAPI.End();
+            TimerCloseForm();
+        }
+
+        private void CallFriend(string peerId)
+        {
+            NIMVChatInfo info = new NIMVChatInfo();
+            info.Uids = new System.Collections.Generic.List<string>();
+            info.Uids.Add(peerId);
+            VChatAPI.Start(NIMVideoChatMode.kNIMVideoChatModeVideo, "C# demo呼叫", info);//邀请test_id进行语音通话
+        }
+    }
+
+
+
+    public enum VChatState
+    {
+        kVChatUnknow = 0,
+        kVChatInvite,
+        kVChatInviteRefuse,
+        kVChatNotify,
+        kVChating,
+        VChatEnd,
+    }
+
+    public class VideoChatInfo
+    {
+        public VChatState state;
+        public Int64 channel_id;
+        public string uid;
+        public NIMVideoChatMode chat_mode;
+
+        public VideoChatInfo()
+        {
+            state = VChatState.kVChatUnknow;
+            channel_id = 0;
+            uid = "";
+            chat_mode = NIMVideoChatMode.kNIMVideoChatModeAudio;
         }
     }
 }
